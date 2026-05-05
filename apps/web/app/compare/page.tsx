@@ -8,6 +8,7 @@ import { compareSnapshots } from '@ig-tracker/core';
 import type { SnapshotComparison } from '@ig-tracker/core';
 import { db, type SnapshotRecord } from '@/lib/db';
 import { AccountList } from '@/components/AccountList';
+import { LandingFooter } from '@/components/landing/FinalCTA';
 import { T } from '@/components/landing/tokens';
 
 interface Section {
@@ -99,14 +100,14 @@ function ComparePageInner() {
     <div style={{ minHeight: '100vh', background: T.bg, color: T.ink, fontFamily: T.sans }}>
       {/* Nav */}
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(244,240,232,0.06)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.8)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
           <div style={{ width: 26, height: 26, borderRadius: 7, background: `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
               <path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>IG Tracker</span>
-        </div>
+        </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, fontSize: 13 }}>
           <Link href="/history" style={{ color: T.inkDim, textDecoration: 'none' }}>History</Link>
           <Link href="/"        style={{ color: T.inkDim, textDecoration: 'none' }}>Home</Link>
@@ -207,6 +208,8 @@ function ComparePageInner() {
           />
         </div>
       </main>
+
+      <LandingFooter />
     </div>
   );
 }
