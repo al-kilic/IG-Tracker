@@ -15,9 +15,7 @@ export default function HowToExportPage() {
       {/* Nav */}
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(244,240,232,0.06)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.8)' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <div style={{ width: 26, height: 26, borderRadius: 7, background: `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          </div>
+          <img src="/logo.png" alt="WhoUnfollowed Logo" width={26} height={26} style={{ borderRadius: 7, objectFit: 'contain' }} />
           <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
         <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', borderRadius: 10, background: T.teal, color: T.cream, fontSize: 13, fontWeight: 600, textDecoration: 'none', fontFamily: T.sans }}>
@@ -72,7 +70,7 @@ export default function HowToExportPage() {
 
           <Step n={4} title="Configure your export: select only Followers and Following">
             <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.65 }}>
-              Tap <Kbd>Create export</Kbd>. Select your Instagram account, choose "Download to device", then under <Kbd>Customize information</Kbd> deselect everything and check only <strong style={{ color: T.ink }}>Followers and Following</strong>.
+              Tap <Kbd>Create export</Kbd>. Select your Instagram account, choose "Download to device", then under <Kbd>Customize information</Kbd> deselect everything and check only <strong style={{ color: T.ink }}>Followers and Following</strong>. When asked for a date range, select <strong style={{ color: T.ink }}>All time</strong> — any shorter range will only export recent followers, not your full list.
             </p>
             {/* Checkbox mock */}
             <div style={{ borderRadius: 14, border: '1px solid rgba(244,240,232,0.08)', background: 'rgba(244,240,232,0.02)', overflow: 'hidden' }}>

@@ -14,16 +14,17 @@ export function SiteNav() {
       background: 'rgba(13,13,13,0.7)',
     }}>
       <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-        <div style={{
-          width: 28, height: 28, borderRadius: 8,
-          background: `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: `0 4px 14px ${T.tealGlow}`,
-        }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-            <path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
+        <img
+          src="/logo.png"
+          alt="WhoUnfollowed Logo"
+          width={28}
+          height={28}
+          style={{
+            borderRadius: 8,
+            boxShadow: `0 4px 14px ${T.tealGlow}`,
+            objectFit: 'contain'
+          }}
+        />
         <span style={{ fontFamily: T.serif, fontSize: 19, letterSpacing: '-0.01em', color: T.ink }}>WhoUnfollowed</span>
       </Link>
       <div style={{ display: 'flex', alignItems: 'center', gap: 32, fontSize: 13, color: T.inkDim }}>

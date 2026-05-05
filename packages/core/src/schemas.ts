@@ -2,13 +2,13 @@ import { z } from 'zod';
 
 export const stringListItemSchema = z.object({
   href: z.string(),
-  value: z.string(),
+  value: z.string().optional(),
   timestamp: z.number(),
 });
 
 export const relationshipEntrySchema = z.object({
   title: z.string().optional(),
-  media_list_data: z.array(z.unknown()),
+  media_list_data: z.array(z.unknown()).optional(),
   string_list_data: z.tuple([stringListItemSchema]),
 });
 

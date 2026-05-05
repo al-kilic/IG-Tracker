@@ -2,20 +2,20 @@ import { z } from 'zod';
 
 declare const followersFileSchema: z.ZodArray<z.ZodObject<{
     title: z.ZodOptional<z.ZodString>;
-    media_list_data: z.ZodArray<z.ZodUnknown>;
+    media_list_data: z.ZodOptional<z.ZodArray<z.ZodUnknown>>;
     string_list_data: z.ZodTuple<[z.ZodObject<{
         href: z.ZodString;
-        value: z.ZodString;
+        value: z.ZodOptional<z.ZodString>;
         timestamp: z.ZodNumber;
     }, z.core.$strip>], null>;
 }, z.core.$strip>>;
 declare const followingFileSchema: z.ZodObject<{
     relationships_following: z.ZodArray<z.ZodObject<{
         title: z.ZodOptional<z.ZodString>;
-        media_list_data: z.ZodArray<z.ZodUnknown>;
+        media_list_data: z.ZodOptional<z.ZodArray<z.ZodUnknown>>;
         string_list_data: z.ZodTuple<[z.ZodObject<{
             href: z.ZodString;
-            value: z.ZodString;
+            value: z.ZodOptional<z.ZodString>;
             timestamp: z.ZodNumber;
         }, z.core.$strip>], null>;
     }, z.core.$strip>>;

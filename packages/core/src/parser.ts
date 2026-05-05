@@ -10,16 +10,16 @@ import {
   followingFileSchema,
   type Account,
   type ParsedSnapshot,
+  type RelationshipEntry,
 } from './schemas.js';
 
 // ─── JSON helpers ─────────────────────────────────────────────────────────────
 
-function entryToAccount(entry: {
-  string_list_data: [{ href: string; value: string; timestamp: number }];
-}): Account {
+function entryToAccount(entry: RelationshipEntry): Account {
   const item = entry.string_list_data[0];
+  const username = item.value ?? entry.title ?? '';
   return {
-    username: item.value,
+    username,
     href: item.href,
     followedAt: item.timestamp > 0 ? item.timestamp : null,
   };

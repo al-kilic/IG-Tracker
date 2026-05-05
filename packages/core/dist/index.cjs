@@ -85,12 +85,12 @@ var SchemaValidationError = class extends Error {
 var import_zod = require("zod");
 var stringListItemSchema = import_zod.z.object({
   href: import_zod.z.string(),
-  value: import_zod.z.string(),
+  value: import_zod.z.string().optional(),
   timestamp: import_zod.z.number()
 });
 var relationshipEntrySchema = import_zod.z.object({
   title: import_zod.z.string().optional(),
-  media_list_data: import_zod.z.array(import_zod.z.unknown()),
+  media_list_data: import_zod.z.array(import_zod.z.unknown()).optional(),
   string_list_data: import_zod.z.tuple([stringListItemSchema])
 });
 var followersFileSchema = import_zod.z.array(relationshipEntrySchema);
@@ -111,8 +111,9 @@ var parsedSnapshotSchema = import_zod.z.object({
 // src/parser.ts
 function entryToAccount(entry) {
   const item = entry.string_list_data[0];
+  const username = item.value ?? entry.title ?? "";
   return {
-    username: item.value,
+    username,
     href: item.href,
     followedAt: item.timestamp > 0 ? item.timestamp : null
   };

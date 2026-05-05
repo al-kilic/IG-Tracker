@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { T } from './tokens';
 
 // ─── Illustrations ─────────────────────────────────────────────────────────────
@@ -108,10 +109,10 @@ export function FlowSection() {
           Your Instagram export,{' '}
           <span style={{ fontStyle: 'italic', color: T.tealLight }}>ready in minutes.</span>
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 18 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 18, marginBottom: 24 }}>
           <FlowStep
             n="01" title="Export your data from Instagram"
-            body="Go to Instagram → Settings → Accounts Center → Your Information &amp; Permissions → Export Your Information. Select Followers &amp; Following. Hit request."
+            body="Go to Instagram → Settings → Accounts Center → Your Information &amp; Permissions → Export Your Information. Select Followers &amp; Following. Set date range to All time, then hit request."
             illustration={<IllRequest />} eta="~30 sec"
           />
           <FlowStep
@@ -124,6 +125,12 @@ export function FlowSection() {
             body="Drag the ZIP onto this page. Your browser reads it locally, computes who doesn't follow you back, and shows you the full list. Nothing leaves your device."
             illustration={<IllDrop />} eta="~2 sec" highlight
           />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Link href="/how-to-export" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: T.tealLight, textDecoration: 'none', padding: '10px 20px', borderRadius: 10, border: '1px solid rgba(2,136,143,0.25)', background: 'rgba(2,136,143,0.05)' }}>
+            Step-by-step export guide
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7 H11 M11 7 L8 4 M11 7 L8 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </Link>
         </div>
       </div>
     </section>
