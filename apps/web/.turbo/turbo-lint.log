@@ -1,0 +1,10 @@
+
+> @ig-tracker/web@0.0.1 lint /Users/alan/Documents/VS Code Projects/ig tracker/apps/web
+> next lint
+
+`next lint` is deprecated and will be removed in Next.js 16.
+For new projects, use create-next-app to choose your preferred linter.
+For existing projects, migrate to the ESLint CLI:
+npx @next/codemod@canary next-lint-to-eslint-cli .
+
+ ELIFECYCLE  Command failed.

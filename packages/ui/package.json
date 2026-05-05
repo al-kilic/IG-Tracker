@@ -1,0 +1,11 @@
+{
+  "name": "@ig-tracker/ui",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "echo 'no build yet'",
+    "typecheck": "echo 'no typecheck yet'",
+    "lint": "echo 'no lint yet'"
+  }
+}
