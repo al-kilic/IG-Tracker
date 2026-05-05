@@ -98,8 +98,8 @@ export function FAQSection() {
               <p style={{ fontSize: 13, color: T.inkDim, lineHeight: 1.5, marginBottom: 12 }}>
                 Email us. We answer within a day, usually faster, and a real person actually reads it.
               </p>
-              <a href="mailto:hi@igtracker.app" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: T.tealLight, fontWeight: 600, textDecoration: 'none' }}>
-                hi@igtracker.app
+              <a href="mailto:aekilicc@gmail.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: T.tealLight, fontWeight: 600, textDecoration: 'none' }}>
+                aekilicc@gmail.com
                 <Icon.arrow size={12} color={T.tealLight} />
               </a>
             </div>
