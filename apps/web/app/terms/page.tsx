@@ -5,7 +5,7 @@ import { LandingFooter } from '@/components/landing/FinalCTA';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
-  description: 'The terms and conditions for using IG Tracker.',
+  description: 'The terms and conditions for using WhoUnfollowed.',
 };
 
 export default function TermsPage() {
@@ -16,7 +16,7 @@ export default function TermsPage() {
           <div style={{ width: 26, height: 26, borderRadius: 7, background: `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
-          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>IG Tracker</span>
+          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
         <Link href="/" style={{ fontSize: 13, color: T.inkDim, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -35,15 +35,15 @@ export default function TermsPage() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
           <Section title="1. Acceptance of Terms">
-            By accessing or using IG Tracker, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the service.
+            By accessing or using WhoUnfollowed, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the service.
           </Section>
 
           <Section title="2. Description of Service">
-            IG Tracker is a client-side tool that allows users to parse their own Instagram data exports to compare follower and following lists. The core functionality runs entirely in your browser.
+            WhoUnfollowed is a client-side tool that allows users to parse their own Instagram data exports to compare follower and following lists. The core functionality runs entirely in your browser.
           </Section>
 
           <Section title="3. User Responsibilities">
-            You are responsible for obtaining your own data from Instagram and for any actions you take based on the information provided by IG Tracker. IG Tracker is not responsible for any actions taken against your Instagram account by Meta/Instagram.
+            You are responsible for obtaining your own data from Instagram and for any actions you take based on the information provided by WhoUnfollowed. WhoUnfollowed is not responsible for any actions taken against your Instagram account by Meta/Instagram.
           </Section>
 
           <Section title="4. Privacy & Data">
@@ -51,7 +51,7 @@ export default function TermsPage() {
           </Section>
 
           <Section title="5. Pro Subscription">
-            IG Tracker Pro is an optional paid subscription that provides additional features. Subscriptions are billed on a recurring basis. Please refer to our <Link href="/refund" style={{ color: T.tealLight, textDecoration: 'none' }}>Refund Policy</Link> for information regarding cancellations and refunds.
+            WhoUnfollowed Pro is an optional paid subscription that provides additional features. Subscriptions are billed on a recurring basis. Please refer to our <Link href="/refund" style={{ color: T.tealLight, textDecoration: 'none' }}>Refund Policy</Link> for information regarding cancellations and refunds.
           </Section>
 
           <Section title="6. Disclaimer of Warranties">
@@ -59,7 +59,7 @@ export default function TermsPage() {
           </Section>
 
           <Section title="7. Limitation of Liability">
-            To the maximum extent permitted by law, IG Tracker shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the service.
+            To the maximum extent permitted by law, WhoUnfollowed shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the service.
           </Section>
 
           <Section title="8. Modifications to Terms">
@@ -74,7 +74,7 @@ export default function TermsPage() {
         <div style={{ marginTop: 56, paddingTop: 32, borderTop: '1px solid rgba(244,240,232,0.06)' }}>
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: T.inkDim, textDecoration: 'none' }}>
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            Back to IG Tracker
+            Back to WhoUnfollowed
           </Link>
         </div>
       </main>
@@ -87,16 +87,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <h2 style={{ fontFamily: T.serif, fontSize: 20, fontWeight: 400, color: T.ink, letterSpacing: '-0.01em', marginBottom: 12 }}>{title}</h2>
-      <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{children}</p>
-    </div>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <h2 style={{ fontFamily: T.serif, fontSize: 20, fontWeight: 400, color: T.ink, letterSpacing: '-0.01em', marginBottom: 12 }}>{title}</h2>
-      <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{children}</p>
+      <div style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{children}</div>
     </div>
   );
 }

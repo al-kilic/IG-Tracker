@@ -18,7 +18,7 @@ export default function HowToExportPage() {
           <div style={{ width: 26, height: 26, borderRadius: 7, background: `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
-          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>IG Tracker</span>
+          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
         <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px', borderRadius: 10, background: T.teal, color: T.cream, fontSize: 13, fontWeight: 600, textDecoration: 'none', fontFamily: T.sans }}>
           Upload ZIP
@@ -44,7 +44,7 @@ export default function HowToExportPage() {
 
         {/* Tip */}
         <Callout variant="tip">
-          Only request <strong>Followers and Following</strong> — not your entire Instagram history. Requesting everything can take 48+ hours. A focused export is ready in under 2 minutes.
+          Only request <strong>Followers and Following</strong>, not your entire Instagram history. Requesting everything can take 48+ hours. A focused export is ready in under 2 minutes.
         </Callout>
 
         {/* Steps */}
@@ -65,18 +65,18 @@ export default function HowToExportPage() {
 
           <Step n={3} title="Go to Export Your Information">
             <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.65 }}>
-              Tap <Kbd>Export your information</Kbd>. You'll see two options — choose <Kbd>Export to device</Kbd> (not "Transfer to destination").
+              Tap <Kbd>Export your information</Kbd>. You'll see two options. Choose <Kbd>Export to device</Kbd> (not "Transfer to destination").
             </p>
             <NavPath steps={['Your information and permissions', 'Export your information', 'Export to device']} />
           </Step>
 
-          <Step n={4} title="Configure your export — select only Followers and Following">
+          <Step n={4} title="Configure your export: select only Followers and Following">
             <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.65 }}>
               Tap <Kbd>Create export</Kbd>. Select your Instagram account, choose "Download to device", then under <Kbd>Customize information</Kbd> deselect everything and check only <strong style={{ color: T.ink }}>Followers and Following</strong>.
             </p>
             {/* Checkbox mock */}
             <div style={{ borderRadius: 14, border: '1px solid rgba(244,240,232,0.08)', background: 'rgba(244,240,232,0.02)', overflow: 'hidden' }}>
-              <div style={{ padding: '10px 14px', borderBottom: '1px solid rgba(244,240,232,0.06)', fontSize: 11, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.1em' }}>CUSTOMIZE INFORMATION — select only:</div>
+              <div style={{ padding: '10px 14px', borderBottom: '1px solid rgba(244,240,232,0.06)', fontSize: 11, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.1em' }}>CUSTOMIZE INFORMATION — SELECT ONLY:</div>
               {[
                 { label: 'Followers and Following', checked: true },
                 { label: 'Posts', checked: false },
@@ -97,12 +97,12 @@ export default function HowToExportPage() {
 
           <Step n={5} title='Choose JSON format, then tap "Start export"'>
             <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.65 }}>
-              Instagram will ask for a format. Choose <strong style={{ color: T.ink }}>JSON</strong> — not HTML. JSON includes timestamps and our parser handles it fully.
+              Instagram will ask for a format. Choose <strong style={{ color: T.ink }}>JSON</strong>, not HTML. JSON includes timestamps and our parser handles it fully.
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               <div style={{ padding: '14px 16px', borderRadius: 12, border: `2px solid ${T.tealMid}`, background: 'rgba(2,136,143,0.08)' }}>
                 <div style={{ fontSize: 14, fontWeight: 700, color: T.tealLight, marginBottom: 4 }}>JSON</div>
-                <div style={{ fontSize: 12, color: T.inkDim }}>Recommended — includes timestamps</div>
+                <div style={{ fontSize: 12, color: T.inkDim }}>Recommended. Includes timestamps.</div>
               </div>
               <div style={{ padding: '14px 16px', borderRadius: 12, border: '1px solid rgba(244,240,232,0.08)', background: 'rgba(244,240,232,0.02)', opacity: 0.5 }}>
                 <div style={{ fontSize: 14, fontWeight: 500, color: T.inkDim, marginBottom: 4 }}>HTML</div>
@@ -146,7 +146,7 @@ export default function HowToExportPage() {
         <div style={{ marginTop: 56, padding: '32px 36px', borderRadius: 20, border: `1px solid rgba(2,136,143,0.3)`, background: 'rgba(2,136,143,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
           <div>
             <div style={{ fontFamily: T.serif, fontSize: 24, color: T.ink, letterSpacing: '-0.01em', marginBottom: 6 }}>Got the ZIP?</div>
-            <div style={{ fontSize: 14, color: T.inkDim }}>Drop it on the home page. Parsed in your browser — no upload, no account.</div>
+            <div style={{ fontSize: 14, color: T.inkDim }}>Drop it on the home page. Parsed in your browser. No upload, no account.</div>
           </div>
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 22px', borderRadius: 12, background: T.teal, color: T.cream, fontSize: 14, fontWeight: 600, textDecoration: 'none', fontFamily: T.sans, whiteSpace: 'nowrap' }}>
             Upload your ZIP now

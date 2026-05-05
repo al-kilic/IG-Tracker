@@ -59,7 +59,7 @@ export function FAQSection() {
               <span style={{ fontStyle: 'italic', color: T.tealLight }}>answers.</span>
             </h2>
             <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.55, marginBottom: 32, maxWidth: 320 }}>
-              Not the marketing ones. If something here{"doesn't"} address what you actually want to know, the contact link is real.
+              Not the marketing ones. If something here doesn&apos;t address what you actually want to know, the contact link is real.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 28 }}>
@@ -96,7 +96,7 @@ export function FAQSection() {
                 <span style={{ fontSize: 12, color: T.tealLight, fontWeight: 600, fontFamily: T.mono, letterSpacing: '0.04em' }}>Still wondering?</span>
               </div>
               <p style={{ fontSize: 13, color: T.inkDim, lineHeight: 1.5, marginBottom: 12 }}>
-                Email us. We answer within a day, usually faster, and a real person actually reads it.
+                Email us.
               </p>
               <a href="mailto:aekilicc@gmail.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: T.tealLight, fontWeight: 600, textDecoration: 'none' }}>
                 aekilicc@gmail.com

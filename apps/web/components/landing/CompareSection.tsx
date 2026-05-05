@@ -27,7 +27,7 @@ function CompareGrid() {
             <Icon.shield size={16} color={T.cream}/>
           </div>
           <div>
-            <div style={{ fontSize: 11, color: T.tealLight, letterSpacing: '0.14em', fontFamily: T.mono }}>IG TRACKER</div>
+            <div style={{ fontSize: 11, color: T.tealLight, letterSpacing: '0.14em', fontFamily: T.mono }}>WhoUnfollowed</div>
             <div style={{ fontFamily: T.serif, fontSize: 22, lineHeight: 1.1, color: T.ink }}>Your data, your device.</div>
           </div>
         </div>
@@ -83,7 +83,7 @@ export function CompareSection() {
           </span>
         </h2>
         <p style={{ fontSize: 16, color: T.inkDim, maxWidth: 600, marginBottom: 56, lineHeight: 1.55 }}>
-          {"That isn't a UX choice. It's a hostage transaction. The moment they have your login, your account is in their database, and many of these tools have been caught storing or leaking those credentials."}
+          Handing over your Instagram password to a third-party app isn&apos;t just risky. It violates Instagram&apos;s own Terms of Service and puts your account at permanent risk of suspension. Dozens of these tools have already been caught storing or selling those credentials. Your account, your audience, your income, handed to a stranger for a follower list.
         </p>
         <CompareGrid />
       </div>

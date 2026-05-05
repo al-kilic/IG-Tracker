@@ -24,10 +24,10 @@ export function SiteNav() {
             <path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
-        <span style={{ fontFamily: T.serif, fontSize: 19, letterSpacing: '-0.01em', color: T.ink }}>IG&nbsp;Tracker</span>
+        <span style={{ fontFamily: T.serif, fontSize: 19, letterSpacing: '-0.01em', color: T.ink }}>WhoUnfollowed</span>
       </Link>
       <div style={{ display: 'flex', alignItems: 'center', gap: 32, fontSize: 13, color: T.inkDim }}>
-        <a href="#flow" style={{ cursor: 'pointer', color: 'inherit', textDecoration: 'none' }}>How it works</a>
+        <a href="#flow" style={{ cursor: 'pointer', color: 'inherit', textDecoration: 'none' }}>How It Works</a>
         <a href="/privacy" style={{ cursor: 'pointer', color: 'inherit', textDecoration: 'none' }}>Privacy</a>
         <a href="#pricing" style={{ cursor: 'pointer', color: 'inherit', textDecoration: 'none' }}>Pricing</a>
         <a

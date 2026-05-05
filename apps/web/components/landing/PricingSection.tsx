@@ -65,7 +65,10 @@ function PricingBig() {
               </div>
             ))}
           </div>
-          <button style={{ width: '100%', padding: '13px 18px', borderRadius: 11, background: 'transparent', color: T.ink, border: '1px solid rgba(244,240,232,0.18)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}>
+          <button
+            onClick={() => { const el = document.getElementById('upload'); el ? el.scrollIntoView({ behavior: 'smooth' }) : window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            style={{ width: '100%', padding: '13px 18px', borderRadius: 11, background: 'transparent', color: T.ink, border: '1px solid rgba(244,240,232,0.18)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}
+          >
             Use it free
           </button>
         </div>
@@ -137,7 +140,10 @@ function PricingBig() {
               </div>
             ))}
           </div>
-          <button style={{ width: '100%', padding: '13px 18px', borderRadius: 11, background: 'transparent', color: T.ink, border: '1px solid rgba(244,240,232,0.18)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}>
+          <button
+            onClick={() => { window.location.href = 'mailto:aekilicc@gmail.com?subject=Notify%20me%20at%20WhoUnfollowed%20Desktop%20launch'; }}
+            style={{ width: '100%', padding: '13px 18px', borderRadius: 11, background: 'transparent', color: T.ink, border: '1px solid rgba(244,240,232,0.18)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}
+          >
             Notify me at launch
           </button>
         </div>

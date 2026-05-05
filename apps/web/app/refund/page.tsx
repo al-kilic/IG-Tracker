@@ -5,7 +5,7 @@ import { LandingFooter } from '@/components/landing/FinalCTA';
 
 export const metadata: Metadata = {
   title: 'Refund Policy',
-  description: 'Our policy on refunds for IG Tracker Pro.',
+  description: 'Our policy on refunds for WhoUnfollowed Pro.',
 };
 
 export default function RefundPage() {
@@ -16,7 +16,7 @@ export default function RefundPage() {
           <div style={{ width: 26, height: 26, borderRadius: 7, background: `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
-          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>IG Tracker</span>
+          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
         <Link href="/" style={{ fontSize: 13, color: T.inkDim, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -35,11 +35,11 @@ export default function RefundPage() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 36 }}>
           <Section title="No Refund Policy">
-            IG Tracker provides a substantial free tier that allows you to fully test the application's core functionality before ever considering an upgrade. Because the service is intangible and the free tier is always available to ensure the tool meets your needs, we do not offer refunds once a Pro subscription has been purchased.
+            WhoUnfollowed provides a substantial free tier that allows you to fully test the application's core functionality before ever considering an upgrade. Because the service is intangible and the free tier is always available to ensure the tool meets your needs, we do not offer refunds once a Pro subscription has been purchased.
           </Section>
 
           <Section title="Try Before You Buy">
-            We encourage all users to use the free version of IG Tracker to its fullest extent. There are no time limits on the free tier, and it includes the primary parsing engine. Pro features are supplementary (such as cloud snapshots and history tracking) and do not change the core "IG Tracker" experience.
+            We encourage all users to use the free version of WhoUnfollowed to its fullest extent. There are no time limits on the free tier, and it includes the primary parsing engine. Pro features are supplementary (such as cloud snapshots and history tracking) and do not change the core "WhoUnfollowed" experience.
           </Section>
 
           <Section title="Exceptions">
@@ -50,7 +50,7 @@ export default function RefundPage() {
         <div style={{ marginTop: 56, paddingTop: 32, borderTop: '1px solid rgba(244,240,232,0.06)' }}>
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: T.inkDim, textDecoration: 'none' }}>
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            Back to IG Tracker
+            Back to WhoUnfollowed
           </Link>
         </div>
       </main>
@@ -64,7 +64,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <h2 style={{ fontFamily: T.serif, fontSize: 20, fontWeight: 400, color: T.ink, letterSpacing: '-0.01em', marginBottom: 12 }}>{title}</h2>
-      <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{children}</p>
+      <div style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{children}</div>
     </div>
   );
 }

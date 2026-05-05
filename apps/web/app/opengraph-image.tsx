@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'IG Tracker — See who unfollowed you. Privately.';
+export const alt = 'WhoUnfollowed — See who unfollowed you. Privately.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -174,7 +174,7 @@ export default function OgImage() {
           }}
         >
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#01696f' }} />
-          <div style={{ color: '#01696f', fontSize: 16, fontWeight: 600 }}>igtracker.app</div>
+          <div style={{ color: '#01696f', fontSize: 16, fontWeight: 600 }}>whounfollowed.app</div>
         </div>
       </div>
     </div>,

@@ -5,7 +5,7 @@ import { LandingFooter } from '@/components/landing/FinalCTA';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'How IG Tracker handles your data — which is almost nothing.',
+  description: 'How WhoUnfollowed handles your data — which is almost nothing.',
 };
 
 export default function PrivacyPage() {
@@ -17,7 +17,7 @@ export default function PrivacyPage() {
           <div style={{ width: 26, height: 26, borderRadius: 7, background: `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
-          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>IG Tracker</span>
+          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
         <Link href="/" style={{ fontSize: 13, color: T.inkDim, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -39,7 +39,7 @@ export default function PrivacyPage() {
         <div style={{ padding: '20px 24px', borderRadius: 16, border: `1px solid rgba(2,136,143,0.3)`, background: 'rgba(2,136,143,0.06)', marginBottom: 40 }}>
           <div style={{ fontSize: 11, color: T.tealLight, fontFamily: T.mono, letterSpacing: '0.1em', marginBottom: 8 }}>THE SHORT VERSION</div>
           <p style={{ fontSize: 15, color: T.ink, lineHeight: 1.6 }}>
-            By default, IG Tracker collects nothing. Your Instagram export is parsed entirely in your browser. No data is transmitted to any server. We have no visibility into what you upload or what results you see.
+            By default, WhoUnfollowed collects nothing. Your Instagram export is parsed entirely in your browser. No data is transmitted to any server. We have no visibility into what you upload or what results you see.
           </p>
         </div>
 
@@ -98,7 +98,7 @@ export default function PrivacyPage() {
         <div style={{ marginTop: 56, paddingTop: 32, borderTop: '1px solid rgba(244,240,232,0.06)' }}>
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: T.inkDim, textDecoration: 'none' }}>
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            Back to IG Tracker
+            Back to WhoUnfollowed
           </Link>
         </div>
       </main>
@@ -112,7 +112,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <h2 style={{ fontFamily: T.serif, fontSize: 20, fontWeight: 400, color: T.ink, letterSpacing: '-0.01em', marginBottom: 12 }}>{title}</h2>
-      <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{children}</p>
+      <div style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{children}</div>
     </div>
   );
 }

@@ -29,7 +29,36 @@ function StatCard({ label, value, sub, accent = false }: { label: string; value:
 
 // ─── Tab bar ──────────────────────────────────────────────────────────────────
 
-interface Tab { id: string; label: string; count: number; accounts: Account[]; csvFilename: string; emptyMessage: string }
+interface Tab { id: string; label: string; description: string; count: number; accounts: Account[]; csvFilename: string; emptyMessage: string }
+
+function InfoTooltip({ text }: { text: string }) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <span
+      style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+    >
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0, opacity: 0.5 }}>
+        <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.3"/>
+        <path d="M7 6.5 V10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+        <circle cx="7" cy="4.5" r="0.7" fill="currentColor"/>
+      </svg>
+      {visible && (
+        <span style={{
+          position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
+          marginBottom: 8, width: 200, padding: '8px 12px', borderRadius: 8,
+          background: 'rgba(20,20,20,0.97)', border: '1px solid rgba(244,240,232,0.1)',
+          fontSize: 12, color: 'rgba(244,240,232,0.75)', lineHeight: 1.5,
+          whiteSpace: 'normal', textAlign: 'left', pointerEvents: 'none', zIndex: 100,
+          boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+        }}>
+          {text}
+        </span>
+      )}
+    </span>
+  );
+}
 
 function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; onChange: (id: string) => void }) {
   return (
@@ -52,6 +81,7 @@ function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; o
             }}
           >
             {tab.label}
+            <InfoTooltip text={tab.description} />
             <span style={{
               fontSize: 11, padding: '2px 7px', borderRadius: 20, fontFamily: T.mono,
               background: active ? T.tealMid : 'rgba(244,240,232,0.06)',
@@ -84,9 +114,9 @@ export default function ResultsPage() {
   const ratioSub     = analysis.ratio >= 1 ? 'More followers than following' : 'More following than followers';
 
   const tabs: Tab[] = [
-    { id: 'non-followers', label: "Don't follow back", count: analysis.nonFollowers.length, accounts: analysis.nonFollowers, csvFilename: `non-followers-${snapshot.exportedAt}.csv`, emptyMessage: 'Everyone you follow also follows you back.' },
-    { id: 'fans',          label: 'Fans',              count: analysis.fans.length,         accounts: analysis.fans,         csvFilename: `fans-${snapshot.exportedAt}.csv`,          emptyMessage: 'You follow everyone who follows you.' },
-    { id: 'mutuals',       label: 'Mutuals',           count: analysis.mutuals.length,      accounts: analysis.mutuals,      csvFilename: `mutuals-${snapshot.exportedAt}.csv`,       emptyMessage: 'No mutual follows found.' },
+    { id: 'non-followers', label: "Don't follow back", description: "Accounts you follow that don't follow you back.",       count: analysis.nonFollowers.length, accounts: analysis.nonFollowers, csvFilename: `non-followers-${snapshot.exportedAt}.csv`, emptyMessage: 'Everyone you follow also follows you back.' },
+    { id: 'fans',          label: 'Fans',              description: "Accounts that follow you, but you don't follow back.",  count: analysis.fans.length,         accounts: analysis.fans,         csvFilename: `fans-${snapshot.exportedAt}.csv`,          emptyMessage: 'You follow everyone who follows you.' },
+    { id: 'mutuals',       label: 'Mutuals',           description: "Accounts you both follow each other.",                  count: analysis.mutuals.length,      accounts: analysis.mutuals,      csvFilename: `mutuals-${snapshot.exportedAt}.csv`,       emptyMessage: 'No mutual follows found.' },
   ];
 
   const activeTab = tabs.find(t => t.id === activeTabId) ?? tabs[0]!;
@@ -106,7 +136,7 @@ export default function ResultsPage() {
               <path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>IG Tracker</span>
+          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, fontSize: 13 }}>
           <Link href="/history" style={{ color: T.inkDim, textDecoration: 'none' }}>History</Link>

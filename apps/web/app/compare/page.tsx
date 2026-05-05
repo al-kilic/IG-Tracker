@@ -106,7 +106,7 @@ function ComparePageInner() {
               <path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>IG Tracker</span>
+          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, fontSize: 13 }}>
           <Link href="/history" style={{ color: T.inkDim, textDecoration: 'none' }}>History</Link>

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { T } from './tokens';
@@ -20,7 +22,7 @@ export function FinalCTA() {
 
         <div style={{ position: 'absolute', right: 32, top: 32, bottom: 32, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', fontFamily: T.mono, fontSize: 10, color: T.inkMute, letterSpacing: '0.18em', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
           <span>SEC.07 · CTA</span>
-          <span>IGTRACKER · 2026</span>
+          <span>WHOUNFOLLOWED · 2026</span>
         </div>
 
         <div style={{ position: 'relative', zIndex: 2, padding: '88px 96px 80px', display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 64, alignItems: 'center' }}>
@@ -34,7 +36,7 @@ export function FinalCTA() {
               <span style={{ fontStyle: 'italic', color: T.tealLight }}>answer.</span>
             </h3>
             <p style={{ fontSize: 17, color: T.inkDim, lineHeight: 1.5, marginBottom: 32, maxWidth: 460 }}>
-              Instagram already handed you the data. We just put it through a parser they{"didn't"} bother to write. One drop, one list, your account stays untouched.
+              Instagram already handed you the data. We just put it through a parser they didn&apos;t bother to write. One drop, one list, your account stays untouched.
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32, flexWrap: 'wrap' }}>
               <MagneticCTA primary>Drop your export</MagneticCTA>
@@ -68,7 +70,7 @@ export function FinalCTA() {
                 <span style={{ color: T.tealLight }}>246</span>
                 <span style={{ color: T.inkMute, fontSize: 22 }}>/1,203</span>
               </div>
-              <div style={{ fontSize: 12, color: T.inkDim, marginBottom: 16 }}>accounts you follow that{"don't"} follow you back</div>
+              <div style={{ fontSize: 12, color: T.inkDim, marginBottom: 16 }}>accounts you follow that don&apos;t follow you back</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 14 }}>
                 {(['@alex.studio','@marco.visuals','@sarah_creates','+ 243 more'] as string[]).map((u,i) => (
                   <div key={u} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 8px', borderRadius: 6, background: i === 3 ? 'transparent' : 'rgba(244,240,232,0.025)', fontSize: 12, color: i === 3 ? T.tealLight : T.ink, fontFamily: T.mono, fontStyle: i === 3 ? 'italic' : 'normal' }}>
@@ -102,7 +104,7 @@ export function LandingFooter() {
               <div style={{ width: 32, height: 32, borderRadius: 9, background: `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Icon.shield size={16} color={T.cream} />
               </div>
-              <span style={{ fontFamily: T.serif, fontSize: 22, color: T.ink, letterSpacing: '-0.01em' }}>IG Tracker</span>
+              <span style={{ fontFamily: T.serif, fontSize: 22, color: T.ink, letterSpacing: '-0.01em' }}>WhoUnfollowed</span>
             </Link>
             <p style={{ fontFamily: T.serif, fontSize: 18, fontStyle: 'italic', color: T.inkDim, lineHeight: 1.4, maxWidth: 320, marginBottom: 20 }}>
               A simple tool that respects what every other one of these tools quietly violated.
@@ -150,7 +152,7 @@ export function LandingFooter() {
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, paddingTop: 24, borderTop: '1px solid rgba(244,240,232,0.05)' }}>
           <div style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.04em' }}>
-            © 2026 IG Tracker · Independent · Not affiliated with Instagram or Meta
+            © 2026 WhoUnfollowed · Independent · Not affiliated with Instagram or Meta
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             {[

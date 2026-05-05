@@ -61,7 +61,7 @@ export function HeroSection() {
     if (!file.name.toLowerCase().endsWith('.zip') &&
         file.type !== 'application/zip' &&
         file.type !== 'application/x-zip-compressed') {
-      setErrMsg('Please upload a .zip file — the one Instagram emailed you.');
+      setErrMsg('Please upload a .zip file. That is the one Instagram emailed you.');
       setPhase('error');
       return;
     }
@@ -143,7 +143,7 @@ export function HeroSection() {
     : `linear-gradient(135deg, rgba(2,136,143,0.5), rgba(244,240,232,0.08), rgba(168,75,47,0.3))`;
 
   return (
-    <section style={{ position: 'relative', padding: '0 48px 48px' }}>
+    <section id="upload" style={{ position: 'relative', padding: '0 48px 48px' }}>
       {/* Portal for upgrade dialog */}
       {mounted && pending && oldest && createPortal(
         <UpgradeDialog
@@ -182,7 +182,7 @@ export function HeroSection() {
         <ProfileCard handle="@alex.studio" status="not_following_back" />
       </div>
       <div style={{ position: 'absolute', left: 28, top: 360, animation: 'drift-2 7.5s ease-in-out infinite', zIndex: 2 }}>
-        <ProfileCard handle="@bloom.theory" status="mutual" small />
+        <ProfileCard handle="@nova.frames" status="mutual" small />
       </div>
       <div style={{ position: 'absolute', right: 60, top: 130, animation: 'drift-3 6.5s ease-in-out infinite', zIndex: 2 }}>
         <ProfileCard handle="@marco.visuals" status="not_following_back" />
@@ -235,9 +235,9 @@ export function HeroSection() {
           }}>{"doesn't follow you back."}</span>
         </div>
         <div>
-          Without handing over{' '}
+          Without sharing{' '}
           <span style={{ position: 'relative', display: 'inline-block' }}>
-            <s style={{ textDecorationColor: T.terra, textDecorationThickness: '5px' }}>your login.</s>
+            <s style={{ textDecorationColor: T.terra, textDecorationThickness: '5px' }}>your password.</s>
           </span>
         </div>
       </h1>
@@ -250,7 +250,7 @@ export function HeroSection() {
         animation: 'fade-up 0.7s 0.25s cubic-bezier(0.16,1,0.3,1) both',
       }}>
         Upload the data export Instagram already gave you. We read it on your device and show you
-        every account you follow that{"doesn't follow you back."}
+        every account you follow that doesn&apos;t follow you back.
       </p>
 
       {/* ── Drop zone ──────────────────────────────────────────────────────── */}
@@ -325,7 +325,9 @@ export function HeroSection() {
                 </div>
                 {phase !== 'dragging' && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <MagneticCTA primary onClick={() => inputRef.current?.click()}>Choose file</MagneticCTA>
+                    <div onClick={e => e.stopPropagation()} style={{ display: 'inline-flex' }}>
+                      <MagneticCTA primary onClick={() => inputRef.current?.click()}>Choose file</MagneticCTA>
+                    </div>
                     <span style={{ fontSize: 12, color: T.inkMute }}>or drop anywhere</span>
                   </div>
                 )}
@@ -398,7 +400,7 @@ export function HeroSection() {
       {/* Live counters */}
       <div style={{
         maxWidth: 680, margin: '32px auto 0',
-        display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 0,
+        display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0,
         background: 'rgba(244,240,232,0.02)', border: '1px solid rgba(244,240,232,0.06)',
         borderRadius: 16, overflow: 'hidden', position: 'relative', zIndex: 5,
         animation: 'fade-up 0.7s 0.55s cubic-bezier(0.16,1,0.3,1) both',
@@ -406,11 +408,10 @@ export function HeroSection() {
         {([
           ['Snapshots parsed', 14823, ''],
           ['Avg non-followers',  187, ''],
-          ['No login forms',       0, ''],
-          ['Free during beta',   100, '%'],
+          ['Password shared',  0, ''],
         ] as [string, number, string][]).map(([label, val, suf], i) => (
-          <div key={label} style={{ padding: '14px 12px', borderRight: i < 3 ? '1px solid rgba(244,240,232,0.05)' : 'none', textAlign: 'center' }}>
-            <div style={{ fontFamily: T.serif, fontSize: 24, lineHeight: 1, color: i === 3 ? T.tealLight : T.ink, animation: `count-up 0.7s ${0.9+i*0.1}s both` }}>
+          <div key={label} style={{ padding: '14px 12px', borderRight: i < 2 ? '1px solid rgba(244,240,232,0.05)' : 'none', textAlign: 'center' }}>
+            <div style={{ fontFamily: T.serif, fontSize: 24, lineHeight: 1, color: i === 2 ? T.tealLight : T.ink, animation: `count-up 0.7s ${0.9+i*0.1}s both` }}>
               <CountUp to={val} suffix={suf} duration={1600} delay={900 + i * 120} />
             </div>
             <div style={{ fontSize: 10, color: T.inkMute, marginTop: 4, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{label}</div>

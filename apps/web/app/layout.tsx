@@ -3,7 +3,7 @@ import { ThemeProvider } from 'next-themes';
 import { FontLoader } from '@/components/FontLoader';
 import './globals.css';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://igtracker.app';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://whounfollowed.app';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -18,8 +18,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'IG Tracker — See who unfollowed you',
-    template: '%s | IG Tracker',
+    default: 'WhoUnfollowed — See who unfollowed you',
+    template: '%s | WhoUnfollowed',
   },
   description:
     "Upload your Instagram data export and see who unfollowed you, who doesn't follow back, and track changes over time. Nothing leaves your browser.",
@@ -31,14 +31,14 @@ export const metadata: Metadata = {
     'privacy instagram tool',
     'local-first instagram analytics',
   ],
-  authors: [{ name: 'IG Tracker' }],
-  creator: 'IG Tracker',
+  authors: [{ name: 'WhoUnfollowed' }],
+  creator: 'WhoUnfollowed',
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: SITE_URL,
-    siteName: 'IG Tracker',
-    title: 'IG Tracker — See who unfollowed you',
+    siteName: 'WhoUnfollowed',
+    title: 'WhoUnfollowed — See who unfollowed you',
     description:
       "Upload your Instagram export. See who unfollowed you, who doesn't follow back, and track changes over time. Nothing leaves your browser.",
     images: [
@@ -46,13 +46,13 @@ export const metadata: Metadata = {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'IG Tracker — See who unfollowed you. Privately.',
+        alt: 'WhoUnfollowed — See who unfollowed you. Privately.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'IG Tracker — See who unfollowed you',
+    title: 'WhoUnfollowed — See who unfollowed you',
     description:
       'Upload your Instagram export. See who unfollowed you. Nothing leaves your browser.',
     images: ['/opengraph-image'],

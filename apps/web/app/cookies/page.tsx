@@ -5,7 +5,7 @@ import { LandingFooter } from '@/components/landing/FinalCTA';
 
 export const metadata: Metadata = {
   title: 'Cookie Policy',
-  description: 'How we use cookies and local storage on IG Tracker.',
+  description: 'How we use cookies and local storage on WhoUnfollowed.',
 };
 
 export default function CookiePage() {
@@ -16,7 +16,7 @@ export default function CookiePage() {
           <div style={{ width: 26, height: 26, borderRadius: 7, background: `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M9 5 L4 10 L9 15 M20 10 H4" stroke={T.cream} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </div>
-          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>IG Tracker</span>
+          <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
         <Link href="/" style={{ fontSize: 13, color: T.inkDim, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -41,7 +41,7 @@ export default function CookiePage() {
           <Section title="How We Use Cookies">
             <strong style={{ color: T.ink }}>We do not use tracking or advertising cookies.</strong>
             <br /><br />
-            IG Tracker is designed to be privacy-first. We use standard browser features like Local Storage and IndexedDB to save your snapshots locally on your machine. These are not transmitted to us.
+            WhoUnfollowed is designed to be privacy-first. We use standard browser features like Local Storage and IndexedDB to save your snapshots locally on your machine. These are not transmitted to us.
             <br /><br />
             If you sign in to a Pro account, we use a single "session cookie" to keep you logged in. This cookie is strictly necessary for the operation of the account system.
           </Section>
@@ -53,14 +53,14 @@ export default function CookiePage() {
           </Section>
 
           <Section title="Managing Your Data">
-            You can clear all data stored by IG Tracker at any time by clearing your browser's site data or "cookies" for this domain. This will remove any saved snapshots stored in your browser.
+            You can clear all data stored by WhoUnfollowed at any time by clearing your browser's site data or "cookies" for this domain. This will remove any saved snapshots stored in your browser.
           </Section>
         </div>
 
         <div style={{ marginTop: 56, paddingTop: 32, borderTop: '1px solid rgba(244,240,232,0.06)' }}>
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: T.inkDim, textDecoration: 'none' }}>
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            Back to IG Tracker
+            Back to WhoUnfollowed
           </Link>
         </div>
       </main>
@@ -74,7 +74,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div>
       <h2 style={{ fontFamily: T.serif, fontSize: 20, fontWeight: 400, color: T.ink, letterSpacing: '-0.01em', marginBottom: 12 }}>{title}</h2>
-      <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{children}</p>
+      <div style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{children}</div>
     </div>
   );
 }

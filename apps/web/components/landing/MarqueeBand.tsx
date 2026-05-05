@@ -22,7 +22,7 @@ export function MarqueeBand() {
         }}>
           {[0, 1].map((dup) => (
             <span key={dup} style={{ display: 'flex', alignItems: 'center', gap: 56, flexShrink: 0 }}>
-              <span>See who{"doesn't"} follow back</span>
+              <span>see who doesn&apos;t follow back</span>
               <span style={{ color: T.tealMid }}>✶</span>
               <span style={{ fontStyle: 'italic', color: T.tealLight }}>no login needed</span>
               <span style={{ color: T.tealMid }}>✶</span>

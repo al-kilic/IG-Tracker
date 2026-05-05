@@ -105,23 +105,23 @@ export function FlowSection() {
           <div style={{ flex: 1, height: 1, background: 'rgba(244,240,232,0.08)' }} />
         </div>
         <h2 style={{ fontFamily: T.serif, fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, lineHeight: 1.0, letterSpacing: '-0.03em', marginBottom: 56, color: T.ink }}>
-          Three steps.{' '}
-          <span style={{ fontStyle: 'italic', color: T.tealLight }}>Two minutes total.</span>
+          Your Instagram export,{' '}
+          <span style={{ fontStyle: 'italic', color: T.tealLight }}>ready in minutes.</span>
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 18 }}>
           <FlowStep
-            n="01" title="Request your data"
-            body="Open Instagram → Settings → Accounts Center → Your Information & Permissions → Export. Pick Followers + Following. JSON."
+            n="01" title="Export your data from Instagram"
+            body="Go to Instagram → Settings → Accounts Center → Your Information &amp; Permissions → Export Your Information. Select Followers &amp; Following. Hit request."
             illustration={<IllRequest />} eta="~30 sec"
           />
           <FlowStep
-            n="02" title="Wait for the email"
-            body="Instagram usually emails you a download link within a few minutes. Just request followers and following, you don't need the whole archive."
+            n="02" title="Instagram emails you the file"
+            body="Within minutes, Instagram sends you a download link. You don't need the full archive, just the followers &amp; following export is enough."
             illustration={<IllEmail />} eta="few min"
           />
           <FlowStep
-            n="03" title="Drop it here"
-            body="Drag the ZIP into the page above. We read your data right in the browser and show you the list. Nothing gets uploaded."
+            n="03" title="Drop the ZIP and see your list instantly"
+            body="Drag the ZIP onto this page. Your browser reads it locally, computes who doesn't follow you back, and shows you the full list. Nothing leaves your device."
             illustration={<IllDrop />} eta="~2 sec" highlight
           />
         </div>

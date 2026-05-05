@@ -108,7 +108,7 @@ function MockDiff() {
           ['+','@new.fan',       T.tealLight,'started following'],
           ['−','@old.friend',    T.terra,    'unfollowed'],
           ['−','@silent.account',T.terra,    'unfollowed'],
-          ['+','@bloom.theory',  T.tealLight,'started following'],
+          ['+','@nova.frames',  T.tealLight,'started following'],
           ['−','@hello.frame',   T.terra,    'unfollowed'],
         ] as [string,string,string,string][]).map(([s,u,c,l],i) => (
           <div key={u} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, fontFamily: T.mono, animation: `fade-up 0.5s ${0.3+i*0.08}s both` }}>
@@ -166,7 +166,7 @@ export function ValueSection() {
           <span style={{ fontStyle: 'italic', color: T.tealLight }}>after one upload.</span>
         </h2>
         <p style={{ fontSize: 16, color: T.inkDim, maxWidth: 540, lineHeight: 1.55, marginBottom: 64 }}>
-          Not a vague graph. Not a recommendation. The actual list of every account you follow that{"doesn't"} follow you back, plus a growth dashboard if you save snapshots over time.
+          Not a vague graph. Not a recommendation. The actual list of every account you follow that doesn&apos;t follow you back, plus a growth dashboard if you save snapshots over time.
         </p>
 
         <div style={{ position: 'relative', height: 540 }}>
@@ -177,7 +177,7 @@ export function ValueSection() {
           />
           <ProductMock
             style={{ position: 'absolute', top: 0, left: '24%', width: '60%', transform: 'rotate(0.6deg)', zIndex: 3 }}
-            title="igtracker.app · Non-followers"
+            title="whounfollowed.app · Non-followers"
             variant="list"
           />
           <ProductMock
