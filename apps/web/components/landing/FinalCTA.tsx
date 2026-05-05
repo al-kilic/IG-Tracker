@@ -123,12 +123,12 @@ export function LandingFooter() {
             { title: 'Company', items: [
               { label: 'About',     href: '#' },
               { label: 'Contact',   href: 'mailto:aekilicc@gmail.com' },
-              { label: 'Press kit', href: '#' },
             ]},
             { title: 'Legal', items: [
               { label: 'Privacy policy',   href: '/privacy' },
+              { label: 'Refund policy',    href: '/refund' },
+              { label: 'Cookie policy',    href: '/cookies' },
               { label: 'Terms',            href: '#' },
-              { label: 'Cookie settings',  href: '#' },
             ]},
           ].map(col => (
             <div key={col.title}>

@@ -1,6 +1,6 @@
 
 
-> @ig-tracker/core@0.0.1 build /Users/alan/Documents/VS Code Projects/ig tracker/packages/core
+> @ig-tracker/core@0.0.1 build /Users/alan/Documents/IG-Tracker/packages/core
 > tsup src/index.ts --format esm,cjs --dts --clean
 
 [34mCLI[39m Building entry: src/index.ts
@@ -10,11 +10,11 @@
 [34mCLI[39m Cleaning output folder
 [34mESM[39m Build start
 [34mCJS[39m Build start
-[32mESM[39m [1mdist/index.js [22m[32m9.53 KB[39m
-[32mESM[39m ⚡️ Build success in 12438ms
 [32mCJS[39m [1mdist/index.cjs [22m[32m11.70 KB[39m
-[32mCJS[39m ⚡️ Build success in 12438ms
+[32mCJS[39m ⚡️ Build success in 7573ms
+[32mESM[39m [1mdist/index.js [22m[32m9.53 KB[39m
+[32mESM[39m ⚡️ Build success in 7573ms
 DTS Build start
-DTS ⚡️ Build success in 415595ms
+DTS ⚡️ Build success in 72058ms
 DTS dist/index.d.ts  3.06 KB
 DTS dist/index.d.cts 3.06 KB
