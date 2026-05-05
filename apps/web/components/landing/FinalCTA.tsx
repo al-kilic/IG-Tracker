@@ -117,7 +117,7 @@ export function LandingFooter() {
             { title: 'Product', items: [
               { label: 'How to request your data', href: '/how-to-export' },
               { label: 'Privacy approach',         href: '/privacy' },
-              { label: 'Source code',              href: 'https://github.com' },
+              { label: 'Source code',              href: 'https://github.com/al-kilic/IG-Tracker' },
               { label: 'Changelog',                href: '#' },
             ]},
             { title: 'Company', items: [
@@ -154,14 +154,14 @@ export function LandingFooter() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             {[
-              { name: 'GitHub', icon: <Icon.gh size={16} color={T.inkDim} /> },
-              { name: 'Email', icon: (
+              { name: 'GitHub', href: 'https://github.com/al-kilic/IG-Tracker', icon: <Icon.gh size={16} color={T.inkDim} /> },
+              { name: 'Email',  href: 'mailto:aekilicc@gmail.com', icon: (
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke={T.inkDim} strokeWidth="1.3"/>
                   <path d="M2 4 L8 9 L14 4" stroke={T.inkDim} strokeWidth="1.3" fill="none" strokeLinecap="round"/>
                 </svg>
               )},
-              { name: 'RSS', icon: (
+              { name: 'RSS',    href: '#', icon: (
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M2 11.5 a1 1 0 1 1 0.001 0" fill={T.inkDim}/>
                   <path d="M2 7 a5 5 0 0 1 5 5" stroke={T.inkDim} strokeWidth="1.3" fill="none" strokeLinecap="round"/>
@@ -172,7 +172,7 @@ export function LandingFooter() {
               <a
                 key={s.name}
                 title={s.name}
-                href="#"
+                href={s.href}
                 style={{ width: 32, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(244,240,232,0.08)', cursor: 'pointer', transition: 'all 0.2s' }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(244,240,232,0.2)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(244,240,232,0.08)'; }}
