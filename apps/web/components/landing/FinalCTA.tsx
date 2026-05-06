@@ -42,7 +42,7 @@ export function FinalCTA() {
               <MagneticCTA primary>Drop your export</MagneticCTA>
               <Link href="/how-to-export" style={{ background: 'transparent', color: T.ink, border: '1px solid rgba(244,240,232,0.18)', padding: '14px 22px', borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
                 <Icon.code size={14} color={T.tealMid} />
-                How to request your data
+                How To Request Your Data
               </Link>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 20, fontSize: 12, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.04em' }}>
@@ -124,10 +124,10 @@ export function LandingFooter() {
 
           {[
             { title: 'Product', items: [
-              { label: 'How to request your data', href: '/how-to-export' },
+              { label: 'How To Request Your Data', href: '/how-to-export' },
               { label: 'Privacy approach',         href: '/privacy' },
               { label: 'Source code',              href: 'https://github.com/al-kilic/IG-Tracker' },
-              { label: 'Changelog',                href: '#' },
+              { label: 'Changelog',                href: '/changelog' },
             ]},
             { title: 'Company', items: [
               { label: 'About',     href: '#' },

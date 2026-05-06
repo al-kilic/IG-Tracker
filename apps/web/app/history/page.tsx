@@ -59,7 +59,6 @@ export default function HistoryPage() {
       </nav>
 
       <main style={{ maxWidth: 800, margin: '0 auto', padding: '48px 32px' }}>
-... (unchanged content)
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
           <div style={{ fontSize: 11, color: T.tealMid, fontFamily: T.mono, letterSpacing: '0.14em', marginBottom: 12 }}>SNAPSHOT HISTORY</div>

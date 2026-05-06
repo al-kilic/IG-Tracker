@@ -324,11 +324,17 @@ export function HeroSection() {
                   </div>
                 </div>
                 {phase !== 'dragging' && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div onClick={e => e.stopPropagation()} style={{ display: 'inline-flex' }}>
-                      <MagneticCTA primary onClick={() => inputRef.current?.click()}>Choose file</MagneticCTA>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <div onClick={e => e.stopPropagation()} style={{ display: 'inline-flex' }}>
+                        <MagneticCTA primary onClick={() => inputRef.current?.click()}>Choose file</MagneticCTA>
+                      </div>
+                      <span style={{ fontSize: 12, color: T.inkMute }}>or drop anywhere</span>
                     </div>
-                    <span style={{ fontSize: 12, color: T.inkMute }}>or drop anywhere</span>
+                    <a href="/history" style={{ fontSize: 12, color: T.inkMute, textDecoration: 'none', borderBottom: `1px solid rgba(244,240,232,0.15)`, paddingBottom: 1 }}
+                      onClick={e => e.stopPropagation()}>
+                      Already have snapshots? View your history →
+                    </a>
                   </div>
                 )}
               </div>
