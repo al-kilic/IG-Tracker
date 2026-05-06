@@ -110,8 +110,6 @@ export default function ResultsPage() {
   if (!snapshot || !analysis) return null;
 
   const exportedDate = format(new Date(snapshot.exportedAt * 1000), 'MMM d, yyyy');
-  const ratio        = analysis.ratio === 0 ? '—' : analysis.ratio.toFixed(2);
-  const ratioSub     = analysis.ratio >= 1 ? 'More followers than following' : 'More following than followers';
 
   const tabs: Tab[] = [
     { id: 'non-followers', label: "Don't follow back", description: "Accounts you follow that don't follow you back.",       count: analysis.nonFollowers.length, accounts: analysis.nonFollowers, csvFilename: `non-followers-${snapshot.exportedAt}.csv`, emptyMessage: 'Everyone you follow also follows you back.' },

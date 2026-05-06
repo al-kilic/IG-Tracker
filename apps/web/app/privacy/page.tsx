@@ -117,4 +117,4 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-import React from 'react';
+import type React from 'react';

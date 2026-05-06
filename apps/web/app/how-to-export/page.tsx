@@ -207,4 +207,4 @@ function Callout({ variant, children }: { variant: 'warning' | 'tip'; children: 
   );
 }
 
-import React from 'react';
+import type React from 'react';

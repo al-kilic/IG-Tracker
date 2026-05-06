@@ -66,7 +66,7 @@ function PricingBig() {
             ))}
           </div>
           <button
-            onClick={() => { const el = document.getElementById('upload'); el ? el.scrollIntoView({ behavior: 'smooth' }) : window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            onClick={() => { const el = document.getElementById('upload'); if (el) { el.scrollIntoView({ behavior: 'smooth' }); } else { window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
             style={{ width: '100%', padding: '13px 18px', borderRadius: 11, background: 'transparent', color: T.ink, border: '1px solid rgba(244,240,232,0.18)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}
           >
             Use it free
