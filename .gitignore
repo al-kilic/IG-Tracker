@@ -1,2 +1,8 @@
 node_modules/
 .next/
+
+# Private docs — local only
+CLAUDE.md
+PRO.md
+ROADMAP.md
+TODO.md
