@@ -5,7 +5,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  ...(process.env.BUILD_STANDALONE === 'true' ? { output: 'standalone' } : {}),
+  output: 'standalone',
   transpilePackages: ['@ig-tracker/core'],
   turbopack: {
     root: path.resolve(__dirname, '../..'),

@@ -28,6 +28,9 @@
     "pnpm": ">=9"
   },
   "packageManager": "pnpm@10.33.2",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp", "msw"]
+  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
