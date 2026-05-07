@@ -126,10 +126,11 @@ export function FlowSection() {
             illustration={<IllDrop />} eta="~2 sec" highlight
           />
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Link href="/how-to-export" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: T.tealLight, textDecoration: 'none', padding: '10px 20px', borderRadius: 10, border: '1px solid rgba(2,136,143,0.25)', background: 'rgba(2,136,143,0.05)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+          <p style={{ fontSize: 13, color: T.inkMute, margin: 0 }}>Not sure how to get your Instagram export?</p>
+          <Link href="/how-to-export" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 600, color: T.cream, textDecoration: 'none', padding: '13px 24px', borderRadius: 12, background: T.teal, boxShadow: `0 4px 20px ${T.tealGlow}` }}>
             Step-by-step export guide
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M3 7 H11 M11 7 L8 4 M11 7 L8 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7 H11 M11 7 L8 4 M11 7 L8 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </Link>
         </div>
       </div>

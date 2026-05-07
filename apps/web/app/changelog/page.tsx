@@ -78,7 +78,7 @@ export default function ChangelogPage() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
           {entries.map((entry, i) => {
-            const tag = tagStyles[entry.tag];
+            const tag = tagStyles[entry.tag] ?? tagStyles['improvement'];
             return (
               <div key={entry.version} style={{ display: 'flex', gap: 24 }}>
                 {/* Timeline */}
