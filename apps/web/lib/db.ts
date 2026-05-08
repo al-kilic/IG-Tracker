@@ -9,13 +9,28 @@ export interface SnapshotRecord {
   data: ParsedSnapshot;
 }
 
+export type TriageState = 'not_a_fan' | 'let_it_slide' | 'done' | 'check_later';
+
+export interface TriageRecord {
+  id?: number;
+  snapshotKey: number; // exportedAt timestamp
+  username: string;
+  state: TriageState;
+  updatedAt: number;
+}
+
 class IgTrackerDb extends Dexie {
   snapshots!: Table<SnapshotRecord, number>;
+  triageStates!: Table<TriageRecord, number>;
 
   constructor() {
     super('ig-tracker');
     this.version(1).stores({
       snapshots: '++id, exportedAt, savedAt',
+    });
+    this.version(2).stores({
+      snapshots: '++id, exportedAt, savedAt',
+      triageStates: '++id, [snapshotKey+username], snapshotKey',
     });
   }
 }

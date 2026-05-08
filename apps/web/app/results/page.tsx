@@ -8,21 +8,42 @@ import { analyzeSnapshot } from '@ig-tracker/core';
 import type { Account } from '@ig-tracker/core';
 import { useSnapshotStore } from '@/lib/store';
 import { AccountList } from '@/components/AccountList';
+import { TriageList } from '@/components/TriageList';
 import { LandingFooter } from '@/components/landing/FinalCTA';
 import { T } from '@/components/landing/tokens';
+import { useTriage } from '@/hooks/useTriage';
 
 // ─── Stat card ───────────────────────────────────────────────────────────────
 
-function StatCard({ label, value, sub, accent = false }: { label: string; value: string | number; sub?: string; accent?: boolean }) {
+function StatCard({ label, value, badge, accent = false }: {
+  label: string;
+  value: string | number;
+  badge?: { text: string; title: string } | undefined;
+  accent?: boolean;
+}) {
   return (
     <div style={{
-      padding: '20px 22px', borderRadius: 16,
+      padding: '16px 18px', borderRadius: 14,
       background: accent ? 'rgba(2,136,143,0.08)' : 'rgba(244,240,232,0.02)',
-      border: `1px solid ${accent ? 'rgba(2,136,143,0.25)' : 'rgba(244,240,232,0.06)'}`,
+      border: `1px solid ${accent ? 'rgba(2,136,143,0.25)' : 'rgba(244,240,232,0.07)'}`,
+      display: 'flex', flexDirection: 'column', gap: 6,
     }}>
-      <div style={{ fontSize: 10, color: T.inkMute, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: T.mono, marginBottom: 10 }}>{label}</div>
-      <div style={{ fontFamily: T.serif, fontSize: 40, lineHeight: 1, letterSpacing: '-0.03em', color: accent ? T.tealLight : T.ink }}>{typeof value === 'number' ? value.toLocaleString() : value}</div>
-      {sub && <div style={{ fontSize: 11, color: T.inkMute, marginTop: 6 }}>{sub}</div>}
+      <div style={{ fontSize: 12, color: accent ? T.tealMid : T.inkDim, fontFamily: T.mono, letterSpacing: '0.06em', textTransform: 'uppercase', fontWeight: 500 }}>
+        {label}
+      </div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+        <span style={{ fontFamily: T.serif, fontSize: 36, lineHeight: 1, letterSpacing: '-0.03em', color: accent ? T.tealLight : T.ink }}>
+          {typeof value === 'number' ? value.toLocaleString() : value}
+        </span>
+        {badge && (
+          <span title={badge.title} style={{
+            fontSize: 13, fontFamily: T.mono, color: T.terra,
+            whiteSpace: 'nowrap', lineHeight: 1,
+          }}>
+            {badge.text}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
@@ -106,6 +127,11 @@ export default function ResultsPage() {
   useEffect(() => { if (!snapshot) router.replace('/'); }, [snapshot, router]);
 
   const analysis = useMemo(() => snapshot ? analyzeSnapshot(snapshot) : null, [snapshot]);
+  const { triage } = useTriage(snapshot?.exportedAt ?? 0);
+  const unfollowedCount = useMemo(
+    () => [...triage.values()].filter(s => s === 'done').length,
+    [triage],
+  );
 
   if (!snapshot || !analysis) return null;
 
@@ -133,6 +159,7 @@ export default function ResultsPage() {
           <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, fontSize: 13 }}>
+          <Link href="/dashboard" style={{ color: T.inkDim, textDecoration: 'none' }}>Radar</Link>
           <Link href="/history" style={{ color: T.inkDim, textDecoration: 'none' }}>History</Link>
           <Link href="/" style={{ color: T.inkDim, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -162,22 +189,37 @@ export default function ResultsPage() {
         </div>
 
         {/* Stats grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 40 }}>
-          <StatCard label="Followers"   value={analysis.totalFollowers} />
-          <StatCard label="Following"   value={analysis.totalFollowing} />
-          <StatCard label="Mutuals"     value={analysis.mutuals.length} />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 40 }}>
+          <StatCard label="Followers"     value={analysis.totalFollowers} />
+          <StatCard
+            label="Following"
+            value={analysis.totalFollowing}
+            badge={unfollowedCount > 0 ? {
+              text: `→ now ~${(analysis.totalFollowing - unfollowedCount).toLocaleString()}`,
+              title: `${unfollowedCount} marked as unfollowed`,
+            } : undefined}
+          />
+          <StatCard label="Mutuals"       value={analysis.mutuals.length} />
           <StatCard label="Non-followers" value={analysis.nonFollowers.length} accent />
         </div>
 
         {/* Tabs + list */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <TabBar tabs={tabs} activeId={activeTabId} onChange={setActiveTabId} />
-          <AccountList
-            key={activeTabId}
-            accounts={activeTab.accounts}
-            csvFilename={activeTab.csvFilename}
-            emptyMessage={activeTab.emptyMessage}
-          />
+          {activeTabId === 'non-followers' ? (
+            <TriageList
+              accounts={analysis.nonFollowers}
+              snapshotKey={snapshot.exportedAt}
+              csvFilename={activeTab.csvFilename}
+            />
+          ) : (
+            <AccountList
+              key={activeTabId}
+              accounts={activeTab.accounts}
+              csvFilename={activeTab.csvFilename}
+              emptyMessage={activeTab.emptyMessage}
+            />
+          )}
         </div>
       </main>
 

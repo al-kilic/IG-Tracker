@@ -102,10 +102,18 @@ var accountSchema = import_zod.z.object({
   href: import_zod.z.string(),
   followedAt: import_zod.z.number().nullable()
 });
+var pendingRequestsFileSchema = import_zod.z.object({
+  relationships_follow_requests_sent: import_zod.z.array(relationshipEntrySchema)
+});
+var recentlyUnfollowedFileSchema = import_zod.z.object({
+  relationships_unfollowed_users: import_zod.z.array(relationshipEntrySchema)
+});
 var parsedSnapshotSchema = import_zod.z.object({
   exportedAt: import_zod.z.number(),
   followers: import_zod.z.array(accountSchema),
-  following: import_zod.z.array(accountSchema)
+  following: import_zod.z.array(accountSchema),
+  pendingRequests: import_zod.z.array(accountSchema).optional(),
+  recentlyUnfollowed: import_zod.z.array(accountSchema).optional()
 });
 
 // src/parser.ts
@@ -216,11 +224,41 @@ async function parseInstagramZip(zipFile) {
     followers = await parseFollowersJson(zip, followerFileNames);
     following = await parseFollowingJson(zip, followingFileName);
   }
+  const pendingRequests = await parseOptionalRelationships(
+    zip,
+    fileNames,
+    /pending_follow_requests\.json$/i,
+    (data) => {
+      const r = pendingRequestsFileSchema.safeParse(data);
+      return r.success ? r.data.relationships_follow_requests_sent.map(entryToAccount) : null;
+    }
+  );
+  const recentlyUnfollowed = await parseOptionalRelationships(
+    zip,
+    fileNames,
+    /recently_unfollowed_profiles\.json$/i,
+    (data) => {
+      const r = recentlyUnfollowedFileSchema.safeParse(data);
+      return r.success ? r.data.relationships_unfollowed_users.map(entryToAccount) : null;
+    }
+  );
   return {
     exportedAt: Math.floor(Date.now() / 1e3),
     followers,
-    following
+    following,
+    ...pendingRequests ? { pendingRequests } : {},
+    ...recentlyUnfollowed ? { recentlyUnfollowed } : {}
   };
+}
+async function parseOptionalRelationships(zip, fileNames, pattern, parse) {
+  const fname = fileNames.find((n) => pattern.test(n));
+  if (!fname) return null;
+  try {
+    const raw = await zip.files[fname].async("string");
+    return parse(JSON.parse(raw));
+  } catch {
+    return null;
+  }
 }
 
 // src/diff.ts

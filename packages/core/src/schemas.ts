@@ -24,10 +24,20 @@ export const accountSchema = z.object({
   followedAt: z.number().nullable(),
 });
 
+export const pendingRequestsFileSchema = z.object({
+  relationships_follow_requests_sent: z.array(relationshipEntrySchema),
+});
+
+export const recentlyUnfollowedFileSchema = z.object({
+  relationships_unfollowed_users: z.array(relationshipEntrySchema),
+});
+
 export const parsedSnapshotSchema = z.object({
   exportedAt: z.number(),
   followers: z.array(accountSchema),
   following: z.array(accountSchema),
+  pendingRequests: z.array(accountSchema).optional(),
+  recentlyUnfollowed: z.array(accountSchema).optional(),
 });
 
 export type StringListItem = z.infer<typeof stringListItemSchema>;
@@ -36,3 +46,5 @@ export type FollowersFile = z.infer<typeof followersFileSchema>;
 export type FollowingFile = z.infer<typeof followingFileSchema>;
 export type Account = z.infer<typeof accountSchema>;
 export type ParsedSnapshot = z.infer<typeof parsedSnapshotSchema>;
+export type PendingRequestsFile = z.infer<typeof pendingRequestsFileSchema>;
+export type RecentlyUnfollowedFile = z.infer<typeof recentlyUnfollowedFileSchema>;

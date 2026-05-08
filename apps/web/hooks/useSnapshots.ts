@@ -6,7 +6,7 @@ import type { ParsedSnapshot } from '@ig-tracker/core';
 import { db, type SnapshotRecord } from '@/lib/db';
 export type { SnapshotRecord };
 
-export const FREE_SNAPSHOT_LIMIT = 3;
+export const FREE_SNAPSHOT_LIMIT = 1;
 
 export function useSnapshotList(): SnapshotRecord[] {
   return useLiveQuery(() => db.snapshots.orderBy('savedAt').reverse().toArray(), [], []) ?? [];

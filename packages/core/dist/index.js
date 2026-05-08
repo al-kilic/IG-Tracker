@@ -59,10 +59,18 @@ var accountSchema = z.object({
   href: z.string(),
   followedAt: z.number().nullable()
 });
+var pendingRequestsFileSchema = z.object({
+  relationships_follow_requests_sent: z.array(relationshipEntrySchema)
+});
+var recentlyUnfollowedFileSchema = z.object({
+  relationships_unfollowed_users: z.array(relationshipEntrySchema)
+});
 var parsedSnapshotSchema = z.object({
   exportedAt: z.number(),
   followers: z.array(accountSchema),
-  following: z.array(accountSchema)
+  following: z.array(accountSchema),
+  pendingRequests: z.array(accountSchema).optional(),
+  recentlyUnfollowed: z.array(accountSchema).optional()
 });
 
 // src/parser.ts
@@ -173,11 +181,41 @@ async function parseInstagramZip(zipFile) {
     followers = await parseFollowersJson(zip, followerFileNames);
     following = await parseFollowingJson(zip, followingFileName);
   }
+  const pendingRequests = await parseOptionalRelationships(
+    zip,
+    fileNames,
+    /pending_follow_requests\.json$/i,
+    (data) => {
+      const r = pendingRequestsFileSchema.safeParse(data);
+      return r.success ? r.data.relationships_follow_requests_sent.map(entryToAccount) : null;
+    }
+  );
+  const recentlyUnfollowed = await parseOptionalRelationships(
+    zip,
+    fileNames,
+    /recently_unfollowed_profiles\.json$/i,
+    (data) => {
+      const r = recentlyUnfollowedFileSchema.safeParse(data);
+      return r.success ? r.data.relationships_unfollowed_users.map(entryToAccount) : null;
+    }
+  );
   return {
     exportedAt: Math.floor(Date.now() / 1e3),
     followers,
-    following
+    following,
+    ...pendingRequests ? { pendingRequests } : {},
+    ...recentlyUnfollowed ? { recentlyUnfollowed } : {}
   };
+}
+async function parseOptionalRelationships(zip, fileNames, pattern, parse) {
+  const fname = fileNames.find((n) => pattern.test(n));
+  if (!fname) return null;
+  try {
+    const raw = await zip.files[fname].async("string");
+    return parse(JSON.parse(raw));
+  } catch {
+    return null;
+  }
 }
 
 // src/diff.ts

@@ -8,6 +8,8 @@ import {
 import {
   followersFileSchema,
   followingFileSchema,
+  pendingRequestsFileSchema,
+  recentlyUnfollowedFileSchema,
   type Account,
   type ParsedSnapshot,
   type RelationshipEntry,
@@ -165,9 +167,46 @@ export async function parseInstagramZip(
     following = await parseFollowingJson(zip, followingFileName);
   }
 
+  // Optional extras — gracefully skip if not present in this export
+  const pendingRequests = await parseOptionalRelationships(
+    zip, fileNames,
+    /pending_follow_requests\.json$/i,
+    (data) => {
+      const r = pendingRequestsFileSchema.safeParse(data);
+      return r.success ? r.data.relationships_follow_requests_sent.map(entryToAccount) : null;
+    },
+  );
+
+  const recentlyUnfollowed = await parseOptionalRelationships(
+    zip, fileNames,
+    /recently_unfollowed_profiles\.json$/i,
+    (data) => {
+      const r = recentlyUnfollowedFileSchema.safeParse(data);
+      return r.success ? r.data.relationships_unfollowed_users.map(entryToAccount) : null;
+    },
+  );
+
   return {
     exportedAt: Math.floor(Date.now() / 1000),
     followers,
     following,
+    ...(pendingRequests ? { pendingRequests } : {}),
+    ...(recentlyUnfollowed ? { recentlyUnfollowed } : {}),
   };
+}
+
+async function parseOptionalRelationships(
+  zip: JSZip,
+  fileNames: string[],
+  pattern: RegExp,
+  parse: (data: unknown) => Account[] | null,
+): Promise<Account[] | null> {
+  const fname = fileNames.find(n => pattern.test(n));
+  if (!fname) return null;
+  try {
+    const raw = await zip.files[fname]!.async('string');
+    return parse(JSON.parse(raw));
+  } catch {
+    return null;
+  }
 }

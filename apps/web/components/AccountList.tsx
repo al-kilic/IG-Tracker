@@ -89,13 +89,7 @@ export function AccountList({
               return (
                 <div
                   key={account.username}
-                  style={{
-                    position: 'absolute',
-                    top: item.start,
-                    left: 0,
-                    right: 0,
-                    height: ROW_HEIGHT,
-                  }}
+                  style={{ position: 'absolute', top: item.start, left: 0, right: 0, height: ROW_HEIGHT }}
                   className={cn(
                     'flex items-center gap-3 px-4 border-b border-foreground/[0.06] last:border-0',
                     item.index % 2 === 0 ? 'bg-background' : 'bg-foreground/[0.015]',

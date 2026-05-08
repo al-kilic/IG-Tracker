@@ -13,6 +13,7 @@ import {
   type ParsedSnapshot,
 } from '@ig-tracker/core';
 import { useSnapshotStore } from '@/lib/store';
+import { isProUser } from '@/lib/flags';
 import {
   useSnapshotList,
   saveSnapshot,
@@ -70,7 +71,7 @@ export function UploadZone() {
       ) {
         setState({
           status: 'error',
-          message: 'Please upload a .zip file — the one Instagram emailed you.',
+          message: 'Please upload a .zip file (the one Instagram emailed you).',
         });
         return;
       }
@@ -100,7 +101,7 @@ export function UploadZone() {
         setState({ status: 'processing', progress: 100 });
         await new Promise((r) => setTimeout(r, 300));
 
-        if (snapshots.length >= FREE_SNAPSHOT_LIMIT) {
+        if (!isProUser() && snapshots.length >= FREE_SNAPSHOT_LIMIT) {
           setState({ status: 'idle' });
           setPendingSnapshot(snapshot);
         } else {

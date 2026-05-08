@@ -10,6 +10,27 @@ export const metadata: Metadata = {
 
 const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improvement' | 'feature'; items: string[] }[] = [
   {
+    version: '0.4',
+    date: 'May 8, 2026',
+    tag: 'feature',
+    items: [
+      'Triage workflow on non-followers — Dropping, Whitelist, Unfollowed, Skip for now',
+      'Triage states persist per snapshot in IndexedDB',
+      'Keyboard nav: arrow keys to move, 1-4 to triage',
+      'Progress bar showing triage completion with milestone messages',
+      'Witty copy under each triage badge, unique per account',
+      'Whitelist section collapsed at the bottom with expandable account list',
+      'Toast with Undo when adding to Whitelist',
+      'Filter pills with live counts and info tooltips: All, Untriaged, Dropping, Unfollowed, Skip for now',
+      'A-Z / Z-A sort on the non-followers list',
+      'Visited row highlighting scoped per snapshot',
+      'Carry over triage from a previous snapshot — optional, with per-state checkboxes and snapshot picker',
+      'Live following estimate next to the Following count, updates as you triage',
+      'Free tier capped at 1 snapshot, Pro is unlimited',
+      'Upload always works during beta regardless of snapshot count',
+    ],
+  },
+  {
     version: '0.3',
     date: 'May 6, 2026',
     tag: 'improvement',

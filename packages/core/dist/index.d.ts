@@ -37,6 +37,16 @@ declare const parsedSnapshotSchema: z.ZodObject<{
         href: z.ZodString;
         followedAt: z.ZodNullable<z.ZodNumber>;
     }, z.core.$strip>>;
+    pendingRequests: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        username: z.ZodString;
+        href: z.ZodString;
+        followedAt: z.ZodNullable<z.ZodNumber>;
+    }, z.core.$strip>>>;
+    recentlyUnfollowed: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        username: z.ZodString;
+        href: z.ZodString;
+        followedAt: z.ZodNullable<z.ZodNumber>;
+    }, z.core.$strip>>>;
 }, z.core.$strip>;
 type FollowersFile = z.infer<typeof followersFileSchema>;
 type FollowingFile = z.infer<typeof followingFileSchema>;
