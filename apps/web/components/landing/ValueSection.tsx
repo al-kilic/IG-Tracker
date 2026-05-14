@@ -6,24 +6,31 @@ import { T } from './tokens';
 function MockList() {
   return (
     <>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', borderBottom: '1px solid rgba(244,240,232,0.05)' }}>
+      {/* Stats — 2-col on mobile, 4-col on sm+ */}
+      <div className="grid grid-cols-2 sm:grid-cols-4" style={{ borderBottom: '1px solid rgba(244,240,232,0.05)' }}>
         {([['1,203','Following'],['847','Followers'],['246',"Don't follow back"],['535','Mutuals']] as [string,string][]).map(([v,l],i) => (
-          <div key={l} style={{ padding: '14px 14px', borderRight: i < 3 ? '1px solid rgba(244,240,232,0.04)' : 'none' }}>
-            <div style={{ fontFamily: T.serif, fontSize: 22, color: i === 2 ? T.tealLight : T.ink }}>{v}</div>
-            <div style={{ fontSize: 9, color: T.inkMute, marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{l}</div>
+          <div key={l} style={{
+            padding: '12px 12px',
+            borderRight: (i % 2 === 0) ? '1px solid rgba(244,240,232,0.04)' : 'none',
+            borderBottom: i < 2 ? '1px solid rgba(244,240,232,0.04)' : 'none',
+          }} className={i >= 2 ? 'sm:border-b-0' : ''}>
+            <div style={{ fontFamily: T.serif, fontSize: 19, color: i === 2 ? T.tealLight : T.ink }}>{v}</div>
+            <div style={{ fontSize: 8, color: T.inkMute, marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{l}</div>
           </div>
         ))}
       </div>
-      <div style={{ display: 'flex', borderBottom: '1px solid rgba(244,240,232,0.05)', padding: '0 12px' }}>
-        {["Don't follow back (246)",'Fans (312)','Mutuals (535)'].map((t,i) => (
+      {/* Tabs — scrollable on mobile */}
+      <div style={{ display: 'flex', borderBottom: '1px solid rgba(244,240,232,0.05)', padding: '0 12px', overflowX: 'auto' }}>
+        {[["Don't follow back",'246'],['Fans','312'],['Mutuals','535']].map(([t,n],i) => (
           <div key={t} style={{
-            padding: '10px 14px', fontSize: 11, fontWeight: i === 0 ? 600 : 400,
+            padding: '9px 10px', fontSize: 10, fontWeight: i === 0 ? 600 : 400,
             color: i === 0 ? T.ink : T.inkMute,
             borderBottom: `2px solid ${i === 0 ? T.tealMid : 'transparent'}`,
-          }}>{t}</div>
+            whiteSpace: 'nowrap', flexShrink: 0,
+          }}>{t} <span style={{ opacity: 0.6 }}>({n})</span></div>
         ))}
-        <div style={{ marginLeft: 'auto', padding: '10px 0', display: 'flex', alignItems: 'center' }}>
-          <span style={{ fontSize: 10, color: T.tealLight, padding: '4px 10px', border: `1px solid rgba(2,136,143,0.3)`, borderRadius: 6 }}>Export CSV</span>
+        <div style={{ marginLeft: 'auto', padding: '9px 0', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+          <span style={{ fontSize: 9, color: T.tealLight, padding: '3px 8px', border: `1px solid rgba(2,136,143,0.3)`, borderRadius: 6 }}>CSV</span>
         </div>
       </div>
       <div style={{ padding: '4px 6px' }}>
@@ -66,7 +73,7 @@ function MockCsv() {
           ))}
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 14 }}>
+      <div className="grid grid-cols-3" style={{ gap: 6, marginBottom: 14 }}>
         {([
           ['+184','New followers', T.tealLight,'↑'],
           ['−47', 'Unfollowed',   T.terra,     '↓'],
@@ -155,21 +162,22 @@ function ProductMock({
 
 export function ValueSection() {
   return (
-    <section style={{ padding: '120px 48px', position: 'relative' }}>
+    <section className="px-4 sm:px-12 py-20 sm:py-32 relative">
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 14 }}>
           <span style={{ fontFamily: T.mono, fontSize: 11, color: T.tealMid, letterSpacing: '0.18em' }}>02 / VALUE</span>
           <div style={{ flex: 1, height: 1, background: 'rgba(244,240,232,0.08)' }} />
         </div>
-        <h2 style={{ fontFamily: T.serif, fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, lineHeight: 1.0, letterSpacing: '-0.03em', marginBottom: 18, color: T.ink }}>
+        <h2 style={{ fontFamily: T.serif, fontSize: 'clamp(36px, 6vw, 72px)', fontWeight: 400, lineHeight: 1.0, letterSpacing: '-0.03em', marginBottom: 18, color: T.ink }}>
           What you actually get<br/>
           <span style={{ fontStyle: 'italic', color: T.tealLight }}>after one upload.</span>
         </h2>
-        <p style={{ fontSize: 16, color: T.inkDim, maxWidth: 540, lineHeight: 1.55, marginBottom: 64 }}>
+        <p style={{ fontSize: 16, color: T.inkDim, maxWidth: 540, lineHeight: 1.55, marginBottom: 48 }}>
           Not a vague graph. Not a recommendation. The actual list of every account you follow that doesn&apos;t follow you back, plus a growth dashboard if you save snapshots over time.
         </p>
 
-        <div style={{ position: 'relative', height: 540 }}>
+        {/* Desktop: layered absolute layout */}
+        <div className="hidden md:block" style={{ position: 'relative', height: 540 }}>
           <ProductMock
             style={{ position: 'absolute', top: 40, left: '6%', width: '52%', transform: 'rotate(-1.2deg)', opacity: 0.85, zIndex: 1 }}
             title="Pro · Growth Dashboard"
@@ -185,6 +193,13 @@ export function ValueSection() {
             title="Compare snapshots"
             variant="diff"
           />
+        </div>
+
+        {/* Mobile: stacked single mocks */}
+        <div className="flex flex-col gap-4 md:hidden">
+          <ProductMock title="whounfollowed.app · Non-followers" variant="list" />
+          <ProductMock title="Pro · Growth Dashboard" variant="csv" />
+          <ProductMock title="Compare snapshots" variant="diff" />
         </div>
       </div>
     </section>

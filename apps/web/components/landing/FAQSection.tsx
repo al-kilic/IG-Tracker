@@ -37,21 +37,123 @@ const ITEMS: Record<CategoryId, [string, string][]> = {
   ],
 };
 
-export function FAQSection() {
-  const [activeCat, setActiveCat] = React.useState<CategoryId>('privacy');
-  const [openIdx,   setOpenIdx]   = React.useState(0);
+function CategoryTabs({ activeCat, setActiveCat }: { activeCat: CategoryId; setActiveCat: (c: CategoryId) => void }) {
+  return (
+    <div style={{ display: 'flex', gap: 4, overflowX: 'auto', paddingBottom: 4 }}>
+      {CATEGORIES.map(c => {
+        const active = activeCat === c.id;
+        return (
+          <button
+            key={c.id}
+            onClick={() => setActiveCat(c.id)}
+            style={{
+              flexShrink: 0,
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '10px 16px', borderRadius: 10,
+              background: active ? 'rgba(2,136,143,0.1)' : 'rgba(244,240,232,0.02)',
+              border: `1px solid ${active ? 'rgba(2,136,143,0.3)' : 'rgba(244,240,232,0.06)'}`,
+              color: active ? T.ink : T.inkDim,
+              fontSize: 13, fontWeight: active ? 600 : 400,
+              fontFamily: T.sans, cursor: 'pointer',
+              transition: 'all 0.2s', whiteSpace: 'nowrap',
+            }}
+          >
+            <span style={{ width: 4, height: 14, borderRadius: 2, background: active ? T.tealLight : 'transparent', transition: 'background 0.2s', flexShrink: 0 }} />
+            {c.label}
+            <span style={{ fontSize: 11, color: T.inkMute, fontFamily: T.mono }}>{c.count}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
-  React.useEffect(() => { setOpenIdx(0); }, [activeCat]);
+function Accordion({ activeCat }: { activeCat: CategoryId }) {
+  const [openIdx, setOpenIdx] = React.useState(0);
+  React.useEffect(() => setOpenIdx(0), [activeCat]);
 
   return (
-    <section style={{ padding: '0 48px 120px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {ITEMS[activeCat].map(([q, a], i) => {
+        const open = openIdx === i;
+        return (
+          <div
+            key={`${activeCat}-${i}`}
+            style={{
+              borderRadius: 14,
+              background: open ? 'rgba(2,136,143,0.05)' : 'rgba(244,240,232,0.02)',
+              border: `1px solid ${open ? 'rgba(2,136,143,0.2)' : 'rgba(244,240,232,0.06)'}`,
+              overflow: 'hidden',
+              transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
+            }}
+          >
+            <button
+              onClick={() => setOpenIdx(open ? -1 : i)}
+              style={{ width: '100%', padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left' }}
+            >
+              <span style={{ fontFamily: T.serif, fontSize: 18, lineHeight: 1.3, letterSpacing: '-0.01em', color: T.ink }}>{q}</span>
+              <span style={{
+                width: 30, height: 30, borderRadius: '50%', flexShrink: 0,
+                background: open ? T.tealMid : 'rgba(244,240,232,0.06)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all 0.3s',
+                transform: open ? 'rotate(45deg)' : 'rotate(0)',
+              }}>
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                  <path d="M7 2 V12 M2 7 H12" stroke={open ? T.cream : T.ink} strokeWidth="1.6" strokeLinecap="round"/>
+                </svg>
+              </span>
+            </button>
+            <div style={{ maxHeight: open ? 300 : 0, opacity: open ? 1 : 0, overflow: 'hidden', transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)' }}>
+              <div style={{ padding: '0 20px 20px', fontSize: 14, color: T.inkDim, lineHeight: 1.65 }}>{a}</div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export function FAQSection() {
+  const [activeCat, setActiveCat] = React.useState<CategoryId>('privacy');
+
+  return (
+    <section className="px-4 sm:px-12 pb-24 sm:pb-32">
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 14 }}>
           <span style={{ fontFamily: T.mono, fontSize: 11, color: T.tealMid, letterSpacing: '0.18em' }}>06 / QUESTIONS</span>
           <div style={{ flex: 1, height: 1, background: 'rgba(244,240,232,0.08)' }} />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '380px 1fr', gap: 64, alignItems: 'flex-start' }}>
+        {/* ── Mobile layout: heading → tabs → accordion → contact ── */}
+        <div className="sm:hidden">
+          <h2 style={{ fontFamily: T.serif, fontSize: 'clamp(36px, 10vw, 56px)', fontWeight: 400, lineHeight: 1.0, letterSpacing: '-0.03em', marginBottom: 16, color: T.ink }}>
+            The honest<br/>
+            <span style={{ fontStyle: 'italic', color: T.tealLight }}>answers.</span>
+          </h2>
+          <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.55, marginBottom: 24 }}>
+            Not the marketing ones. If something here doesn&apos;t address what you actually want to know, the contact link is real.
+          </p>
+          <div style={{ marginBottom: 20 }}>
+            <CategoryTabs activeCat={activeCat} setActiveCat={setActiveCat} />
+          </div>
+          <div style={{ marginBottom: 24 }}>
+            <Accordion activeCat={activeCat} />
+          </div>
+          <div style={{ padding: '16px', background: 'rgba(244,240,232,0.025)', border: '1px solid rgba(244,240,232,0.06)', borderRadius: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: T.tealLight }} />
+              <span style={{ fontSize: 12, color: T.tealLight, fontWeight: 600, fontFamily: T.mono }}>Still wondering?</span>
+            </div>
+            <a href="mailto:aekilicc@gmail.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: T.tealLight, fontWeight: 600, textDecoration: 'none' }}>
+              aekilicc@gmail.com
+              <Icon.arrow size={12} color={T.tealLight} />
+            </a>
+          </div>
+        </div>
+
+        {/* ── Desktop layout: sidebar + accordion ── */}
+        <div className="hidden sm:grid" style={{ gridTemplateColumns: '340px 1fr', gap: 64, alignItems: 'flex-start' }}>
           {/* Left: sticky sidebar */}
           <div style={{ position: 'sticky', top: 80 }}>
             <h2 style={{ fontFamily: T.serif, fontSize: 'clamp(40px, 4.5vw, 56px)', fontWeight: 400, lineHeight: 1.0, letterSpacing: '-0.03em', marginBottom: 18, color: T.ink }}>
@@ -61,7 +163,6 @@ export function FAQSection() {
             <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.55, marginBottom: 32, maxWidth: 320 }}>
               Not the marketing ones. If something here doesn&apos;t address what you actually want to know, the contact link is real.
             </p>
-
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 28 }}>
               {CATEGORIES.map(c => {
                 const active = activeCat === c.id;
@@ -89,15 +190,12 @@ export function FAQSection() {
                 );
               })}
             </div>
-
             <div style={{ padding: '18px', background: 'rgba(244,240,232,0.025)', border: '1px solid rgba(244,240,232,0.06)', borderRadius: 14 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: T.tealLight, animation: 'glow-soft 2s ease-in-out infinite' }} />
                 <span style={{ fontSize: 12, color: T.tealLight, fontWeight: 600, fontFamily: T.mono, letterSpacing: '0.04em' }}>Still wondering?</span>
               </div>
-              <p style={{ fontSize: 13, color: T.inkDim, lineHeight: 1.5, marginBottom: 12 }}>
-                Email us.
-              </p>
+              <p style={{ fontSize: 13, color: T.inkDim, lineHeight: 1.5, marginBottom: 12 }}>Email us.</p>
               <a href="mailto:aekilicc@gmail.com" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: T.tealLight, fontWeight: 600, textDecoration: 'none' }}>
                 aekilicc@gmail.com
                 <Icon.arrow size={12} color={T.tealLight} />
@@ -106,45 +204,7 @@ export function FAQSection() {
           </div>
 
           {/* Right: accordion */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {ITEMS[activeCat].map(([q, a], i) => {
-              const open = openIdx === i;
-              return (
-                <div
-                  key={`${activeCat}-${i}`}
-                  style={{
-                    borderRadius: 14,
-                    background: open ? 'rgba(2,136,143,0.05)' : 'rgba(244,240,232,0.02)',
-                    border: `1px solid ${open ? 'rgba(2,136,143,0.2)' : 'rgba(244,240,232,0.06)'}`,
-                    overflow: 'hidden',
-                    transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
-                    animation: `fade-up 0.5s ${0.06*i}s cubic-bezier(0.16,1,0.3,1) both`,
-                  }}
-                >
-                  <button
-                    onClick={() => setOpenIdx(open ? -1 : i)}
-                    style={{ width: '100%', padding: '20px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left' }}
-                  >
-                    <span style={{ fontFamily: T.serif, fontSize: 20, lineHeight: 1.25, letterSpacing: '-0.01em', color: T.ink }}>{q}</span>
-                    <span style={{
-                      width: 32, height: 32, borderRadius: '50%',
-                      background: open ? T.tealMid : 'rgba(244,240,232,0.06)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                      transition: 'all 0.3s',
-                      transform: open ? 'rotate(45deg)' : 'rotate(0)',
-                    }}>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                        <path d="M7 2 V12 M2 7 H12" stroke={open ? T.cream : T.ink} strokeWidth="1.6" strokeLinecap="round"/>
-                      </svg>
-                    </span>
-                  </button>
-                  <div style={{ maxHeight: open ? 240 : 0, opacity: open ? 1 : 0, overflow: 'hidden', transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)' }}>
-                    <div style={{ padding: '0 64px 24px 24px', fontSize: 14, color: T.inkDim, lineHeight: 1.65 }}>{a}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <Accordion activeCat={activeCat} />
         </div>
       </div>
     </section>

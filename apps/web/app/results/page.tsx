@@ -83,7 +83,7 @@ function InfoTooltip({ text }: { text: string }) {
 
 function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; onChange: (id: string) => void }) {
   return (
-    <div style={{ display: 'flex', gap: 4, padding: 4, borderRadius: 14, background: 'rgba(244,240,232,0.03)', border: '1px solid rgba(244,240,232,0.06)' }}>
+    <div style={{ display: 'flex', gap: 4, padding: 4, borderRadius: 14, background: 'rgba(244,240,232,0.03)', border: '1px solid rgba(244,240,232,0.06)', overflowX: 'auto' }}>
       {tabs.map(tab => {
         const active = tab.id === activeId;
         return (
@@ -91,20 +91,21 @@ function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; o
             key={tab.id}
             onClick={() => onChange(tab.id)}
             style={{
-              flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              padding: '10px 16px', borderRadius: 10,
+              flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+              padding: '10px 10px', borderRadius: 10, whiteSpace: 'nowrap', minWidth: 0,
               background: active ? 'rgba(2,136,143,0.12)' : 'transparent',
               border: `1px solid ${active ? 'rgba(2,136,143,0.3)' : 'transparent'}`,
               color: active ? T.ink : T.inkDim,
-              fontSize: 13, fontWeight: active ? 600 : 400,
+              fontSize: 12, fontWeight: active ? 600 : 400,
               fontFamily: T.sans, cursor: 'pointer',
               transition: 'all 0.2s',
             }}
           >
-            {tab.label}
+            <span className="hidden sm:inline">{tab.label}</span>
+            <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
             <InfoTooltip text={tab.description} />
             <span style={{
-              fontSize: 11, padding: '2px 7px', borderRadius: 20, fontFamily: T.mono,
+              fontSize: 11, padding: '2px 6px', borderRadius: 20, fontFamily: T.mono, flexShrink: 0,
               background: active ? T.tealMid : 'rgba(244,240,232,0.06)',
               color: active ? T.cream : T.inkMute,
             }}>
@@ -148,31 +149,37 @@ export default function ResultsPage() {
   return (
     <div style={{ minHeight: '100vh', background: T.bg, color: T.ink, fontFamily: T.sans }}>
       {/* Nav */}
-      <nav style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '16px 32px', borderBottom: '1px solid rgba(244,240,232,0.06)',
-        position: 'sticky', top: 0, zIndex: 50,
-        backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.8)',
-      }}>
+      <nav
+        className="flex items-center justify-between px-4 sm:px-8 py-4 sticky top-0 z-50"
+        style={{ borderBottom: '1px solid rgba(244,240,232,0.06)', backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.8)' }}
+      >
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
           <img src="/logo.png" alt="WhoUnfollowed Logo" width={26} height={26} style={{ borderRadius: 7, objectFit: 'contain' }} />
           <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24, fontSize: 13 }}>
-          <Link href="/dashboard" style={{ color: T.inkDim, textDecoration: 'none' }}>Radar</Link>
-          <Link href="/history" style={{ color: T.inkDim, textDecoration: 'none' }}>History</Link>
+        <div className="flex items-center gap-3 sm:gap-6" style={{ fontSize: 13 }}>
+          <Link href="/dashboard" style={{
+            color: T.tealLight, textDecoration: 'none', fontWeight: 600,
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            padding: '5px 12px', borderRadius: 8,
+            background: 'rgba(2,136,143,0.1)', border: '1px solid rgba(2,136,143,0.25)',
+          }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: T.tealLight, display: 'inline-block' }} />
+            Radar
+          </Link>
+          <Link href="/history" className="hidden sm:inline" style={{ color: T.inkDim, textDecoration: 'none' }}>History</Link>
           <Link href="/" style={{ color: T.inkDim, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M8 2 H3 A1 1 0 0 0 2 3 V11 A1 1 0 0 0 3 12 H11 A1 1 0 0 0 12 11 V6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
               <path d="M9 2 H12 V5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M7 7 L12 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
             </svg>
-            New upload
+            <span className="hidden sm:inline">New upload</span>
           </Link>
         </div>
       </nav>
 
-      <main style={{ maxWidth: 900, margin: '0 auto', padding: '48px 32px' }}>
+      <main className="px-4 sm:px-8 py-10 sm:py-12" style={{ maxWidth: 900, margin: '0 auto' }}>
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
@@ -189,7 +196,7 @@ export default function ResultsPage() {
         </div>
 
         {/* Stats grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 40 }}>
+        <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: 10, marginBottom: 40 }}>
           <StatCard label="Followers"     value={analysis.totalFollowers} />
           <StatCard
             label="Following"

@@ -99,7 +99,7 @@ function FlowStep({
 
 export function FlowSection() {
   return (
-    <section id="flow" style={{ padding: '0 48px 120px', position: 'relative' }}>
+    <section id="flow" className="px-4 sm:px-12 pb-24 sm:pb-32 relative">
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 14 }}>
           <span style={{ fontFamily: T.mono, fontSize: 11, color: T.tealMid, letterSpacing: '0.18em' }}>03 / FLOW</span>
@@ -109,7 +109,7 @@ export function FlowSection() {
           Your Instagram export,{' '}
           <span style={{ fontStyle: 'italic', color: T.tealLight }}>ready in minutes.</span>
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 18, marginBottom: 24 }}>
+        <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: 18, marginBottom: 24 }}>
           <FlowStep
             n="01" title="Export your data from Instagram"
             body="Go to Instagram → Settings → Accounts Center → Your Information &amp; Permissions → Export Your Information. Select Followers &amp; Following. Set date range to All time, then hit request."

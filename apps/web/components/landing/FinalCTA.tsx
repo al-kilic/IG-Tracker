@@ -7,7 +7,7 @@ import { Icon, GridBg, MagneticCTA } from './atoms';
 
 export function FinalCTA() {
   return (
-    <section style={{ padding: '40px 48px 96px', position: 'relative' }}>
+    <section className="px-4 sm:px-12 pb-16 sm:pb-24 pt-10 relative">
       <div style={{
         maxWidth: 1240, margin: '0 auto',
         position: 'relative', overflow: 'hidden', borderRadius: 32,
@@ -25,7 +25,7 @@ export function FinalCTA() {
           <span>WHOUNFOLLOWED · 2026</span>
         </div>
 
-        <div style={{ position: 'relative', zIndex: 2, padding: '88px 96px 80px', display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 64, alignItems: 'center' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-16 px-6 py-14 sm:px-24 sm:py-20" style={{ position: 'relative', zIndex: 2, alignItems: 'center' }}>
           <div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 100, background: 'rgba(2,136,143,0.12)', border: '1px solid rgba(2,136,143,0.25)', marginBottom: 24 }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: T.tealLight, animation: 'glow-soft 2s ease-in-out infinite' }} />
@@ -96,9 +96,9 @@ export function FinalCTA() {
 
 export function LandingFooter() {
   return (
-    <footer style={{ padding: '64px 48px 48px', borderTop: '1px solid rgba(244,240,232,0.05)', position: 'relative' }}>
+    <footer className="px-4 sm:px-12 pt-14 pb-10" style={{ borderTop: '1px solid rgba(244,240,232,0.05)', position: 'relative' }}>
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: 48, marginBottom: 56 }}>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 sm:gap-12 mb-14">
           <div>
             <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, textDecoration: 'none' }}>
               <img
@@ -124,20 +124,20 @@ export function LandingFooter() {
 
           {[
             { title: 'Product', items: [
-              { label: 'How To Request Your Data', href: '/how-to-export' },
-              { label: 'Privacy approach',         href: '/privacy' },
-              { label: 'Source code',              href: 'https://github.com/al-kilic/IG-Tracker' },
-              { label: 'Changelog',                href: '/changelog' },
+              { label: 'How to Export Your Data', href: '/how-to-export' },
+              { label: 'Privacy Approach',        href: '/privacy' },
+              { label: 'Source Code',             href: 'https://github.com/al-kilic/IG-Tracker' },
+              { label: 'Changelog',               href: '/changelog' },
             ]},
             { title: 'Company', items: [
-              { label: 'About',     href: '#' },
-              { label: 'Contact',   href: 'mailto:aekilicc@gmail.com' },
+              { label: 'About',   href: '#' },
+              { label: 'Contact', href: 'mailto:aekilicc@gmail.com' },
             ]},
             { title: 'Legal', items: [
-              { label: 'Privacy policy',   href: '/privacy' },
-              { label: 'Refund policy',    href: '/refund' },
-              { label: 'Cookie policy',    href: '/cookies' },
-              { label: 'Terms of service', href: '/terms' },
+              { label: 'Privacy Policy',   href: '/privacy' },
+              { label: 'Refund Policy',    href: '/refund' },
+              { label: 'Cookie Policy',    href: '/cookies' },
+              { label: 'Terms of Service', href: '/terms' },
             ]},
           ].map(col => (
             <div key={col.title}>

@@ -143,7 +143,7 @@ export function HeroSection() {
     : `linear-gradient(135deg, rgba(2,136,143,0.5), rgba(244,240,232,0.08), rgba(168,75,47,0.3))`;
 
   return (
-    <section id="upload" style={{ position: 'relative', padding: '0 48px 48px' }}>
+    <section id="upload" className="relative px-4 sm:px-12 pb-12">
       {/* Portal for upgrade dialog */}
       {mounted && pending && oldest && createPortal(
         <UpgradeDialog
@@ -177,20 +177,20 @@ export function HeroSection() {
         pointerEvents: 'none', filter: 'blur(40px)',
       }} />
 
-      {/* Floating profile cards */}
-      <div style={{ position: 'absolute', left: 60, top: 140, animation: 'drift-1 6s ease-in-out infinite', zIndex: 2 }}>
+      {/* Floating profile cards — hidden on mobile */}
+      <div className="hidden lg:block" style={{ position: 'absolute', left: 60, top: 140, animation: 'drift-1 6s ease-in-out infinite', zIndex: 2 }}>
         <ProfileCard handle="@alex.studio" status="not_following_back" />
       </div>
-      <div style={{ position: 'absolute', left: 28, top: 360, animation: 'drift-2 7.5s ease-in-out infinite', zIndex: 2 }}>
+      <div className="hidden lg:block" style={{ position: 'absolute', left: 28, top: 360, animation: 'drift-2 7.5s ease-in-out infinite', zIndex: 2 }}>
         <ProfileCard handle="@nova.frames" status="mutual" small />
       </div>
-      <div style={{ position: 'absolute', right: 60, top: 130, animation: 'drift-3 6.5s ease-in-out infinite', zIndex: 2 }}>
+      <div className="hidden lg:block" style={{ position: 'absolute', right: 60, top: 130, animation: 'drift-3 6.5s ease-in-out infinite', zIndex: 2 }}>
         <ProfileCard handle="@marco.visuals" status="not_following_back" />
       </div>
-      <div style={{ position: 'absolute', right: 32, top: 380, animation: 'drift-4 8s ease-in-out infinite', zIndex: 2 }}>
+      <div className="hidden lg:block" style={{ position: 'absolute', right: 32, top: 380, animation: 'drift-4 8s ease-in-out infinite', zIndex: 2 }}>
         <ProfileCard handle="@sarah_creates" status="fan" small />
       </div>
-      <div style={{ position: 'absolute', left: 200, top: 490, animation: 'drift-5 7s ease-in-out infinite', zIndex: 2, opacity: 0.75 }}>
+      <div className="hidden lg:block" style={{ position: 'absolute', left: 200, top: 490, animation: 'drift-5 7s ease-in-out infinite', zIndex: 2, opacity: 0.75 }}>
         <ProfileCard handle="@wave.theory" status="not_following_back" small />
       </div>
 
@@ -252,6 +252,19 @@ export function HeroSection() {
         Upload the data export Instagram already gave you. We read it on your device and show you
         every account you follow that doesn&apos;t follow you back.
       </p>
+
+      {/* ── Mobile floating cards (same style as desktop, smaller, clipped at edges) ── */}
+      <div className="lg:hidden" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2, overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', left: -24, top: 160, animation: 'drift-1 6s ease-in-out infinite', opacity: 0.25 }}>
+          <ProfileCard handle="@alex.studio" status="not_following_back" small />
+        </div>
+        <div style={{ position: 'absolute', right: -24, top: 230, animation: 'drift-3 6.5s ease-in-out infinite', opacity: 0.2 }}>
+          <ProfileCard handle="@marco.visuals" status="not_following_back" small />
+        </div>
+        <div style={{ position: 'absolute', left: 4, top: 390, animation: 'drift-2 7.5s ease-in-out infinite', opacity: 0.15 }}>
+          <ProfileCard handle="@nova.frames" status="mutual" small />
+        </div>
+      </div>
 
       {/* ── Drop zone ──────────────────────────────────────────────────────── */}
       <div style={{
@@ -390,23 +403,18 @@ export function HeroSection() {
         </div>
 
         {/* Trust line */}
-        <div style={{
-          marginTop: 14, textAlign: 'center',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          gap: 26, fontSize: 12, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.02em',
-        }}>
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-3" style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.02em' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon.shield size={13} color={T.tealMid} />no login required</span>
-          <span style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
+          <span className="hidden sm:inline-block" style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon.code size={13} color={T.tealMid} />open-source parser</span>
-          <span style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
+          <span className="hidden sm:inline-block" style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon.bolt size={13} color={T.tealMid} />runs in your browser</span>
         </div>
       </div>
 
       {/* Live counters */}
-      <div style={{
+      <div className="grid grid-cols-3" style={{
         maxWidth: 680, margin: '32px auto 0',
-        display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0,
         background: 'rgba(244,240,232,0.02)', border: '1px solid rgba(244,240,232,0.06)',
         borderRadius: 16, overflow: 'hidden', position: 'relative', zIndex: 5,
         animation: 'fade-up 0.7s 0.55s cubic-bezier(0.16,1,0.3,1) both',

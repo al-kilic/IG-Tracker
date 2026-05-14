@@ -10,6 +10,25 @@ export const metadata: Metadata = {
 
 const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improvement' | 'feature'; items: string[] }[] = [
   {
+    version: '0.5',
+    date: 'May 15, 2026',
+    tag: 'improvement',
+    items: [
+      'Full mobile responsive pass — every page now works properly on iPhone (375–390px)',
+      'Hamburger nav menu on mobile with slide-down drawer',
+      'Hero floating profile cards adapted for mobile — subtle, edge-clipped with drift animation',
+      'Section 02 (Value) — product mocks stack vertically on mobile, MockList stats reflow to 2×2 grid',
+      'Section 03 (Flow) — 3-step cards stack vertically on mobile',
+      'Section 04 (Why Us) — comparison table stacks vertically on mobile with proper border switching',
+      'Section 05 (Pricing) — single merged card with Free / Pro / Mobile tab switcher on mobile; 3-card grid preserved on desktop',
+      'Section 06 (FAQ) — removed hardcoded 380px sidebar column; mobile shows heading → category tabs → accordion',
+      'Final CTA section and footer reflow to single column on mobile',
+      'Results page stats grid: 4-col → 2-col on mobile; tab bar labels shorten and scroll',
+      'Radar (Dashboard) page: 6-col hero stats → 3-col on mobile; side-by-side cards stack vertically',
+      'Mobile card — updated to reflect iOS + Android app bundled with Pro (no separate one-time price)',
+    ],
+  },
+  {
     version: '0.4',
     date: 'May 8, 2026',
     tag: 'feature',

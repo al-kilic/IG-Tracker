@@ -20,48 +20,51 @@ const THEM_ITEMS = [
 
 function CompareGrid() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(244,240,232,0.06)' }}>
-      <div style={{ padding: '28px', background: 'rgba(2,136,143,0.06)', borderRight: '1px solid rgba(244,240,232,0.06)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 9, background: T.teal, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Icon.shield size={16} color={T.cream}/>
-          </div>
-          <div>
-            <div style={{ fontSize: 11, color: T.tealLight, letterSpacing: '0.14em', fontFamily: T.mono }}>WhoUnfollowed</div>
-            <div style={{ fontFamily: T.serif, fontSize: 22, lineHeight: 1.1, color: T.ink }}>Your data, your device.</div>
-          </div>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {US_ITEMS.map((line, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, animation: `fade-up 0.6s ${0.1*i}s both` }}>
-              <div style={{ flexShrink: 0, marginTop: 3, width: 16, height: 16, borderRadius: '50%', background: T.tealMid, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Icon.check size={10} color={T.cream}/>
-              </div>
-              <span style={{ fontSize: 13, color: T.ink, lineHeight: 1.5 }}>{line}</span>
+    <div style={{ borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(244,240,232,0.06)' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: 0 }}>
+        <div style={{ padding: '28px', background: 'rgba(2,136,143,0.06)', borderBottom: '1px solid rgba(244,240,232,0.06)' }}
+          className="sm:border-b-0 sm:border-r sm:border-r-[rgba(244,240,232,0.06)]">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 9, background: T.teal, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon.shield size={16} color={T.cream}/>
             </div>
-          ))}
+            <div>
+              <div style={{ fontSize: 11, color: T.tealLight, letterSpacing: '0.14em', fontFamily: T.mono }}>WhoUnfollowed</div>
+              <div style={{ fontFamily: T.serif, fontSize: 20, lineHeight: 1.1, color: T.ink }}>Your data, your device.</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {US_ITEMS.map((line, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <div style={{ flexShrink: 0, marginTop: 3, width: 16, height: 16, borderRadius: '50%', background: T.tealMid, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icon.check size={10} color={T.cream}/>
+                </div>
+                <span style={{ fontSize: 13, color: T.ink, lineHeight: 1.5 }}>{line}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div style={{ padding: '28px', background: 'rgba(168,75,47,0.04)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(168,75,47,0.2)', border: `1px solid ${T.terra}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontFamily: T.serif, fontSize: 18, color: T.terra, fontStyle: 'italic' }}>x</span>
-          </div>
-          <div>
-            <div style={{ fontSize: 11, color: T.terra, letterSpacing: '0.14em', fontFamily: T.mono }}>EVERYONE ELSE</div>
-            <div style={{ fontFamily: T.serif, fontSize: 22, lineHeight: 1.1, color: T.inkDim }}>Hostage transaction.</div>
-          </div>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {THEM_ITEMS.map((line, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, animation: `fade-up 0.6s ${0.1*i}s both` }}>
-              <div style={{ flexShrink: 0, marginTop: 3, width: 16, height: 16, borderRadius: '50%', background: 'rgba(168,75,47,0.15)', border: `1px solid ${T.terra}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Icon.x size={9} color={T.terra}/>
-              </div>
-              <span style={{ fontSize: 13, color: T.inkDim, lineHeight: 1.5 }}>{line}</span>
+        <div style={{ padding: '28px', background: 'rgba(168,75,47,0.04)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(168,75,47,0.2)', border: `1px solid ${T.terra}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <span style={{ fontFamily: T.serif, fontSize: 18, color: T.terra, fontStyle: 'italic' }}>x</span>
             </div>
-          ))}
+            <div>
+              <div style={{ fontSize: 11, color: T.terra, letterSpacing: '0.14em', fontFamily: T.mono }}>EVERYONE ELSE</div>
+              <div style={{ fontFamily: T.serif, fontSize: 20, lineHeight: 1.1, color: T.inkDim }}>Hostage transaction.</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {THEM_ITEMS.map((line, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <div style={{ flexShrink: 0, marginTop: 3, width: 16, height: 16, borderRadius: '50%', background: 'rgba(168,75,47,0.15)', border: `1px solid ${T.terra}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icon.x size={9} color={T.terra}/>
+                </div>
+                <span style={{ fontSize: 13, color: T.inkDim, lineHeight: 1.5 }}>{line}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -70,7 +73,7 @@ function CompareGrid() {
 
 export function CompareSection() {
   return (
-    <section id="privacy" style={{ padding: '0 48px 120px' }}>
+    <section id="privacy" className="px-4 sm:px-12 pb-24 sm:pb-32">
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 14 }}>
           <span style={{ fontFamily: T.mono, fontSize: 11, color: T.terra, letterSpacing: '0.18em' }}>04 / WHY US</span>
