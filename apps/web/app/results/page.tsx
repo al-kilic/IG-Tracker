@@ -12,6 +12,8 @@ import { TriageList } from '@/components/TriageList';
 import { LandingFooter } from '@/components/landing/FinalCTA';
 import { T } from '@/components/landing/tokens';
 import { useTriage } from '@/hooks/useTriage';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { Tutorial } from '@/components/Tutorial';
 
 // ─── Stat card ───────────────────────────────────────────────────────────────
 
@@ -24,8 +26,8 @@ function StatCard({ label, value, badge, accent = false }: {
   return (
     <div style={{
       padding: '16px 18px', borderRadius: 14,
-      background: accent ? 'rgba(2,136,143,0.08)' : 'rgba(244,240,232,0.02)',
-      border: `1px solid ${accent ? 'rgba(2,136,143,0.25)' : 'rgba(244,240,232,0.07)'}`,
+      background: accent ? 'rgba(2,136,143,0.08)' : 'var(--t-surface1)',
+      border: `1px solid ${accent ? 'rgba(2,136,143,0.25)' : 'var(--t-border1)'}`,
       display: 'flex', flexDirection: 'column', gap: 6,
     }}>
       <div style={{ fontSize: 12, color: accent ? T.tealMid : T.inkDim, fontFamily: T.mono, letterSpacing: '0.06em', textTransform: 'uppercase', fontWeight: 500 }}>
@@ -83,7 +85,7 @@ function InfoTooltip({ text }: { text: string }) {
 
 function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; onChange: (id: string) => void }) {
   return (
-    <div style={{ display: 'flex', gap: 4, padding: 4, borderRadius: 14, background: 'rgba(244,240,232,0.03)', border: '1px solid rgba(244,240,232,0.06)', overflowX: 'auto' }}>
+    <div style={{ display: 'flex', gap: 4, padding: 4, borderRadius: 14, background: 'rgba(244,240,232,0.03)', border: '1px solid var(--t-border1)' }}>
       {tabs.map(tab => {
         const active = tab.id === activeId;
         return (
@@ -91,22 +93,21 @@ function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; o
             key={tab.id}
             onClick={() => onChange(tab.id)}
             style={{
-              flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-              padding: '10px 10px', borderRadius: 10, whiteSpace: 'nowrap', minWidth: 0,
+              flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              padding: '10px 16px', borderRadius: 10,
               background: active ? 'rgba(2,136,143,0.12)' : 'transparent',
               border: `1px solid ${active ? 'rgba(2,136,143,0.3)' : 'transparent'}`,
               color: active ? T.ink : T.inkDim,
-              fontSize: 12, fontWeight: active ? 600 : 400,
+              fontSize: 13, fontWeight: active ? 600 : 400,
               fontFamily: T.sans, cursor: 'pointer',
               transition: 'all 0.2s',
             }}
           >
-            <span className="hidden sm:inline">{tab.label}</span>
-            <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
+            {tab.label}
             <InfoTooltip text={tab.description} />
             <span style={{
-              fontSize: 11, padding: '2px 6px', borderRadius: 20, fontFamily: T.mono, flexShrink: 0,
-              background: active ? T.tealMid : 'rgba(244,240,232,0.06)',
+              fontSize: 11, padding: '2px 7px', borderRadius: 20, fontFamily: T.mono,
+              background: active ? T.tealMid : 'var(--t-border1)',
               color: active ? T.cream : T.inkMute,
             }}>
               {tab.count.toLocaleString()}
@@ -120,12 +121,52 @@ function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; o
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
+function RadarPulse({ trigger }: { trigger: boolean }) {
+  const [show, setShow] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+
+  useEffect(() => {
+    if (!trigger) return;
+    try { if (sessionStorage.getItem('ig-tracker:radar-pulse')) return; } catch {}
+    const t = setTimeout(() => setShow(true), 1200);
+    const t2 = setTimeout(() => setShow(false), 9000);
+    return () => { clearTimeout(t); clearTimeout(t2); };
+  }, [trigger]);
+
+  if (!show || dismissed) return null;
+
+  return (
+    <div style={{
+      position: 'fixed', top: 56, left: '50%', transform: 'translateX(-50%)',
+      zIndex: 500,
+      background: 'rgba(6,14,16,0.97)',
+      border: `1px solid ${T.tealMid}`,
+      borderRadius: 12,
+      padding: '10px 16px',
+      boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 24px rgba(2,136,143,0.25)`,
+      backdropFilter: 'blur(16px)',
+      display: 'flex', alignItems: 'center', gap: 10,
+      animation: 'fade-up 0.5s cubic-bezier(0.16,1,0.3,1) both',
+      cursor: 'default',
+      whiteSpace: 'nowrap',
+    }}>
+      <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.tealLight, animation: 'glow-soft 2s ease-in-out infinite', flexShrink: 0 }} />
+      <span style={{ fontSize: 13, color: '#f4f0e8', fontFamily: T.sans }}>
+        Done triaging? Check <a href="/dashboard" onClick={() => { try { sessionStorage.setItem('ig-tracker:radar-pulse', '1'); } catch {} setDismissed(true); }} style={{ color: T.tealLight, fontWeight: 700, textDecoration: 'none' }}>Radar ↗</a> for your account health score.
+      </span>
+      <button onClick={() => { try { sessionStorage.setItem('ig-tracker:radar-pulse', '1'); } catch {} setDismissed(true); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(244,240,232,0.3)', fontSize: 16, lineHeight: 1, padding: '0 2px' }}>×</button>
+    </div>
+  );
+}
+
 export default function ResultsPage() {
   const router       = useRouter();
   const snapshot     = useSnapshotStore(s => s.currentSnapshot);
   const [activeTabId, setActiveTabId] = useState('non-followers');
+  const [tutorialDone, setTutorialDone] = useState(false);
 
   useEffect(() => { if (!snapshot) router.replace('/'); }, [snapshot, router]);
+  useEffect(() => { router.prefetch('/dashboard'); }, [router]);
 
   const analysis = useMemo(() => snapshot ? analyzeSnapshot(snapshot) : null, [snapshot]);
   const { triage } = useTriage(snapshot?.exportedAt ?? 0);
@@ -148,10 +189,32 @@ export default function ResultsPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: T.bg, color: T.ink, fontFamily: T.sans }}>
+      <RadarPulse trigger={tutorialDone} />
+      <Tutorial
+        storageKey="ig-tracker:tutorial-results"
+        onDismiss={() => setTutorialDone(true)}
+        steps={[
+          {
+            title: 'Your numbers at a glance',
+            body: "Followers, following, mutuals, and non-followers — all pulled from your export. The non-followers count is the list you'll work through.",
+            targetSelector: '#tutorial-stats',
+          },
+          {
+            title: 'Triage each account',
+            body: "Hover a row to see action buttons — mark accounts as Dropping, Whitelist, or Skip. Progress saves automatically and the estimated following count updates in real time.",
+            targetSelector: '#tutorial-tabbar',
+          },
+          {
+            title: 'Fans, Mutuals & CSV export',
+            body: "Switch tabs to see who follows you back (Fans) and mutual follows. Export any list as a CSV file any time.",
+            targetSelector: '#tutorial-tabbar',
+          },
+        ]}
+      />
       {/* Nav */}
       <nav
         className="flex items-center justify-between px-4 sm:px-8 py-4 sticky top-0 z-50"
-        style={{ borderBottom: '1px solid rgba(244,240,232,0.06)', backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.8)' }}
+        style={{ borderBottom: '1px solid var(--t-border1)', backdropFilter: 'blur(14px)', background: 'var(--t-navBg)' }}
       >
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
           <img src="/logo.png" alt="WhoUnfollowed Logo" width={26} height={26} style={{ borderRadius: 7, objectFit: 'contain' }} />
@@ -176,6 +239,7 @@ export default function ResultsPage() {
             </svg>
             <span className="hidden sm:inline">New upload</span>
           </Link>
+          <ThemeToggle />
         </div>
       </nav>
 
@@ -196,7 +260,7 @@ export default function ResultsPage() {
         </div>
 
         {/* Stats grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: 10, marginBottom: 40 }}>
+        <div id="tutorial-stats" className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: 10, marginBottom: 40 }}>
           <StatCard label="Followers"     value={analysis.totalFollowers} />
           <StatCard
             label="Following"
@@ -212,7 +276,9 @@ export default function ResultsPage() {
 
         {/* Tabs + list */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <TabBar tabs={tabs} activeId={activeTabId} onChange={setActiveTabId} />
+          <div id="tutorial-tabbar">
+            <TabBar tabs={tabs} activeId={activeTabId} onChange={setActiveTabId} />
+          </div>
           {activeTabId === 'non-followers' ? (
             <TriageList
               accounts={analysis.nonFollowers}

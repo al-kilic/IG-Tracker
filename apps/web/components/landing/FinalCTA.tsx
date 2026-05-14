@@ -40,7 +40,7 @@ export function FinalCTA() {
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32, flexWrap: 'wrap' }}>
               <MagneticCTA primary>Drop your export</MagneticCTA>
-              <Link href="/how-to-export" style={{ background: 'transparent', color: T.ink, border: '1px solid rgba(244,240,232,0.18)', padding: '14px 22px', borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+              <Link href="/how-to-export" style={{ background: 'transparent', color: T.ink, border: '1px solid var(--t-border3)', padding: '14px 22px', borderRadius: 12, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
                 <Icon.code size={14} color={T.tealMid} />
                 How To Request Your Data
               </Link>
@@ -59,7 +59,7 @@ export function FinalCTA() {
 
           {/* Preview card */}
           <div style={{ position: 'relative' }}>
-            <div style={{ background: 'rgba(20,33,38,0.85)', backdropFilter: 'blur(8px)', border: '1px solid rgba(244,240,232,0.08)', borderRadius: 18, padding: '20px 22px', boxShadow: '0 30px 80px rgba(0,0,0,0.5)', transform: 'rotate(-1.5deg)' }}>
+            <div style={{ background: 'rgba(20,33,38,0.85)', backdropFilter: 'blur(8px)', border: '1px solid var(--t-border2)', borderRadius: 18, padding: '20px 22px', boxShadow: '0 30px 80px rgba(0,0,0,0.5)', transform: 'rotate(-1.5deg)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
                 <div style={{ fontFamily: T.mono, fontSize: 10, color: T.inkMute, letterSpacing: '0.1em' }}>YOUR RESULT (PREVIEW)</div>
                 <div style={{ display: 'flex', gap: 4 }}>
@@ -81,7 +81,7 @@ export function FinalCTA() {
               </div>
               <div style={{ display: 'flex', gap: 6 }}>
                 <span style={{ flex: 1, padding: '8px 10px', borderRadius: 8, background: T.tealMid, color: T.cream, fontSize: 11, fontWeight: 600, textAlign: 'center', fontFamily: T.sans }}>Export CSV</span>
-                <span style={{ flex: 1, padding: '8px 10px', borderRadius: 8, background: 'rgba(244,240,232,0.04)', border: '1px solid rgba(244,240,232,0.08)', color: T.ink, fontSize: 11, fontWeight: 600, textAlign: 'center', fontFamily: T.sans }}>Save snapshot</span>
+                <span style={{ flex: 1, padding: '8px 10px', borderRadius: 8, background: 'var(--t-surface2)', border: '1px solid var(--t-border2)', color: T.ink, fontSize: 11, fontWeight: 600, textAlign: 'center', fontFamily: T.sans }}>Save snapshot</span>
               </div>
             </div>
             <div style={{ position: 'absolute', top: -16, right: -8, fontFamily: T.serif, fontSize: 14, fontStyle: 'italic', color: T.terra, opacity: 0.7, padding: '4px 10px', border: `1px solid ${T.terra}`, borderRadius: 100, transform: 'rotate(8deg)', background: 'rgba(168,75,47,0.08)' }}>
@@ -96,7 +96,7 @@ export function FinalCTA() {
 
 export function LandingFooter() {
   return (
-    <footer className="px-4 sm:px-12 pt-14 pb-10" style={{ borderTop: '1px solid rgba(244,240,232,0.05)', position: 'relative' }}>
+    <footer className="px-4 sm:px-12 pt-14 pb-10" style={{ borderTop: '1px solid var(--t-surface2)', position: 'relative' }}>
       <div style={{ maxWidth: 1240, margin: '0 auto' }}>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 sm:gap-12 mb-14">
           <div>
@@ -124,6 +124,7 @@ export function LandingFooter() {
 
           {[
             { title: 'Product', items: [
+              { label: 'What is WhoUnfollowed?',  href: '/what-is-whounfollowed' },
               { label: 'How to Export Your Data', href: '/how-to-export' },
               { label: 'Privacy Approach',        href: '/privacy' },
               { label: 'Source Code',             href: 'https://github.com/al-kilic/IG-Tracker' },
@@ -157,7 +158,7 @@ export function LandingFooter() {
           ))}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, paddingTop: 24, borderTop: '1px solid rgba(244,240,232,0.05)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, paddingTop: 24, borderTop: '1px solid var(--t-surface2)' }}>
           <div style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.04em' }}>
             © 2026 WhoUnfollowed · Independent · Not affiliated with Instagram or Meta
           </div>
@@ -182,9 +183,9 @@ export function LandingFooter() {
                 key={s.name}
                 title={s.name}
                 href={s.href}
-                style={{ width: 32, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(244,240,232,0.08)', cursor: 'pointer', transition: 'all 0.2s' }}
+                style={{ width: 32, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--t-border2)', cursor: 'pointer', transition: 'all 0.2s' }}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(244,240,232,0.2)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(244,240,232,0.08)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--t-border2)'; }}
               >{s.icon}</a>
             ))}
           </div>

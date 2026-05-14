@@ -24,7 +24,7 @@ function IllRequest() {
         </linearGradient>
       </defs>
       <rect x="80" y="14" width="60" height="92" rx="10" fill="url(#phone-grad)" stroke="rgba(244,240,232,0.15)" strokeWidth="1"/>
-      <rect x="86" y="22" width="48" height="70" rx="3" fill="rgba(244,240,232,0.04)"/>
+      <rect x="86" y="22" width="48" height="70" rx="3" fill="var(--t-surface2)"/>
       <rect x="90" y="28" width="40" height="6" rx="1.5" fill="rgba(244,240,232,0.15)"/>
       <rect x="90" y="38" width="32" height="6" rx="1.5" fill="rgba(244,240,232,0.1)"/>
       <rect x="90" y="48" width="40" height="6" rx="1.5" fill={T.tealMid}/>
@@ -80,17 +80,17 @@ function FlowStep({
   return (
     <div style={{
       position: 'relative', padding: '24px 24px 28px',
-      background: highlight ? 'rgba(2,136,143,0.06)' : 'rgba(244,240,232,0.02)',
-      border: `1px solid ${highlight ? 'rgba(2,136,143,0.3)' : 'rgba(244,240,232,0.06)'}`,
+      background: highlight ? 'rgba(2,136,143,0.06)' : 'var(--t-surface1)',
+      border: `1px solid ${highlight ? 'rgba(2,136,143,0.3)' : 'var(--t-border1)'}`,
       borderRadius: 18, overflow: 'hidden',
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
         <span style={{ fontFamily: T.mono, fontSize: 11, color: highlight ? T.tealLight : T.tealMid, letterSpacing: '0.14em', fontWeight: 600 }}>{n}</span>
-        <span style={{ fontSize: 10, color: T.inkMute, fontFamily: T.mono, padding: '2px 8px', border: `1px solid rgba(244,240,232,0.08)`, borderRadius: 20 }}>{eta}</span>
+        <span style={{ fontSize: 10, color: T.inkMute, fontFamily: T.mono, padding: '2px 8px', border: `1px solid var(--t-border2)`, borderRadius: 20 }}>{eta}</span>
       </div>
       <div style={{ marginBottom: 16, marginLeft: -10, marginRight: -10 }}>{illustration}</div>
-      <h3 style={{ fontFamily: T.serif, fontSize: 24, fontWeight: 400, lineHeight: 1.15, marginBottom: 8, letterSpacing: '-0.01em', color: T.ink }}>{title}</h3>
-      <p style={{ fontSize: 13, color: T.inkDim, lineHeight: 1.6 }}>{body}</p>
+      <h3 style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 400, lineHeight: 1.2, marginBottom: 10, letterSpacing: '-0.01em', color: T.ink }}>{title}</h3>
+      <p style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7, margin: 0 }}>{body}</p>
     </div>
   );
 }
@@ -103,31 +103,31 @@ export function FlowSection() {
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 14 }}>
           <span style={{ fontFamily: T.mono, fontSize: 11, color: T.tealMid, letterSpacing: '0.18em' }}>03 / FLOW</span>
-          <div style={{ flex: 1, height: 1, background: 'rgba(244,240,232,0.08)' }} />
+          <div style={{ flex: 1, height: 1, background: 'var(--t-border2)' }} />
         </div>
         <h2 style={{ fontFamily: T.serif, fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, lineHeight: 1.0, letterSpacing: '-0.03em', marginBottom: 56, color: T.ink }}>
-          Your Instagram export,{' '}
-          <span style={{ fontStyle: 'italic', color: T.tealLight }}>ready in minutes.</span>
+          30 seconds to request.{' '}
+          <span style={{ fontStyle: 'italic', color: T.tealLight }}>Minutes to receive. 2 seconds to parse.</span>
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: 18, marginBottom: 24 }}>
           <FlowStep
-            n="01" title="Export your data from Instagram"
-            body="Go to Instagram → Settings → Accounts Center → Your Information &amp; Permissions → Export Your Information. Select Followers &amp; Following. Set date range to All time, then hit request."
+            n="01" title="Request your data in 30 seconds"
+            body="Go to Instagram Accounts Center, choose Export Your Information, select Followers and Following, set the date range to All Time, and hit request. Works on any browser. No app needed."
             illustration={<IllRequest />} eta="~30 sec"
           />
           <FlowStep
-            n="02" title="Instagram emails you the file"
-            body="Within minutes, Instagram sends you a download link. You don't need the full archive, just the followers &amp; following export is enough."
+            n="02" title="Instagram does the work. You just wait."
+            body="Instagram prepares your file and sends you a download link by email, usually within minutes. Download the ZIP. No passwords. No third-party access. Instagram hands it to you directly."
             illustration={<IllEmail />} eta="few min"
           />
           <FlowStep
-            n="03" title="Drop the ZIP and see your list instantly"
-            body="Drag the ZIP onto this page. Your browser reads it locally, computes who doesn't follow you back, and shows you the full list. Nothing leaves your device."
+            n="03" title="Drop the ZIP. See everything instantly."
+            body="Drag the ZIP here. Your browser reads it locally and shows you the full picture in seconds. Nothing leaves your device. No account needed. Zero risk to your Instagram."
             illustration={<IllDrop />} eta="~2 sec" highlight
           />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-          <p style={{ fontSize: 13, color: T.inkMute, margin: 0 }}>Not sure how to get your Instagram export?</p>
+          <p style={{ fontSize: 13, color: T.terra, margin: 0, fontFamily: T.mono, letterSpacing: '0.04em' }}>Not sure how to get your Instagram export?</p>
           <Link href="/how-to-export" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 600, color: T.cream, textDecoration: 'none', padding: '13px 24px', borderRadius: 12, background: T.teal, boxShadow: `0 4px 20px ${T.tealGlow}` }}>
             Step-by-step export guide
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7 H11 M11 7 L8 4 M11 7 L8 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>

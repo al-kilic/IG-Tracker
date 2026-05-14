@@ -8,14 +8,27 @@ import {
 import {
   followersFileSchema,
   followingFileSchema,
-  pendingRequestsFileSchema,
-  recentlyUnfollowedFileSchema,
+  labelValuesFileSchema,
   type Account,
   type ParsedSnapshot,
   type RelationshipEntry,
+  type LabelValuesEntry,
 } from './schemas.js';
 
 // ─── JSON helpers ─────────────────────────────────────────────────────────────
+
+function labelValuesToAccount(entry: LabelValuesEntry): Account | null {
+  const get = (label: string) => entry.label_values.find(lv => lv.label === label)?.value ?? '';
+  const username = get('Username');
+  if (!username) return null;
+  const url = get('URL');
+  const href = url || `https://www.instagram.com/${username}`;
+  return {
+    username,
+    href,
+    followedAt: entry.timestamp && entry.timestamp > 0 ? entry.timestamp : null,
+  };
+}
 
 function entryToAccount(entry: RelationshipEntry): Account {
   const item = entry.string_list_data[0];
@@ -172,8 +185,9 @@ export async function parseInstagramZip(
     zip, fileNames,
     /pending_follow_requests\.json$/i,
     (data) => {
-      const r = pendingRequestsFileSchema.safeParse(data);
-      return r.success ? r.data.relationships_follow_requests_sent.map(entryToAccount) : null;
+      const r = labelValuesFileSchema.safeParse(data);
+      if (!r.success) return null;
+      return r.data.map(labelValuesToAccount).filter((a): a is Account => a !== null);
     },
   );
 
@@ -181,8 +195,9 @@ export async function parseInstagramZip(
     zip, fileNames,
     /recently_unfollowed_profiles\.json$/i,
     (data) => {
-      const r = recentlyUnfollowedFileSchema.safeParse(data);
-      return r.success ? r.data.relationships_unfollowed_users.map(entryToAccount) : null;
+      const r = labelValuesFileSchema.safeParse(data);
+      if (!r.success) return null;
+      return r.data.map(labelValuesToAccount).filter((a): a is Account => a !== null);
     },
   );
 

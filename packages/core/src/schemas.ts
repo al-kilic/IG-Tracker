@@ -24,6 +24,16 @@ export const accountSchema = z.object({
   followedAt: z.number().nullable(),
 });
 
+// label_values format — used by pending_follow_requests.json, recently_unfollowed_profiles.json
+export const labelValuesEntrySchema = z.object({
+  timestamp: z.number().optional(),
+  label_values: z.array(z.object({ label: z.string(), value: z.string() })),
+  fbid: z.string().optional(),
+});
+
+export const labelValuesFileSchema = z.array(labelValuesEntrySchema);
+
+// Legacy wrapper schemas (kept for future-proofing / older export formats)
 export const pendingRequestsFileSchema = z.object({
   relationships_follow_requests_sent: z.array(relationshipEntrySchema),
 });
@@ -48,3 +58,5 @@ export type Account = z.infer<typeof accountSchema>;
 export type ParsedSnapshot = z.infer<typeof parsedSnapshotSchema>;
 export type PendingRequestsFile = z.infer<typeof pendingRequestsFileSchema>;
 export type RecentlyUnfollowedFile = z.infer<typeof recentlyUnfollowedFileSchema>;
+export type LabelValuesEntry = z.infer<typeof labelValuesEntrySchema>;
+export type LabelValuesFile = z.infer<typeof labelValuesFileSchema>;

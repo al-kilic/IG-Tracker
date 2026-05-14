@@ -50,8 +50,8 @@ function CategoryTabs({ activeCat, setActiveCat }: { activeCat: CategoryId; setA
               flexShrink: 0,
               display: 'flex', alignItems: 'center', gap: 8,
               padding: '10px 16px', borderRadius: 10,
-              background: active ? 'rgba(2,136,143,0.1)' : 'rgba(244,240,232,0.02)',
-              border: `1px solid ${active ? 'rgba(2,136,143,0.3)' : 'rgba(244,240,232,0.06)'}`,
+              background: active ? 'rgba(2,136,143,0.1)' : 'var(--t-surface1)',
+              border: `1px solid ${active ? 'rgba(2,136,143,0.3)' : 'var(--t-border1)'}`,
               color: active ? T.ink : T.inkDim,
               fontSize: 13, fontWeight: active ? 600 : 400,
               fontFamily: T.sans, cursor: 'pointer',
@@ -81,8 +81,8 @@ function Accordion({ activeCat }: { activeCat: CategoryId }) {
             key={`${activeCat}-${i}`}
             style={{
               borderRadius: 14,
-              background: open ? 'rgba(2,136,143,0.05)' : 'rgba(244,240,232,0.02)',
-              border: `1px solid ${open ? 'rgba(2,136,143,0.2)' : 'rgba(244,240,232,0.06)'}`,
+              background: open ? 'rgba(2,136,143,0.05)' : 'var(--t-surface1)',
+              border: `1px solid ${open ? 'rgba(2,136,143,0.2)' : 'var(--t-border1)'}`,
               overflow: 'hidden',
               transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
             }}
@@ -94,7 +94,7 @@ function Accordion({ activeCat }: { activeCat: CategoryId }) {
               <span style={{ fontFamily: T.serif, fontSize: 18, lineHeight: 1.3, letterSpacing: '-0.01em', color: T.ink }}>{q}</span>
               <span style={{
                 width: 30, height: 30, borderRadius: '50%', flexShrink: 0,
-                background: open ? T.tealMid : 'rgba(244,240,232,0.06)',
+                background: open ? T.tealMid : 'var(--t-border1)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transition: 'all 0.3s',
                 transform: open ? 'rotate(45deg)' : 'rotate(0)',
@@ -122,7 +122,7 @@ export function FAQSection() {
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 14 }}>
           <span style={{ fontFamily: T.mono, fontSize: 11, color: T.tealMid, letterSpacing: '0.18em' }}>06 / QUESTIONS</span>
-          <div style={{ flex: 1, height: 1, background: 'rgba(244,240,232,0.08)' }} />
+          <div style={{ flex: 1, height: 1, background: 'var(--t-border2)' }} />
         </div>
 
         {/* ── Mobile layout: heading → tabs → accordion → contact ── */}
@@ -140,7 +140,7 @@ export function FAQSection() {
           <div style={{ marginBottom: 24 }}>
             <Accordion activeCat={activeCat} />
           </div>
-          <div style={{ padding: '16px', background: 'rgba(244,240,232,0.025)', border: '1px solid rgba(244,240,232,0.06)', borderRadius: 14 }}>
+          <div style={{ padding: '16px', background: 'rgba(244,240,232,0.025)', border: '1px solid var(--t-border1)', borderRadius: 14 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
               <div style={{ width: 7, height: 7, borderRadius: '50%', background: T.tealLight }} />
               <span style={{ fontSize: 12, color: T.tealLight, fontWeight: 600, fontFamily: T.mono }}>Still wondering?</span>
@@ -190,7 +190,7 @@ export function FAQSection() {
                 );
               })}
             </div>
-            <div style={{ padding: '18px', background: 'rgba(244,240,232,0.025)', border: '1px solid rgba(244,240,232,0.06)', borderRadius: 14 }}>
+            <div style={{ padding: '18px', background: 'rgba(244,240,232,0.025)', border: '1px solid var(--t-border1)', borderRadius: 14 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
                 <div style={{ width: 8, height: 8, borderRadius: '50%', background: T.tealLight, animation: 'glow-soft 2s ease-in-out infinite' }} />
                 <span style={{ fontSize: 12, color: T.tealLight, fontWeight: 600, fontFamily: T.mono, letterSpacing: '0.04em' }}>Still wondering?</span>

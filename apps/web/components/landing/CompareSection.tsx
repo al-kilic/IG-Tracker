@@ -20,10 +20,10 @@ const THEM_ITEMS = [
 
 function CompareGrid() {
   return (
-    <div style={{ borderRadius: 18, overflow: 'hidden', border: '1px solid rgba(244,240,232,0.06)' }}>
+    <div style={{ borderRadius: 18, overflow: 'hidden', border: '1px solid var(--t-border1)' }}>
       <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: 0 }}>
-        <div style={{ padding: '28px', background: 'rgba(2,136,143,0.06)', borderBottom: '1px solid rgba(244,240,232,0.06)' }}
-          className="sm:border-b-0 sm:border-r sm:border-r-[rgba(244,240,232,0.06)]">
+        <div style={{ padding: '28px', background: 'rgba(2,136,143,0.06)', borderBottom: '1px solid var(--t-border1)' }}
+          className="sm:border-b-0 sm:border-r sm:border-r-[var(--t-border1)]">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
             <div style={{ width: 32, height: 32, borderRadius: 9, background: T.teal, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Icon.shield size={16} color={T.cream}/>
@@ -77,7 +77,7 @@ export function CompareSection() {
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 16, marginBottom: 14 }}>
           <span style={{ fontFamily: T.mono, fontSize: 11, color: T.terra, letterSpacing: '0.18em' }}>04 / WHY US</span>
-          <div style={{ flex: 1, height: 1, background: 'rgba(244,240,232,0.08)' }} />
+          <div style={{ flex: 1, height: 1, background: 'var(--t-border2)' }} />
         </div>
         <h2 style={{ fontFamily: T.serif, fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, lineHeight: 1.0, letterSpacing: '-0.03em', marginBottom: 18, color: T.ink }}>
           Every other tool<br/>

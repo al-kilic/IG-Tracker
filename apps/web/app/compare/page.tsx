@@ -10,6 +10,7 @@ import { db, type SnapshotRecord } from '@/lib/db';
 import { AccountList } from '@/components/AccountList';
 import { LandingFooter } from '@/components/landing/FinalCTA';
 import { T } from '@/components/landing/tokens';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface Section {
   id: string;
@@ -54,12 +55,18 @@ function ComparePageInner() {
 
   useEffect(() => {
     if (!oldId || !currentId) { setLoading(false); return; }
+    const timeout = setTimeout(() => setLoading(false), 8000);
     Promise.all([db.snapshots.get(oldId), db.snapshots.get(currentId)])
       .then(([old, cur]) => {
         setOldRecord(old ?? null);
         setCurrentRecord(cur ?? null);
       })
-      .finally(() => setLoading(false));
+      .catch(() => {
+        setOldRecord(null);
+        setCurrentRecord(null);
+      })
+      .finally(() => { clearTimeout(timeout); setLoading(false); });
+    return () => clearTimeout(timeout);
   }, [oldId, currentId]);
 
   if (loading) return <LoadingSpinner />;
@@ -99,14 +106,27 @@ function ComparePageInner() {
   return (
     <div style={{ minHeight: '100vh', background: T.bg, color: T.ink, fontFamily: T.sans }}>
       {/* Nav */}
-      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(244,240,232,0.06)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.8)' }}>
+      <nav
+        className="flex items-center justify-between px-4 sm:px-8 py-4 sticky top-0 z-50"
+        style={{ borderBottom: `1px solid ${T.border1}`, backdropFilter: 'blur(14px)', background: T.navBg }}
+      >
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
           <img src="/logo.png" alt="WhoUnfollowed Logo" width={26} height={26} style={{ borderRadius: 7, objectFit: 'contain' }} />
           <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24, fontSize: 13 }}>
-          <Link href="/history" style={{ color: T.inkDim, textDecoration: 'none' }}>History</Link>
-          <Link href="/"        style={{ color: T.inkDim, textDecoration: 'none' }}>Home</Link>
+        <div className="flex items-center gap-3 sm:gap-6" style={{ fontSize: 13 }}>
+          <Link href="/dashboard" style={{
+            color: T.tealLight, textDecoration: 'none', fontWeight: 600,
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            padding: '5px 12px', borderRadius: 8,
+            background: 'rgba(2,136,143,0.1)', border: '1px solid rgba(2,136,143,0.25)',
+          }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: T.tealLight, display: 'inline-block' }} />
+            Radar
+          </Link>
+          <Link href="/history" className="hidden sm:inline" style={{ color: T.inkDim, textDecoration: 'none' }}>History</Link>
+          <Link href="/" className="hidden sm:inline" style={{ color: T.inkDim, textDecoration: 'none' }}>Home</Link>
+          <ThemeToggle />
         </div>
       </nav>
 

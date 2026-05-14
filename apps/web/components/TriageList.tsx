@@ -6,7 +6,8 @@ import { ExternalLink, Download, Search, ChevronDown, ChevronRight, ArrowUpDown 
 import { format } from 'date-fns';
 import type { Account } from '@ig-tracker/core';
 import { Button } from '@/components/ui/button';
-import { downloadCsv } from '@/lib/csv';
+import { downloadCsv, buildCsv } from '@/lib/csv';
+import { EmailCaptureModal } from '@/components/EmailCaptureModal';
 import { T } from '@/components/landing/tokens';
 import { useTriage, usePreviousTriage, type TriageState } from '@/hooks/useTriage';
 
@@ -313,7 +314,7 @@ function TriageRow({ account, triageState, isVisited, isFocused, onTriage, onVis
           </>
         ) : (
           // Show triage action buttons
-          TRIAGE_OPTIONS.map((opt, i) => (
+          TRIAGE_OPTIONS.map((opt) => (
             <button
               key={opt.state}
               onClick={() => onTriage(opt.state)}
@@ -424,6 +425,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
   const [slideOpen, setSlideOpen]     = useState(false);
   const [visited, setVisited]         = useState<Set<string>>(() => new Set());
   const [toast, setToast]             = useState<ToastData | null>(null);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const [importDismissed, setImportDismissed] = useState(false);
   const [importStates, setImportStates] = useState<Set<TriageState>>(
     new Set(['let_it_slide', 'check_later']),
@@ -688,13 +690,21 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
         <Button
           variant="outline"
           size="sm"
-          onClick={() => downloadCsv(mainAccounts, csvFilename)}
+          onClick={() => setShowEmailModal(true)}
           disabled={mainAccounts.length === 0}
         >
           <Download size={14} />
           Export CSV
         </Button>
       </div>
+      {showEmailModal && (
+        <EmailCaptureModal
+          csvFilename={csvFilename}
+          csvContent={buildCsv(mainAccounts)}
+          onClose={() => setShowEmailModal(false)}
+          onDownload={() => downloadCsv(mainAccounts, csvFilename)}
+        />
+      )}
 
       {/* Filter pills */}
       {(() => {

@@ -13,20 +13,110 @@
   --font-display: "General Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
+/* ── Light theme (default) ─────────────────────────────────────────────────── */
 :root {
   --background: #f4f0e8;
   --foreground: #1a1a1a;
+
+  /* Design tokens — light */
+  --t-bg:        #f4f0e8;
+  --t-bgPanel:   #ede8df;
+  --t-bgCard:    #e8e3da;
+  --t-bgDeep:    #f4f0e8;
+  --t-ink:       #1a1a1a;
+  --t-inkDim:    rgba(26,26,26,0.58);
+  --t-inkMute:   rgba(26,26,26,0.36);
+  --t-teal:      #015a5f;
+  --t-tealMid:   #01696f;
+  --t-tealLight: #013d42;
+  --t-tealGlow:  rgba(1,105,111,0.12);
+  --t-terra:     #a84b2f;
+  --t-cream:     #f4f0e8;
+
+  /* Derived surface / border tokens */
+  --t-navBg:     rgba(244,240,232,0.88);
+  --t-border1:   rgba(26,26,26,0.07);
+  --t-border2:   rgba(26,26,26,0.10);
+  --t-border3:   rgba(26,26,26,0.14);
+  --t-surface1:  rgba(26,26,26,0.025);
+  --t-surface2:  rgba(26,26,26,0.04);
+  --t-overlay:   #f0ebe2;
+  --t-overlayBorder: rgba(26,26,26,0.10);
+
+  /* Toggle active pill */
+  --t-toggleActiveBg:   #1a1a1a;
+  --t-toggleActiveText: #f4f0e8;
+}
+
+/* ── Dark theme ────────────────────────────────────────────────────────────── */
+html.dark {
+  --background: #0d0d0d;
+  --foreground: #f4f0e8;
+
+  --t-bg:        #0d0d0d;
+  --t-bgPanel:   #141414;
+  --t-bgCard:    #1a1a1a;
+  --t-bgDeep:    #0d0d0d;
+  --t-ink:       #f4f0e8;
+  --t-inkDim:    rgba(244,240,232,0.55);
+  --t-inkMute:   rgba(244,240,232,0.32);
+  --t-teal:      #01696f;
+  --t-tealMid:   #02888f;
+  --t-tealLight: #5fc4c8;
+  --t-tealGlow:  rgba(2,136,143,0.25);
+  --t-terra:     #a84b2f;
+  --t-cream:     #f4f0e8;
+
+  --t-navBg:     rgba(13,13,13,0.75);
+  --t-border1:   rgba(244,240,232,0.06);
+  --t-border2:   rgba(244,240,232,0.08);
+  --t-border3:   rgba(244,240,232,0.12);
+  --t-surface1:  rgba(244,240,232,0.02);
+  --t-surface2:  rgba(244,240,232,0.04);
+  --t-overlay:   rgba(16,20,20,0.98);
+  --t-overlayBorder: rgba(244,240,232,0.10);
+
+  --t-toggleActiveBg:   #f4f0e8;
+  --t-toggleActiveText: #0d0d0d;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --background: #0b2426;
+    --background: #0d0d0d;
     --foreground: #f4f0e8;
+
+    --t-bg:        #0d0d0d;
+    --t-bgPanel:   #141414;
+    --t-bgCard:    #1a1a1a;
+    --t-bgDeep:    #0d0d0d;
+    --t-ink:       #f4f0e8;
+    --t-inkDim:    rgba(244,240,232,0.55);
+    --t-inkMute:   rgba(244,240,232,0.32);
+    --t-teal:      #01696f;
+    --t-tealMid:   #02888f;
+    --t-tealLight: #5fc4c8;
+    --t-tealGlow:  rgba(2,136,143,0.25);
+    --t-terra:     #a84b2f;
+    --t-cream:     #f4f0e8;
+
+    --t-navBg:     rgba(13,13,13,0.75);
+    --t-border1:   rgba(244,240,232,0.06);
+    --t-border2:   rgba(244,240,232,0.08);
+    --t-border3:   rgba(244,240,232,0.12);
+    --t-surface1:  rgba(244,240,232,0.02);
+    --t-surface2:  rgba(244,240,232,0.04);
+    --t-overlay:   rgba(16,20,20,0.98);
+    --t-overlayBorder: rgba(244,240,232,0.10);
+
+    --t-toggleActiveBg:   #f4f0e8;
+    --t-toggleActiveText: #0d0d0d;
   }
 }
 
-html.dark  { --background: #0b2426; --foreground: #f4f0e8; }
-html.light { --background: #f4f0e8; --foreground: #1a1a1a; }
+html.light {
+  --background: #f4f0e8;
+  --foreground: #1a1a1a;
+}
 
 body {
   background-color: var(--background);

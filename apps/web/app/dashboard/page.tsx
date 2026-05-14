@@ -14,12 +14,14 @@ import { useSnapshotStore } from '@/lib/store';
 import { LandingFooter } from '@/components/landing/FinalCTA';
 import { T } from '@/components/landing/tokens';
 import { useSnapshotList } from '@/hooks/useSnapshots';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { Tutorial } from '@/components/Tutorial';
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
 const CARD = {
-  bg: 'rgba(244,240,232,0.02)',
-  border: '1px solid rgba(244,240,232,0.07)',
+  bg: 'var(--t-surface1)',
+  border: '1px solid var(--t-border1)',
   radius: 16,
   pad: '24px',
 };
@@ -50,16 +52,6 @@ function CardTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Metric({ value, label, color, size = 'lg' }: { value: string | number; label: string; color?: string; size?: 'lg' | 'sm' }) {
-  return (
-    <div>
-      <div style={{ fontFamily: T.serif, fontSize: size === 'lg' ? 48 : 28, lineHeight: 1, letterSpacing: '-0.03em', color: color ?? T.ink }}>
-        {typeof value === 'number' ? value.toLocaleString() : value}
-      </div>
-      <div style={{ fontSize: 11, color: T.inkMute, fontFamily: T.mono, marginTop: 6, letterSpacing: '0.04em' }}>{label}</div>
-    </div>
-  );
-}
 
 function IGLink({ href, username }: { href: string; username: string }) {
   return (
@@ -104,7 +96,7 @@ function HeroStats({ followers, following, mutuals, nonFollowers }: {
       {stats.map(s => (
         <Card key={s.label} style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
           <div style={{ fontSize: 10, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.06em', textTransform: 'uppercase', height: 24, display: 'flex', alignItems: 'center', marginBottom: 10 }}>{s.label}</div>
-          <div style={{ fontFamily: T.serif, fontSize: 22, lineHeight: 1, letterSpacing: '-0.02em', color: s.color }}>{s.value}</div>
+          <div style={{ fontFamily: T.serif, fontSize: 26, lineHeight: 1, letterSpacing: '-0.02em', color: s.color }}>{s.value}</div>
         </Card>
       ))}
     </div>
@@ -299,7 +291,7 @@ function FollowAgeCard({ nonFollowers }: { nonFollowers: { username: string; hre
         {/* Right: oldest profile card */}
         <div style={{
           padding: '18px 20px', borderRadius: 14,
-          background: 'linear-gradient(135deg, rgba(160,149,107,0.08) 0%, rgba(244,240,232,0.02) 100%)',
+          background: 'linear-gradient(135deg, rgba(160,149,107,0.08) 0%, var(--t-surface1) 100%)',
           border: '1px solid rgba(160,149,107,0.2)',
           display: 'flex', flexDirection: 'column', gap: 12,
         }}>
@@ -477,13 +469,13 @@ function PendingRequestsCard({ accounts }: { accounts: { username: string; href:
         <>
           <div style={{ display: 'flex', gap: 8, margin: '16px 0' }}>
             {buckets.map(b => (
-              <div key={b.label} style={{ flex: 1, padding: '10px 12px', borderRadius: 10, background: 'rgba(244,240,232,0.02)', border: '1px solid rgba(244,240,232,0.07)' }}>
+              <div key={b.label} style={{ flex: 1, padding: '10px 12px', borderRadius: 10, background: 'var(--t-surface1)', border: '1px solid var(--t-border1)' }}>
                 <div style={{ fontFamily: T.serif, fontSize: 24, color: b.color, letterSpacing: '-0.02em' }}>{b.count}</div>
                 <div style={{ fontSize: 10, color: T.inkMute, marginTop: 4, fontFamily: T.mono }}>{b.label}</div>
               </div>
             ))}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 10, border: '1px solid rgba(244,240,232,0.06)', overflow: 'hidden', maxHeight: 280, overflowY: 'auto' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 10, border: '1px solid var(--t-border1)', overflow: 'hidden', maxHeight: 280, overflowY: 'auto' }}>
             {sorted.map((a, i) => {
               const days = a.followedAt ? differenceInDays(now * 1000, a.followedAt * 1000) : null;
               const flag = days !== null && days >= 90 ? { text: 'They saw it.', color: T.terra } :
@@ -520,7 +512,7 @@ function RecentlyUnfollowedCard({ accounts }: { accounts: { username: string; hr
       {!accounts.length ? (
         <EmptyState text="Instagram didn't include this in your export." />
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 10, border: '1px solid rgba(244,240,232,0.06)', overflow: 'hidden', marginTop: 16, maxHeight: 300, overflowY: 'auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 10, border: '1px solid var(--t-border1)', overflow: 'hidden', marginTop: 16, maxHeight: 300, overflowY: 'auto' }}>
           {accounts.map((a, i) => (
             <div key={a.username} style={{
               display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
@@ -555,7 +547,7 @@ function computeHealth({
   const ratio        = following === 0 ? 0 : followers / following;
   const mutualPct    = following === 0 ? 0 : mutuals / following;
   const nonFollowerPct = following === 0 ? 0 : nonFollowers / following;
-  const toUnfollowForElite = Math.max(0, Math.ceil(following * 0.1) - (following - nonFollowers) + nonFollowers - Math.floor(following * 0.1));
+
 
   // Component 1: Follow ratio (0–25)
   const ratioScore = ratio >= 2 ? 25 : ratio >= 1 ? 20 : ratio >= 0.5 ? 12 : ratio >= 0.3 ? 6 : 0;
@@ -645,7 +637,7 @@ function GradeRing({ score, grade, color }: { score: number; grade: string; colo
   const dash = (score / 100) * circ;
   return (
     <svg width={136} height={136} viewBox="0 0 136 136" style={{ filter: `drop-shadow(0 0 18px ${color}40)` }}>
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(244,240,232,0.06)" strokeWidth={sw} />
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke="var(--t-border1)" strokeWidth={sw} />
       <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth={sw}
         strokeDasharray={`${dash} ${circ - dash}`} strokeLinecap="round"
         transform={`rotate(-90 ${cx} ${cy})`} />
@@ -668,7 +660,7 @@ function MiniRing({ score, max }: { score: number; max: number }) {
   const dash = (score / max) * circ;
   return (
     <svg width={52} height={52} viewBox="0 0 52 52">
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(244,240,232,0.06)" strokeWidth={sw} />
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke="var(--t-border1)" strokeWidth={sw} />
       <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth={sw}
         strokeDasharray={`${dash} ${circ - dash}`} strokeLinecap="round"
         transform={`rotate(-90 ${cx} ${cy})`} />
@@ -953,7 +945,7 @@ function RadarModal({ onClose }: { onClose: () => void }) {
             <div key={s.title} style={{
               display: 'flex', gap: 16,
               padding: '16px 18px', borderRadius: 14,
-              background: 'rgba(244,240,232,0.02)', border: '1px solid rgba(244,240,232,0.06)',
+              background: 'var(--t-surface1)', border: '1px solid var(--t-border1)',
             }}>
               <div style={{
                 width: 36, height: 36, borderRadius: 10, flexShrink: 0,
@@ -1022,7 +1014,7 @@ export default function DashboardPage() {
       {/* Nav */}
       <nav
         className="flex items-center justify-between px-4 sm:px-8 py-4 sticky top-0 z-50"
-        style={{ borderBottom: '1px solid rgba(244,240,232,0.06)', backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.85)' }}
+        style={{ borderBottom: '1px solid var(--t-border1)', backdropFilter: 'blur(14px)', background: 'var(--t-navBg)' }}
       >
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
           <img src="/logo.png" alt="WhoUnfollowed" width={26} height={26} style={{ borderRadius: 7, objectFit: 'contain' }} />
@@ -1032,10 +1024,31 @@ export default function DashboardPage() {
           <Link href="/results" style={{ color: T.inkDim, textDecoration: 'none' }}>Snapshot</Link>
           <Link href="/history" className="hidden sm:inline" style={{ color: T.inkDim, textDecoration: 'none' }}>History</Link>
           <Link href="/"        className="hidden sm:inline" style={{ color: T.inkDim, textDecoration: 'none' }}>Home</Link>
+          <ThemeToggle />
         </div>
       </nav>
 
       {radarModalOpen && <RadarModal onClose={() => setRadarModalOpen(false)} />}
+      <Tutorial
+        storageKey="ig-tracker:tutorial-radar"
+        steps={[
+          {
+            title: 'Your account health score',
+            body: 'Radar scores your account based on follow ratio, non-follower percentage, and triage progress. The grade improves as you act on your list.',
+            targetSelector: '#tutorial-health',
+          },
+          {
+            title: 'Audience breakdown',
+            body: 'See your followers split into mutuals, fans, and non-followers. The ratio card shows your follow balance. Upload more exports to unlock the growth timeline.',
+            targetSelector: '#tutorial-audience',
+          },
+          {
+            title: 'Recently unfollowed & pending',
+            body: 'Accounts that unfollowed you since your last export and any unanswered follow requests — all pulled straight from your ZIP, nothing extra needed.',
+            targetSelector: '#tutorial-pending',
+          },
+        ]}
+      />
 
       <main className="px-4 sm:px-8 py-8 sm:py-12 pb-20" style={{ maxWidth: 1100, margin: '0 auto' }}>
         {/* Header */}
@@ -1075,7 +1088,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Health score */}
-        <div style={{ marginBottom: 16 }}>
+        <div id="tutorial-health" style={{ marginBottom: 16 }}>
           <AccountHealthCard
             followers={snapshot.followers.length}
             following={snapshot.following.length}
@@ -1101,7 +1114,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Row 1: Audience donut + Follow ratio */}
-        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: 16, marginBottom: 16 }}>
+        <div id="tutorial-audience" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
           <AudienceBreakdown
             followers={snapshot.followers.length}
             mutuals={mutuals.length}
@@ -1121,7 +1134,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Pending + Recently unfollowed */}
-        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: 16 }}>
+        <div id="tutorial-pending" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <PendingRequestsCard accounts={snapshot.pendingRequests ?? []} />
           <RecentlyUnfollowedCard accounts={snapshot.recentlyUnfollowed ?? []} />
         </div>

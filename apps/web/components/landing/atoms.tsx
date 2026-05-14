@@ -32,9 +32,9 @@ export function ProfileCard({
     <div style={{
       width: w, padding: small ? '10px 12px' : '12px 14px',
       borderRadius: 14,
-      background: 'rgba(20,33,38,0.85)',
+      background: 'var(--t-bgCard)',
       backdropFilter: 'blur(8px)',
-      border: '1px solid rgba(244,240,232,0.08)',
+      border: '1px solid var(--t-border2)',
       boxShadow: '0 12px 32px rgba(0,0,0,0.45)',
       display: 'flex', alignItems: 'center', gap: 10,
       userSelect: 'none',
@@ -123,35 +123,45 @@ export const Icon = {
 
 export function CountUp({
   to,
+  from = 0,
   prefix = '',
   suffix = '',
   duration = 1800,
   delay = 0,
 }: {
   to: number;
+  from?: number;
   prefix?: string;
   suffix?: string;
   duration?: number;
   delay?: number;
 }) {
+  // Always start at 0 for SSR — client useEffect handles the real starting point
   const [v, setV] = React.useState(0);
-  const started  = React.useRef(false);
+  const initialised = React.useRef(false);
 
   React.useEffect(() => {
-    if (started.current) return;
-    started.current = true;
+    // After first run: just snap to new value (handles live updates)
+    if (initialised.current) { setV(to); return; }
+    initialised.current = true;
+
+    // First run: snap if return visit or tiny diff, otherwise animate
+    if (to - from <= 2) { setV(to); return; }
+
+    setV(from);
     const t = setTimeout(() => {
       const start = performance.now();
-      const tick = (now: number) => {
+      const range = to - from;
+      const tick  = (now: number) => {
         const p     = Math.min(1, (now - start) / duration);
         const eased = 1 - Math.pow(1 - p, 3);
-        setV(Math.round(to * eased));
+        setV(Math.round(from + range * eased));
         if (p < 1) requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
     }, delay);
     return () => clearTimeout(t);
-  }, [to, duration, delay]);
+  }, [to, from, duration, delay]);
 
   return <span>{prefix}{v.toLocaleString()}{suffix}</span>;
 }

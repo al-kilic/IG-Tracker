@@ -9,6 +9,7 @@ import { useSnapshotList, deleteSnapshot, FREE_SNAPSHOT_LIMIT, type SnapshotReco
 import { LandingFooter } from '@/components/landing/FinalCTA';
 import { T } from '@/components/landing/tokens';
 import { Icon } from '@/components/landing/atoms';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function HistoryPage() {
   const router       = useRouter();
@@ -42,23 +43,31 @@ export default function HistoryPage() {
   return (
     <div style={{ minHeight: '100vh', background: T.bg, color: T.ink, fontFamily: T.sans }}>
       {/* Nav */}
-      <nav style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '16px 32px', borderBottom: '1px solid rgba(244,240,232,0.06)',
-        position: 'sticky', top: 0, zIndex: 50,
-        backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.8)',
-      }}>
+      <nav
+        className="flex items-center justify-between px-4 sm:px-8 py-4 sticky top-0 z-50"
+        style={{ borderBottom: `1px solid ${T.border1}`, backdropFilter: 'blur(14px)', background: T.navBg }}
+      >
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
           <img src="/logo.png" alt="WhoUnfollowed Logo" width={26} height={26} style={{ borderRadius: 7, objectFit: 'contain' }} />
           <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 24, fontSize: 13 }}>
-          <Link href="/"       style={{ color: T.inkDim, textDecoration: 'none' }}>Home</Link>
-          <Link href="/results" style={{ color: T.inkDim, textDecoration: 'none' }}>Latest results</Link>
+        <div className="flex items-center gap-3 sm:gap-6" style={{ fontSize: 13 }}>
+          <Link href="/dashboard" style={{
+            color: T.tealLight, textDecoration: 'none', fontWeight: 600,
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            padding: '5px 12px', borderRadius: 8,
+            background: 'rgba(2,136,143,0.1)', border: '1px solid rgba(2,136,143,0.25)',
+          }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: T.tealLight, display: 'inline-block' }} />
+            Radar
+          </Link>
+          <Link href="/results" className="hidden sm:inline" style={{ color: T.inkDim, textDecoration: 'none' }}>Snapshot</Link>
+          <Link href="/" className="hidden sm:inline" style={{ color: T.inkDim, textDecoration: 'none' }}>Home</Link>
+          <ThemeToggle />
         </div>
       </nav>
 
-      <main style={{ maxWidth: 800, margin: '0 auto', padding: '48px 32px' }}>
+      <main className="px-4 sm:px-8 py-10 sm:py-12" style={{ maxWidth: 800, margin: '0 auto' }}>
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
           <div style={{ fontSize: 11, color: T.tealMid, fontFamily: T.mono, letterSpacing: '0.14em', marginBottom: 12 }}>SNAPSHOT HISTORY</div>
@@ -91,8 +100,15 @@ export default function HistoryPage() {
           {slotsLeft === 0 ? (
             <span style={{ fontSize: 12, color: T.terra, fontFamily: T.mono }}>Upgrade to Pro for unlimited history</span>
           ) : (
-            <Link href="/" style={{ fontSize: 12, color: T.tealLight, fontFamily: T.mono, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-              Add snapshot <Icon.arrow size={11} color={T.tealLight} />
+            <Link href="/" style={{
+              fontSize: 13, fontWeight: 600, fontFamily: T.sans,
+              color: T.cream, textDecoration: 'none',
+              display: 'inline-flex', alignItems: 'center', gap: 7,
+              padding: '8px 16px', borderRadius: 10,
+              background: T.teal, border: `1px solid rgba(2,136,143,0.5)`,
+            }}>
+              <Icon.upload size={13} color={T.cream} />
+              Add New Snapshot
             </Link>
           )}
         </div>

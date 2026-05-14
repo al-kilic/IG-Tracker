@@ -6,13 +6,16 @@ import { useRouter } from 'next/navigation';
 import { Upload, FileX, CheckCircle, AlertCircle } from 'lucide-react';
 import {
   parseInstagramZip,
+  detectDeltaExport,
   InvalidZipError,
   MissingFilesError,
   SchemaValidationError,
   MixedFormatError,
   type ParsedSnapshot,
+  type DeltaReason,
 } from '@ig-tracker/core';
 import { useSnapshotStore } from '@/lib/store';
+import { db } from '@/lib/db';
 import { isProUser } from '@/lib/flags';
 import {
   useSnapshotList,
@@ -21,6 +24,7 @@ import {
   FREE_SNAPSHOT_LIMIT,
 } from '@/hooks/useSnapshots';
 import { UpgradeDialog } from '@/components/UpgradeDialog';
+import { DeltaWarning } from '@/components/DeltaWarning';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -48,6 +52,7 @@ export function UploadZone() {
   const snapshots = useSnapshotList();
   const [state, setState] = useState<UploadState>({ status: 'idle' });
   const [pendingSnapshot, setPendingSnapshot] = useState<ParsedSnapshot | null>(null);
+  const [deltaWarning, setDeltaWarning] = useState<{ snapshot: ParsedSnapshot; reasons: DeltaReason[] } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropZoneId = useId();
   const statusId = useId();
@@ -62,8 +67,7 @@ export function UploadZone() {
     [router, setSnapshot],
   );
 
-  const processFile = useCallback(
-    async (file: File) => {
+  const processFile = async (file: File) => {
       if (
         !file.name.toLowerCase().endsWith('.zip') &&
         file.type !== 'application/zip' &&
@@ -101,6 +105,25 @@ export function UploadZone() {
         setState({ status: 'processing', progress: 100 });
         await new Promise((r) => setTimeout(r, 300));
 
+        // Delta detection — query DB directly to avoid stale closure
+        const latestSaved = await db.snapshots.orderBy('exportedAt').last();
+        const previousSnapshot = latestSaved?.data;
+        const detection = detectDeltaExport(snapshot, previousSnapshot);
+        console.error('🔴 DELTA CHECK', {
+          followers: snapshot.followers.length,
+          following: snapshot.following.length,
+          prevFollowers: previousSnapshot?.followers.length ?? 'none',
+          isDelta: detection.isDelta,
+          reasons: detection.reasons,
+          firstFollowerTs: snapshot.followers[0]?.followedAt,
+          firstFollowingTs: snapshot.following[0]?.followedAt,
+        });
+        if (detection.isDelta) {
+          setState({ status: 'idle' });
+          setDeltaWarning({ snapshot, reasons: detection.reasons });
+          return;
+        }
+
         if (!isProUser() && snapshots.length >= FREE_SNAPSHOT_LIMIT) {
           setState({ status: 'idle' });
           setPendingSnapshot(snapshot);
@@ -111,9 +134,7 @@ export function UploadZone() {
         clearInterval(interval);
         setState({ status: 'error', message: userMessage(err) });
       }
-    },
-    [snapshots.length, commitSnapshot],
-  );
+  };
 
   const handleDeleteOldest = useCallback(async () => {
     if (!pendingSnapshot) return;
@@ -178,6 +199,29 @@ export function UploadZone() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Show delta warning full-screen before anything else
+  if (deltaWarning) {
+    const dismissAndProceed = async () => {
+      const snap = deltaWarning.snapshot;
+      setDeltaWarning(null);
+      if (!isProUser() && snapshots.length >= FREE_SNAPSHOT_LIMIT) {
+        setPendingSnapshot(snap);
+      } else {
+        await commitSnapshot(snap);
+      }
+    };
+    return (
+      <DeltaWarning
+        reasons={deltaWarning.reasons}
+        followerCount={deltaWarning.snapshot.followers.length}
+        followingCount={deltaWarning.snapshot.following.length}
+        onReExport={() => setDeltaWarning(null)}
+        onProceedAnyway={dismissAndProceed}
+        onNewAccount={dismissAndProceed}
+      />
+    );
+  }
 
   return (
     <>

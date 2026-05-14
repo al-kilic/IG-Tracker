@@ -10,8 +10,11 @@ import {
   MixedFormatError,
   type ParsedSnapshot,
 } from '@ig-tracker/core';
+import { detectDeltaExport, type DeltaReason } from '@ig-tracker/core';
 import { useSnapshotStore } from '@/lib/store';
 import { useSnapshotList, saveSnapshot, deleteSnapshot, FREE_SNAPSHOT_LIMIT } from '@/hooks/useSnapshots';
+import { db } from '@/lib/db';
+import { DeltaWarning } from '@/components/DeltaWarning';
 import { UpgradeDialog } from '@/components/UpgradeDialog';
 import { createPortal } from 'react-dom';
 import { T } from './tokens';
@@ -42,6 +45,44 @@ export function HeroSection() {
   const [errMsg,  setErrMsg]  = useState('');
   const [pending, setPending] = useState<ParsedSnapshot | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [deltaWarning, setDeltaWarning] = useState<{ snapshot: ParsedSnapshot; reasons: DeltaReason[] } | null>(null);
+  const STATS_SEED = { snapshots: 1047, avgNonFollowers: 230 };
+
+  // isReturn: true if user has been here before this session (stats cached)
+  const [isReturn] = useState<boolean>(() => {
+    try { return !!sessionStorage.getItem('ig-tracker:stats'); } catch { return false; }
+  });
+
+  const [liveStats, setLiveStats] = useState<{ snapshots: number; avgNonFollowers: number }>(() => {
+    try {
+      const cached = sessionStorage.getItem('ig-tracker:stats');
+      return cached ? JSON.parse(cached) as { snapshots: number; avgNonFollowers: number } : STATS_SEED;
+    } catch { return STATS_SEED; }
+  });
+
+  useEffect(() => {
+    // Prefetch results page immediately so Turbopack compiles it before user uploads
+    router.prefetch('/results');
+
+    // Delay stats fetch so it doesn't compete with route compilation on first load
+    const t = setTimeout(() => {
+      const sessionCounted = sessionStorage.getItem('ig-tracker:session-counted');
+      if (!sessionCounted) {
+        sessionStorage.setItem('ig-tracker:session-counted', '1');
+        fetch('/api/stats', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nonFollowerCount: 0 }) }).catch(() => {});
+      }
+      fetch('/api/stats')
+        .then(r => r.json())
+        .then(d => {
+          const stats = d as { snapshots: number; avgNonFollowers: number };
+          setLiveStats(stats);
+          try { sessionStorage.setItem('ig-tracker:stats', JSON.stringify(stats)); } catch {}
+        })
+        .catch(() => {});
+    }, 2000); // wait 2s before hitting the stats API
+
+    return () => clearTimeout(t);
+  }, [router]);
 
   const dropRef  = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -51,13 +92,22 @@ export function HeroSection() {
 
   // ── Commit a parsed snapshot ──────────────────────────────────────────────
   const commit = useCallback(async (snap: ParsedSnapshot) => {
-    await saveSnapshot(snap);
+    // Navigate immediately — results page reads from Zustand, not IndexedDB
     setSnapshot(snap);
     router.push('/results');
+    // Save to IndexedDB + stats in background (non-blocking)
+    void saveSnapshot(snap);
+    const followerSet = new Set(snap.followers.map(f => f.username));
+    const nonFollowerCount = snap.following.filter(f => !followerSet.has(f.username)).length;
+    void fetch('/api/stats', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nonFollowerCount }),
+    });
   }, [router, setSnapshot]);
 
   // ── Process a dropped / selected file ────────────────────────────────────
-  const processFile = useCallback(async (file: File) => {
+  const processFile = async (file: File) => {
     if (!file.name.toLowerCase().endsWith('.zip') &&
         file.type !== 'application/zip' &&
         file.type !== 'application/x-zip-compressed') {
@@ -81,6 +131,15 @@ export function HeroSection() {
       setProgress(100);
       await new Promise(r => setTimeout(r, 300));
 
+      // Delta detection — always query DB directly (never stale)
+      const latestSaved = await db.snapshots.orderBy('exportedAt').last();
+      const detection = detectDeltaExport(snap, latestSaved?.data);
+      if (detection.isDelta) {
+        setPhase('idle');
+        setDeltaWarning({ snapshot: snap, reasons: detection.reasons });
+        return;
+      }
+
       if (snapshots.length >= FREE_SNAPSHOT_LIMIT) {
         setPhase('idle');
         setPending(snap);
@@ -92,7 +151,7 @@ export function HeroSection() {
       setErrMsg(errorMessage(err));
       setPhase('error');
     }
-  }, [snapshots.length, commit]);
+  };
 
   // ── Upgrade dialog callbacks ──────────────────────────────────────────────
   const handleDeleteOldest = useCallback(async () => {
@@ -140,10 +199,36 @@ export function HeroSection() {
     ? `linear-gradient(135deg, ${T.tealLight}, ${T.tealMid})`
     : phase === 'error'
     ? `linear-gradient(135deg, rgba(168,75,47,0.8), rgba(168,75,47,0.3))`
-    : `linear-gradient(135deg, rgba(2,136,143,0.5), rgba(244,240,232,0.08), rgba(168,75,47,0.3))`;
+    : `linear-gradient(135deg, rgba(2,136,143,0.5), var(--t-border2), rgba(168,75,47,0.3))`;
+
+  if (deltaWarning) {
+    const dismissAndProceed = async () => {
+      const snap = deltaWarning.snapshot;
+      setDeltaWarning(null);
+      if (snapshots.length >= FREE_SNAPSHOT_LIMIT) {
+        setPending(snap);
+      } else {
+        await commit(snap);
+      }
+    };
+    return (
+      <>
+        {/* Keep the hero section visible blurred behind the modal */}
+        <section id="upload" className="relative px-4 sm:px-12 pb-12" style={{ filter: 'blur(2px)', pointerEvents: 'none', userSelect: 'none' }} />
+        <DeltaWarning
+          reasons={deltaWarning.reasons}
+          followerCount={deltaWarning.snapshot.followers.length}
+          followingCount={deltaWarning.snapshot.following.length}
+          onReExport={() => setDeltaWarning(null)}
+          onNewAccount={dismissAndProceed}
+          onProceedAnyway={dismissAndProceed}
+        />
+      </>
+    );
+  }
 
   return (
-    <section id="upload" className="relative px-4 sm:px-12 pb-12">
+    <section id="upload" className="relative px-4 sm:px-12 pb-6 sm:pb-10">
       {/* Portal for upgrade dialog */}
       {mounted && pending && oldest && createPortal(
         <UpgradeDialog
@@ -193,9 +278,21 @@ export function HeroSection() {
       <div className="hidden lg:block" style={{ position: 'absolute', left: 200, top: 490, animation: 'drift-5 7s ease-in-out infinite', zIndex: 2, opacity: 0.75 }}>
         <ProfileCard handle="@wave.theory" status="not_following_back" small />
       </div>
+      {/* Mobile floating cards — subtle, edge-clipped */}
+      <div className="lg:hidden" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2, overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', left: -24, top: 160, animation: 'drift-1 6s ease-in-out infinite', opacity: 0.25 }}>
+          <ProfileCard handle="@alex.studio" status="not_following_back" small />
+        </div>
+        <div style={{ position: 'absolute', right: -24, top: 230, animation: 'drift-3 6.5s ease-in-out infinite', opacity: 0.2 }}>
+          <ProfileCard handle="@marco.visuals" status="not_following_back" small />
+        </div>
+        <div style={{ position: 'absolute', left: 4, top: 390, animation: 'drift-2 7.5s ease-in-out infinite', opacity: 0.15 }}>
+          <ProfileCard handle="@nova.frames" status="mutual" small />
+        </div>
+      </div>
 
       {/* Eyebrow badge */}
-      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 32, position: 'relative', zIndex: 5 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 20, position: 'relative', zIndex: 5 }}>
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
           padding: '7px 18px 7px 8px',
@@ -217,9 +314,9 @@ export function HeroSection() {
       {/* Headline */}
       <h1 style={{
         fontFamily: T.serif, fontWeight: 400,
-        fontSize: 'clamp(36px, 5.2vw, 72px)',
+        fontSize: 'clamp(32px, 4vw, 56px)',
         lineHeight: 1.06, letterSpacing: '-0.03em',
-        textAlign: 'center', marginTop: 18, position: 'relative', zIndex: 5,
+        textAlign: 'center', marginTop: 12, position: 'relative', zIndex: 5,
         animation: 'fade-up 0.7s 0.1s cubic-bezier(0.16,1,0.3,1) both',
         color: T.ink,
       }}>
@@ -244,8 +341,8 @@ export function HeroSection() {
 
       {/* Subhead */}
       <p style={{
-        textAlign: 'center', fontSize: 15, color: T.inkDim,
-        maxWidth: 500, margin: '16px auto 0', lineHeight: 1.55,
+        textAlign: 'center', fontSize: 14, color: T.inkDim,
+        maxWidth: 480, margin: '10px auto 0', lineHeight: 1.5,
         position: 'relative', zIndex: 5,
         animation: 'fade-up 0.7s 0.25s cubic-bezier(0.16,1,0.3,1) both',
       }}>
@@ -253,22 +350,9 @@ export function HeroSection() {
         every account you follow that doesn&apos;t follow you back.
       </p>
 
-      {/* ── Mobile floating cards (same style as desktop, smaller, clipped at edges) ── */}
-      <div className="lg:hidden" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2, overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', left: -24, top: 160, animation: 'drift-1 6s ease-in-out infinite', opacity: 0.25 }}>
-          <ProfileCard handle="@alex.studio" status="not_following_back" small />
-        </div>
-        <div style={{ position: 'absolute', right: -24, top: 230, animation: 'drift-3 6.5s ease-in-out infinite', opacity: 0.2 }}>
-          <ProfileCard handle="@marco.visuals" status="not_following_back" small />
-        </div>
-        <div style={{ position: 'absolute', left: 4, top: 390, animation: 'drift-2 7.5s ease-in-out infinite', opacity: 0.15 }}>
-          <ProfileCard handle="@nova.frames" status="mutual" small />
-        </div>
-      </div>
-
       {/* ── Drop zone ──────────────────────────────────────────────────────── */}
       <div style={{
-        maxWidth: 580, margin: '20px auto 0', position: 'relative', zIndex: 5,
+        maxWidth: 560, margin: '12px auto 0', position: 'relative', zIndex: 5,
         animation: 'fade-up 0.7s 0.4s cubic-bezier(0.16,1,0.3,1) both',
       }}>
         <div
@@ -291,7 +375,7 @@ export function HeroSection() {
           }}
         >
           <div style={{
-            borderRadius: 22, background: T.bgCard, padding: '28px 32px',
+            borderRadius: 22, background: T.bgCard, padding: '20px 28px',
             position: 'relative', overflow: 'hidden',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
@@ -321,7 +405,7 @@ export function HeroSection() {
                     ? `linear-gradient(135deg, ${T.tealLight}, ${T.tealMid})`
                     : `linear-gradient(135deg, ${T.tealMid}, ${T.teal})`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: `0 0 32px ${T.tealGlow}, inset 0 0 0 1px rgba(244,240,232,0.12)`,
+                  boxShadow: `0 0 32px ${T.tealGlow}, inset 0 0 0 1px var(--t-border3)`,
                   animation: 'glow-soft 3s ease-in-out infinite',
                   transform: phase === 'dragging' ? 'scale(1.08)' : 'scale(1)',
                   transition: 'transform 0.2s',
@@ -344,7 +428,7 @@ export function HeroSection() {
                       </div>
                       <span style={{ fontSize: 12, color: T.inkMute }}>or drop anywhere</span>
                     </div>
-                    <a href="/history" style={{ fontSize: 12, color: T.inkMute, textDecoration: 'none', borderBottom: `1px solid rgba(244,240,232,0.15)`, paddingBottom: 1 }}
+                    <a href="/history" style={{ fontSize: 12, color: T.terra, textDecoration: 'none', borderBottom: `1px solid rgba(168,75,47,0.3)`, paddingBottom: 1 }}
                       onClick={e => e.stopPropagation()}>
                       Already have snapshots? View your history →
                     </a>
@@ -373,7 +457,7 @@ export function HeroSection() {
                   </div>
                   <div style={{ fontSize: 13, color: T.inkMute, marginTop: 8 }}>Stays on your device. Nothing is uploaded.</div>
                 </div>
-                <div style={{ width: 340, height: 3, borderRadius: 3, background: 'rgba(244,240,232,0.06)', overflow: 'hidden', position: 'relative' }}>
+                <div style={{ width: 340, height: 3, borderRadius: 3, background: 'var(--t-border1)', overflow: 'hidden', position: 'relative' }}>
                   <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${progress}%`, background: T.tealMid, transition: 'width 0.2s ease-out', borderRadius: 3 }} />
                 </div>
               </div>
@@ -393,7 +477,7 @@ export function HeroSection() {
                 </div>
                 <button
                   onClick={(e) => { e.stopPropagation(); setPhase('idle'); setErrMsg(''); }}
-                  style={{ padding: '11px 22px', borderRadius: 10, border: `1px solid rgba(244,240,232,0.18)`, background: 'transparent', color: T.ink, fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}
+                  style={{ padding: '11px 22px', borderRadius: 10, border: `1px solid var(--t-border3)`, background: 'transparent', color: T.ink, fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}
                 >
                   Try again
                 </button>
@@ -403,30 +487,35 @@ export function HeroSection() {
         </div>
 
         {/* Trust line */}
-        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 mt-3" style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.02em' }}>
+        <div style={{
+          marginTop: 14, textAlign: 'center',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          gap: 26, fontSize: 12, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.02em',
+        }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon.shield size={13} color={T.tealMid} />no login required</span>
-          <span className="hidden sm:inline-block" style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
+          <span style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon.code size={13} color={T.tealMid} />open-source parser</span>
-          <span className="hidden sm:inline-block" style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
+          <span style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon.bolt size={13} color={T.tealMid} />runs in your browser</span>
         </div>
       </div>
 
       {/* Live counters */}
-      <div className="grid grid-cols-3" style={{
-        maxWidth: 680, margin: '32px auto 0',
-        background: 'rgba(244,240,232,0.02)', border: '1px solid rgba(244,240,232,0.06)',
+      <div style={{
+        maxWidth: 680, margin: '16px auto 0',
+        display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0,
+        background: 'var(--t-surface1)', border: '1px solid var(--t-border1)',
         borderRadius: 16, overflow: 'hidden', position: 'relative', zIndex: 5,
         animation: 'fade-up 0.7s 0.55s cubic-bezier(0.16,1,0.3,1) both',
       }}>
         {([
-          ['Snapshots parsed', 14823, ''],
-          ['Avg non-followers',  187, ''],
-          ['Password shared',  0, ''],
+          ['Analyses run',      liveStats.snapshots,       ''],
+          ['Avg non-followers', liveStats.avgNonFollowers, ''],
+          ['Passwords shared',  0, ''],
         ] as [string, number, string][]).map(([label, val, suf], i) => (
           <div key={label} style={{ padding: '14px 12px', borderRight: i < 2 ? '1px solid rgba(244,240,232,0.05)' : 'none', textAlign: 'center' }}>
             <div style={{ fontFamily: T.serif, fontSize: 24, lineHeight: 1, color: i === 2 ? T.tealLight : T.ink, animation: `count-up 0.7s ${0.9+i*0.1}s both` }}>
-              <CountUp to={val} suffix={suf} duration={1600} delay={900 + i * 120} />
+              <CountUp to={val} from={isReturn ? val : 0} suffix={suf} duration={1600} delay={i === 2 || isReturn ? 0 : 900 + i * 120} />
             </div>
             <div style={{ fontSize: 10, color: T.inkMute, marginTop: 4, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{label}</div>
           </div>

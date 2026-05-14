@@ -75,10 +75,10 @@ export function UpgradeDialog({ oldestLabel, onDeleteOldest, onUpgrade, onClose 
         <div style={{ padding: '24px 24px 20px', display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div>
             <h2 id="upgrade-title" style={{ fontFamily: T.serif, fontSize: 22, fontWeight: 400, color: T.ink, letterSpacing: '-0.01em', marginBottom: 8 }}>
-              {"You've"} used all 3 snapshot slots
+              {"You've"} already saved a snapshot
             </h2>
             <p style={{ fontSize: 13, color: T.inkDim, lineHeight: 1.55 }}>
-              The free plan stores up to 3 snapshots locally. Free up a slot or upgrade to save unlimited history.
+              The free plan stores 1 snapshot locally. Delete the existing one to save this upload, or upgrade to Pro for unlimited history.
             </p>
           </div>
 
