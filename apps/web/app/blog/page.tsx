@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BookOpen, Clock, ArrowRight } from 'lucide-react';
+import { BookOpen, Clock } from 'lucide-react';
 import { T } from '@/components/landing/tokens';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LandingFooter } from '@/components/landing/FinalCTA';

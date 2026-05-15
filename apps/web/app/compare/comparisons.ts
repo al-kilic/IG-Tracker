@@ -17,7 +17,7 @@ export interface Comparison {
   cta: string;
 }
 
-const SHARED_ROWS = (competitorName: string): CompareRow[] => [
+const SHARED_ROWS = (_competitorName: string): CompareRow[] => [
   { feature: 'Requires Instagram password', us: false, them: true },
   { feature: 'Risk of account ban',          us: false, them: true },
   { feature: 'Data sent to servers',         us: false, them: true },
