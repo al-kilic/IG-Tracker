@@ -308,7 +308,6 @@ export function LandingFooter() {
             { title: 'Product', items: [
               { label: 'What is WhoUnfollowed?',  href: '/what-is-whounfollowed' },
               { label: 'How to Export Your Data', href: '/how-to-export' },
-              { label: 'Privacy Approach',        href: '/privacy' },
               { label: 'Source Code',             href: 'https://github.com/al-kilic/IG-Tracker' },
               { label: 'Changelog',               href: '/changelog' },
             ]},

@@ -11,6 +11,24 @@ export const metadata: Metadata = {
 
 const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improvement' | 'feature'; items: string[] }[] = [
   {
+    version: '0.6',
+    date: 'May 15, 2026',
+    tag: 'improvement',
+    items: [
+      'Light and dark theme toggle added to every page with a full-screen curtain wipe animation',
+      'Full mobile responsive pass - every page works on iPhone, including hamburger nav, stacked sections, and single-card pricing',
+      'Step-by-step feature tour on Results and Radar pages - appears once per session, highlights each section with a spotlight overlay',
+      'Radar pop-up on Results page - appears after tour ends, anchored to the Radar button in the nav',
+      'Pending Requests date boxes are now clickable - tap a range to sort those accounts to the top of the list',
+      'Pending request status text now varies per account based on exact wait time instead of showing the same label for hundreds of accounts',
+      'Follow Ratio card now has an info button explaining what the ratio means and how to improve it',
+      'Triage filter pill tooltips now show what each label does, not a witty line',
+      'Final CTA section redesigned with entrance animation, animated counter, and value-focused copy',
+      'Trust badges updated to: no login no risk / open source MIT licensed / nothing stored nothing shared',
+      'Pricing cards tightened - smaller font sizes, less padding, removed decorative quotes',
+    ],
+  },
+  {
     version: '0.5',
     date: 'May 12, 2026',
     tag: 'improvement',
