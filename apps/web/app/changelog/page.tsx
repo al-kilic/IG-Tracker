@@ -11,6 +11,23 @@ export const metadata: Metadata = {
 
 const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improvement' | 'feature'; items: string[] }[] = [
   {
+    version: '0.7',
+    date: 'May 15, 2026',
+    tag: 'feature',
+    items: [
+      'About page added - Alcatraz Studio, privacy-first software lab, upcoming apps teased',
+      'Contact page added - topic selector pre-fills email subject, copy email button',
+      'What is WhoUnfollowed page redesigned - interactive FAQ accordion, comparison table vs other apps, 3-step flow, and feature grid',
+      'Privacy Policy rewritten with proper legal structure - 12 numbered sections, explicit GDPR Article 20 basis, Meta/Instagram trademark disclaimer, limitation of liability',
+      'Comparison table fixed - all rows now show correctly (WhoUnfollowed all checks, other apps all X)',
+      'About page: app icons for upcoming products, SOON badge visible through blur overlay, location removed',
+      'Footer Company links now route to /about and /contact',
+      'Pricing cards tightened - smaller font sizes, less padding, removed decorative quotes',
+      'Trust badges updated: no login no risk / open source MIT licensed / nothing stored nothing shared',
+      'Em dashes removed throughout all user-facing copy',
+    ],
+  },
+  {
     version: '0.6',
     date: 'May 15, 2026',
     tag: 'improvement',

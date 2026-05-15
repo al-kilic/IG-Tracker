@@ -312,8 +312,8 @@ export function LandingFooter() {
               { label: 'Changelog',               href: '/changelog' },
             ]},
             { title: 'Company', items: [
-              { label: 'About',   href: '#' },
-              { label: 'Contact', href: 'mailto:aekilicc@gmail.com' },
+              { label: 'About',   href: '/about' },
+              { label: 'Contact', href: '/contact' },
             ]},
             { title: 'Legal', items: [
               { label: 'Privacy Policy',   href: '/privacy' },
