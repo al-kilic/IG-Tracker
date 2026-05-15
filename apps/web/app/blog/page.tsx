@@ -8,7 +8,7 @@ import { T } from '@/components/landing/tokens';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LandingFooter } from '@/components/landing/FinalCTA';
 
-export const POSTS = [
+const POSTS = [
   {
     slug: 'how-to-see-who-unfollowed-you-on-instagram',
     title: 'How to See Who Unfollowed You on Instagram (Without Getting Banned)',
