@@ -82,7 +82,7 @@ export default function PrivacyPage() {
           </Section>
 
           <Section title="4. Data we do not collect">
-            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
               {[
                 'Instagram credentials, usernames, or passwords',
                 'Follower lists, following lists, or any content from your data export',
@@ -90,12 +90,12 @@ export default function PrivacyPage() {
                 'Personal data beyond what is strictly necessary to provide the Pro tier service',
                 'Tracking cookies, advertising identifiers, or cross-site tracking data',
               ].map(item => (
-                <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 14, color: T.inkDim }}>
-                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: T.tealMid, flexShrink: 0, marginTop: 7 }} />
-                  {item}
-                </li>
+                <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 16px', borderRadius: 10, background: 'rgba(168,75,47,0.04)', border: '1px solid rgba(168,75,47,0.12)' }}>
+                  <span style={{ fontSize: 13, fontFamily: T.mono, fontWeight: 800, color: T.terra, flexShrink: 0, letterSpacing: '0.06em' }}>NEVER</span>
+                  <span style={{ fontSize: 14, color: T.ink }}>{item}</span>
+                </div>
               ))}
-            </ul>
+            </div>
           </Section>
 
           <Section title="5. Pro tier data processing">

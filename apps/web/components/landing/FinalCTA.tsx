@@ -313,6 +313,8 @@ export function LandingFooter() {
             ]},
             { title: 'Company', items: [
               { label: 'About',   href: '/about' },
+              { label: 'Blog',    href: '/blog' },
+              { label: 'Compare', href: '/compare' },
               { label: 'Contact', href: '/contact' },
             ]},
             { title: 'Legal', items: [

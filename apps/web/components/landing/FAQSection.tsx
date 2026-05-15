@@ -15,7 +15,7 @@ const CATEGORIES: { id: CategoryId; label: string; count: number }[] = [
 const ITEMS: Record<CategoryId, [string, string][]> = {
   privacy: [
     ['Do I need to give you my Instagram password?',
-     'No. We literally cannot accept it, there is no login form anywhere on the site. You upload your own data export, a ZIP file Instagram emails to you on request.'],
+     'No. There is no Instagram login on WhoUnfollowed. You upload your own data export, a ZIP file Instagram emails to you on request. Your password is never involved.'],
     ['Where does my data go after I upload it?',
      "On the Free plan, nowhere. The ZIP is read by JavaScript inside your browser tab and discarded when you close the page. On Pro, snapshots you choose to save are stored encrypted in our cloud so you can compare them across devices."],
     ['Will Instagram ban me for using this?',
