@@ -50,8 +50,9 @@ function renderBody(body: string) {
   });
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPost(params.slug);
+export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = React.use(params);
+  const post = getPost(slug);
   if (!post) notFound();
 
   const tag = TAG_COLORS[post.tag] ?? TAG_COLORS['Guide']!;
@@ -73,17 +74,20 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       <main className="px-4 sm:px-8" style={{ maxWidth: 680, margin: '0 auto', paddingTop: 56, paddingBottom: 80 }}>
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-            <span style={{ fontSize: 10, fontFamily: T.mono, padding: '2px 8px', borderRadius: 20, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: tag.color, background: tag.bg }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+            <span style={{ fontSize: 10, fontFamily: T.mono, padding: '3px 10px', borderRadius: 20, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: tag.color, background: tag.bg }}>
               {post.tag}
             </span>
             <span style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono }}>{post.date}</span>
             <span style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono }}>{post.readTime} read</span>
           </div>
-          <h1 style={{ fontFamily: T.serif, fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 400, lineHeight: 1.1, letterSpacing: '-0.03em', color: T.ink, marginBottom: 16 }}>
+          <p style={{ fontSize: 11, fontFamily: T.mono, color: T.inkMute, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 10px' }}>
+            WhoUnfollowed Blog
+          </p>
+          <h1 style={{ fontFamily: T.serif, fontSize: 'clamp(30px, 5vw, 52px)', fontWeight: 400, lineHeight: 1.05, letterSpacing: '-0.03em', color: T.ink, marginBottom: 18 }}>
             {post.title}
           </h1>
-          <p style={{ fontSize: 16, color: T.inkDim, lineHeight: 1.6 }}>{post.excerpt}</p>
+          <p style={{ fontSize: 16, color: T.inkDim, lineHeight: 1.65 }}>{post.excerpt}</p>
         </div>
 
         {/* Body */}

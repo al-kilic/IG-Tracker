@@ -9,8 +9,9 @@ import { LandingFooter } from '@/components/landing/FinalCTA';
 import { getComparison, COMPARISONS } from '../comparisons';
 import { Icon } from '@/components/landing/atoms';
 
-export default function ComparePage({ params }: { params: { slug: string } }) {
-  const c = getComparison(params.slug);
+export default function ComparePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = React.use(params);
+  const c = getComparison(slug);
   if (!c) notFound();
 
   const others = COMPARISONS.filter(x => x.slug !== c.slug);
@@ -32,14 +33,12 @@ export default function ComparePage({ params }: { params: { slug: string } }) {
 
         {/* Header */}
         <div style={{ marginBottom: 40 }}>
-          <Link href="/compare" style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 16 }}>
+          <Link href="/compare" style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 24 }}>
             <svg width="11" height="11" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
             All comparisons
           </Link>
-          <div style={{ fontSize: 10, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 12 }}>
-            WhoUnfollowed vs
-          </div>
-          <h1 style={{ fontFamily: T.serif, fontSize: 'clamp(26px, 5vw, 42px)', fontWeight: 400, letterSpacing: '-0.03em', color: T.ink, marginBottom: 14 }}>
+          <p style={{ fontSize: 11, fontFamily: T.mono, color: T.tealMid, letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 8px' }}>WhoUnfollowed vs</p>
+          <h1 style={{ fontFamily: T.serif, fontSize: 'clamp(30px, 5vw, 52px)', fontWeight: 400, letterSpacing: '-0.03em', color: T.ink, lineHeight: 1.05, marginBottom: 16 }}>
             {c.competitorName}
           </h1>
           <p style={{ fontSize: 15, color: T.inkDim, lineHeight: 1.65 }}>{c.excerpt}</p>

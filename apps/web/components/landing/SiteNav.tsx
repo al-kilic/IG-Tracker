@@ -6,6 +6,68 @@ import { T } from './tokens';
 import { Icon } from './atoms';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
+function WhatIsDropdown() {
+  const [open, setOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function handleEnter() {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpen(true);
+  }
+  function handleLeave() {
+    closeTimer.current = setTimeout(() => setOpen(false), 120);
+  }
+
+  const items = [
+    { label: 'What is WhoUnfollowed?', href: '/what-is-whounfollowed', desc: 'How the tool works, and why no password', icon: '○' },
+    { label: 'Compare',                href: '/compare',               desc: 'WhoUnfollowed vs other trackers',       icon: '⊘' },
+    { label: 'Blog',                   href: '/blog',                  desc: 'Guides, tips, privacy takes',           icon: '◻' },
+  ];
+
+  return (
+    <div style={{ position: 'relative' }} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+      <a
+        href="/what-is-whounfollowed"
+        onClick={e => { e.preventDefault(); setOpen(o => !o); }}
+        style={{ cursor: 'pointer', color: open ? T.ink : 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4, transition: 'color 0.15s', whiteSpace: 'nowrap' }}
+      >
+        Learn
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ opacity: 0.5, marginTop: 1 }}>
+          <path d="M2 3.5 L5 6.5 L8 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </a>
+      {open && (
+        <>
+          <div style={{ position: 'absolute', top: '100%', left: '-20px', right: '-20px', height: 10 }} />
+          <div style={{
+            position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)',
+            marginTop: 6, width: 260, borderRadius: 14,
+            background: T.overlay, border: `1px solid ${T.overlayBorder}`,
+            boxShadow: '0 16px 48px rgba(0,0,0,0.22)', padding: '6px',
+            zIndex: 200,
+          }}>
+            <div style={{ position: 'absolute', top: -5, left: '50%', width: 10, height: 10, background: T.overlay, border: `1px solid ${T.overlayBorder}`, borderBottom: 'none', borderRight: 'none', transform: 'translateX(-50%) rotate(45deg)' }} />
+            {items.map(item => (
+              <Link key={item.href} href={item.href}
+                onClick={() => setOpen(false)}
+                style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '9px 12px', borderRadius: 9, textDecoration: 'none', transition: 'background 0.15s' }}
+                onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.background = T.surface2; }}
+                onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.background = 'transparent'; }}
+              >
+                <span style={{ fontSize: 14, color: T.tealMid, flexShrink: 0, marginTop: 1, lineHeight: 1 }}>{item.icon}</span>
+                <div>
+                  <div style={{ fontSize: 13, color: T.ink, fontWeight: 500, lineHeight: 1.3, whiteSpace: 'nowrap' }}>{item.label}</div>
+                  <div style={{ fontSize: 11, color: T.inkMute, marginTop: 2, lineHeight: 1.4 }}>{item.desc}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function HowItWorksDropdown() {
   const [open, setOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -103,7 +165,7 @@ export function SiteNav() {
 
         {/* Desktop nav */}
         <div className="hidden sm:flex items-center" style={{ gap: 32, fontSize: 13, color: T.inkDim }}>
-          <a href="/what-is-whounfollowed" style={{ cursor: 'pointer', color: 'inherit', textDecoration: 'none', whiteSpace: 'nowrap' }}>What is WhoUnfollowed?</a>
+          <WhatIsDropdown />
           <HowItWorksDropdown />
           <a href="/privacy" style={{ cursor: 'pointer', color: 'inherit', textDecoration: 'none' }}>Privacy</a>
           <a
@@ -151,6 +213,9 @@ export function SiteNav() {
             display: 'flex', flexDirection: 'column', gap: 20,
           }}
         >
+          <Link href="/what-is-whounfollowed" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>What is WhoUnfollowed?</Link>
+          <Link href="/compare" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Compare</Link>
+          <Link href="/blog" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Blog</Link>
           <a href="#flow" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>How It Works</a>
           <Link href="/how-to-export" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>How to Export Your Data</Link>
           <a href="https://accountscenter.instagram.com/info_and_permissions/dyi/" target="_blank" rel="noopener noreferrer" style={{ fontSize: 16, color: T.tealLight, textDecoration: 'none' }}>
