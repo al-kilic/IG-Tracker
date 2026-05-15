@@ -111,7 +111,6 @@ export default function ComparePage() {
 
   const COL = `240px repeat(${COMPETITORS.length}, minmax(120px, 1fr))`;
 
-  const colWidth = `${100 / COMPETITORS.length}%`;
 
   return (
     <div style={{ minHeight: '100vh', background: T.bg, color: T.ink, fontFamily: T.sans }}>
@@ -163,7 +162,7 @@ export default function ComparePage() {
           <div style={{ minWidth: 1040, padding: '0 24px' }}>
 
             {/* Feature groups */}
-            {FEATURES.map((group, gi) => (
+            {FEATURES.map((group, _gi) => (
               <div key={group.category}>
                 {/* Category header */}
                 <div style={{
