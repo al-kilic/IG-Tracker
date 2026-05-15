@@ -73,7 +73,7 @@ function PricingMobileTabs({ billing, mobileEmail, setMobileEmail, mobileStatus,
               </div>
             ))}
           </div>
-          <button style={{ width: '100%', padding: '14px', borderRadius: 12, background: T.teal, color: T.cream, border: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, boxShadow: `0 8px 24px ${T.tealGlow}` }}>Joining soon — reserve your spot</button>
+          <button style={{ width: '100%', padding: '14px', borderRadius: 12, background: T.teal, color: T.cream, border: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, boxShadow: `0 8px 24px ${T.tealGlow}` }}>Joining soon. Reserve your spot</button>
         </div>
       )}
 
@@ -232,7 +232,7 @@ function PricingBig() {
               onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
             >
-              Joining soon — reserve your spot
+              Joining soon. Reserve your spot
             </button>
           </div>
         </div>

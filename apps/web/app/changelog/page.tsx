@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { T } from '@/components/landing/tokens';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { LandingFooter } from '@/components/landing/FinalCTA';
 
 export const metadata: Metadata = {
-  title: 'Changelog — WhoUnfollowed',
+  title: 'Changelog - WhoUnfollowed',
   description: 'What\'s new in WhoUnfollowed. Updates, fixes, and improvements.',
 };
 
@@ -17,7 +18,7 @@ const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improve
       'If you upload a scheduled Instagram export by mistake, we now catch it before saving and walk you through requesting the correct full export',
       'Fixed: Pending Requests and Recently Unfollowed on the Radar page were always showing empty. They now populate correctly from your export',
       'Radar works when you open it directly or navigate from Snapshot History, not only after uploading',
-      'Export guide completely rewritten — works on any browser or device, no app needed. One-click link to open Instagram Accounts Center',
+      'Export guide completely rewritten - works on any browser or device, no app needed. One-click link to open Instagram Accounts Center',
       'How It Works menu now includes a direct shortcut to start your Instagram export',
       'Pricing updated to reflect what is actually available now. Mobile app added to the roadmap, included with Pro',
       'How to Export page expanded with a timing guide, file structure explainer, full troubleshooting section, and FAQ with 6 common questions',
@@ -28,7 +29,7 @@ const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improve
     date: 'May 8, 2026',
     tag: 'feature',
     items: [
-      'Triage workflow on non-followers — Dropping, Whitelist, Unfollowed, Skip for now',
+      'Triage workflow on non-followers - Dropping, Whitelist, Unfollowed, Skip for now',
       'Triage states persist per snapshot in IndexedDB',
       'Keyboard nav: arrow keys to move, 1-4 to triage',
       'Progress bar showing triage completion with milestone messages',
@@ -38,7 +39,7 @@ const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improve
       'Filter pills with live counts and info tooltips: All, Untriaged, Dropping, Unfollowed, Skip for now',
       'A-Z / Z-A sort on the non-followers list',
       'Visited row highlighting scoped per snapshot',
-      'Carry over triage from a previous snapshot — optional, with per-state checkboxes and snapshot picker',
+      'Carry over triage from a previous snapshot - optional, with per-state checkboxes and snapshot picker',
       'Live following estimate next to the Following count, updates as you triage',
       'Free tier capped at 1 snapshot, Pro is unlimited',
       'Upload always works during beta regardless of snapshot count',
@@ -50,7 +51,7 @@ const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improve
     tag: 'improvement',
     items: [
       'New logo',
-      'Fixed a parsing issue with newer Instagram exports — some ZIPs were failing to upload',
+      'Fixed a parsing issue with newer Instagram exports - some ZIPs were failing to upload',
       'Added clearer guidance on selecting "All time" when downloading your Instagram data',
       'Step-by-step export guide is now easier to find from the home page',
     ],
@@ -69,7 +70,7 @@ const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improve
     date: 'April 28, 2026',
     tag: 'launch',
     items: [
-      'Launch — upload your Instagram export, see who doesn\'t follow you back',
+      'Launch - upload your Instagram export, see who doesn\'t follow you back',
       'Your data never leaves your browser',
       'Followers, following, mutuals, and non-followers breakdown',
       'CSV export',
@@ -82,22 +83,25 @@ const entries: { version: string; date: string; tag: 'launch' | 'fix' | 'improve
 const tagStyles: Record<string, { label: string; color: string; bg: string }> = {
   launch:      { label: 'Launch',      color: T.tealLight,  bg: 'rgba(2,136,143,0.12)' },
   feature:     { label: 'Feature',     color: '#a8d4b0',    bg: 'rgba(168,212,176,0.1)' },
-  improvement: { label: 'Improvement', color: T.inkDim,     bg: 'rgba(244,240,232,0.06)' },
+  improvement: { label: 'Improvement', color: T.inkDim,     bg: 'var(--t-border1)' },
   fix:         { label: 'Fix',         color: '#e0a070',    bg: 'rgba(168,75,47,0.1)' },
 };
 
 export default function ChangelogPage() {
   return (
     <div style={{ minHeight: '100vh', background: T.bg, color: T.ink, fontFamily: T.sans }}>
-      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(244,240,232,0.06)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.8)' }}>
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid var(--t-border1)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(14px)', background: 'var(--t-navBg)' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
           <img src="/logo.png" alt="WhoUnfollowed Logo" width={26} height={26} style={{ borderRadius: 7, objectFit: 'contain' }} />
           <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
         </Link>
-        <Link href="/" style={{ fontSize: 13, color: T.inkDim, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-          Back to home
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <Link href="/" style={{ fontSize: 13, color: T.inkDim, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Back to home
+          </Link>
+          <ThemeToggle />
+        </div>
       </nav>
 
       <main style={{ maxWidth: 680, margin: '0 auto', padding: '56px 32px 80px' }}>
@@ -120,7 +124,7 @@ export default function ChangelogPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 12 }}>
                   <div style={{ width: 10, height: 10, borderRadius: '50%', background: T.tealMid, flexShrink: 0, marginTop: 6 }} />
                   {i < entries.length - 1 && (
-                    <div style={{ flex: 1, width: 1, background: 'rgba(244,240,232,0.08)', minHeight: 32, marginTop: 6 }} />
+                    <div style={{ flex: 1, width: 1, background: 'var(--t-border2)', minHeight: 32, marginTop: 6 }} />
                   )}
                 </div>
 
@@ -151,7 +155,7 @@ export default function ChangelogPage() {
           })}
         </div>
 
-        <div style={{ marginTop: 8, paddingTop: 32, borderTop: '1px solid rgba(244,240,232,0.06)' }}>
+        <div style={{ marginTop: 8, paddingTop: 32, borderTop: '1px solid var(--t-border1)' }}>
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: T.inkDim, textDecoration: 'none' }}>
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7 H3 M3 7 L6 4 M3 7 L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
             Back to WhoUnfollowed

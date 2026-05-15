@@ -45,7 +45,7 @@ export function DeltaWarning({ reasons, followerCount, followingCount, onReExpor
       <div style={{
         maxWidth: 520, width: '100%',
         background: 'rgba(18,24,24,0.97)',
-        border: '1px solid rgba(244,240,232,0.1)',
+        border: '1px solid var(--t-border2)',
         borderRadius: 24,
         boxShadow: '0 40px 120px rgba(0,0,0,0.7)',
         overflow: 'hidden',
@@ -99,7 +99,7 @@ export function DeltaWarning({ reasons, followerCount, followingCount, onReExpor
               <div style={{
                 position: 'fixed', left, top: y + 22,
                 width: TIP_W, padding: '12px 16px', borderRadius: 12, zIndex: 700,
-                background: 'rgba(14,20,20,0.99)', border: '1px solid rgba(244,240,232,0.15)',
+                background: 'rgba(14,20,20,0.99)', border: '1px solid var(--t-border3)',
                 fontSize: 13, fontFamily: T.sans, fontWeight: 400, lineHeight: 1.65,
                 color: 'rgba(244,240,232,0.75)', pointerEvents: 'none',
                 boxShadow: '0 12px 40px rgba(0,0,0,0.7)',
@@ -171,13 +171,13 @@ export function DeltaWarning({ reasons, followerCount, followingCount, onReExpor
               style={{
                 width: '100%', padding: '11px 16px', borderRadius: 12, cursor: 'pointer',
                 background: 'transparent',
-                border: '1px solid rgba(244,240,232,0.12)',
+                border: '1px solid var(--t-border3)',
                 color: T.inkDim, fontSize: 13, fontFamily: T.sans,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                 transition: 'all 0.15s',
               }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(244,240,232,0.22)'; e.currentTarget.style.color = T.ink; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(244,240,232,0.12)'; e.currentTarget.style.color = T.inkDim; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--t-border3)'; e.currentTarget.style.color = T.inkDim; }}
             >
               <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
                 <path d="M11 7H3M6 4l-3 3 3 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
@@ -187,7 +187,7 @@ export function DeltaWarning({ reasons, followerCount, followingCount, onReExpor
           ) : (
             <div style={{
               padding: '14px 16px', borderRadius: 12,
-              background: 'rgba(244,240,232,0.02)', border: '1px solid rgba(244,240,232,0.08)',
+              background: 'var(--t-surface1)', border: '1px solid var(--t-border2)',
               display: 'flex', flexDirection: 'column', gap: 8,
             }}>
               <p style={{ fontSize: 12, color: T.inkMute, marginBottom: 4, lineHeight: 1.5 }}>
@@ -197,7 +197,7 @@ export function DeltaWarning({ reasons, followerCount, followingCount, onReExpor
                 onClick={onNewAccount}
                 style={{
                   padding: '10px 14px', borderRadius: 10, cursor: 'pointer', textAlign: 'left',
-                  background: 'rgba(244,240,232,0.04)', border: '1px solid rgba(244,240,232,0.1)',
+                  background: 'var(--t-surface2)', border: '1px solid var(--t-border2)',
                   color: T.inkDim, fontSize: 13, fontFamily: T.sans,
                 }}
               >
@@ -207,7 +207,7 @@ export function DeltaWarning({ reasons, followerCount, followingCount, onReExpor
                 onClick={onProceedAnyway}
                 style={{
                   padding: '10px 14px', borderRadius: 10, cursor: 'pointer', textAlign: 'left',
-                  background: 'rgba(244,240,232,0.04)', border: '1px solid rgba(244,240,232,0.1)',
+                  background: 'var(--t-surface2)', border: '1px solid var(--t-border2)',
                   color: T.inkDim, fontSize: 13, fontFamily: T.sans,
                 }}
               >

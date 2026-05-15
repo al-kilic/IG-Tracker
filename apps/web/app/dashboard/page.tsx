@@ -114,7 +114,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
   const displayName = LABEL_MAP[entry.name] ?? entry.name;
   const displayValue = entry.name === 'ratio' ? entry.value.toFixed(2) : entry.value.toLocaleString();
   return (
-    <div style={{ background: 'rgba(16,20,20,0.97)', border: '1px solid rgba(244,240,232,0.12)', borderRadius: 8, padding: '8px 12px', fontSize: 12, color: T.inkDim }}>
+    <div style={{ background: 'rgba(16,20,20,0.97)', border: '1px solid var(--t-border3)', borderRadius: 8, padding: '8px 12px', fontSize: 12, color: T.inkDim }}>
       {label && <div style={{ color: T.inkMute, marginBottom: 4, fontSize: 11 }}>{label}</div>}
       <span style={{ color: T.ink }}>{displayName}</span>: {displayValue}
     </div>
@@ -150,7 +150,7 @@ function AudienceBreakdown({ followers, mutuals, fans, nonFollowers }: {
               <span style={{ fontSize: 12, color: T.inkDim, flex: 1 }}>{d.name}</span>
               <span style={{ fontSize: 13, fontFamily: T.mono, color: T.ink }}>{d.value.toLocaleString()}</span>
               <span style={{ fontSize: 11, fontFamily: T.mono, color: T.inkMute, width: 36, textAlign: 'right' }}>
-                {followers > 0 ? `${Math.round((d.value / followers) * 100)}%` : '—'}
+                {followers > 0 ? `${Math.round((d.value / followers) * 100)}%` : '-'}
               </span>
             </div>
           ))}
@@ -161,6 +161,55 @@ function AudienceBreakdown({ followers, mutuals, fans, nonFollowers }: {
 }
 
 // ─── 3. Follow ratio radial ───────────────────────────────────────────────────
+
+function RatioInfoTooltip() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
+      <button
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        onClick={() => setOpen(o => !o)}
+        aria-label="What is follow ratio?"
+        style={{
+          background: 'none', border: 'none', cursor: 'pointer', padding: 2,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: T.inkMute, lineHeight: 0,
+        }}
+      >
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.3"/>
+          <path d="M8 7.2 V11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+          <circle cx="8" cy="5.2" r="0.75" fill="currentColor"/>
+        </svg>
+      </button>
+      {open && (
+        <div style={{
+          position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)',
+          marginTop: 8, width: 260, zIndex: 200,
+          background: T.overlay, border: `1px solid ${T.overlayBorder}`,
+          borderRadius: 12, padding: '14px 16px',
+          boxShadow: '0 12px 40px rgba(0,0,0,0.35)',
+          pointerEvents: 'none',
+        }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: T.ink, fontFamily: T.sans, marginBottom: 8 }}>
+            What is follow ratio?
+          </div>
+          <p style={{ fontSize: 12, color: T.inkDim, lineHeight: 1.6, margin: '0 0 10px' }}>
+            <strong style={{ color: T.ink }}>Followers ÷ Following.</strong> A ratio of 1.0 means equal. Above 1.0 means more people follow you than you follow back.
+          </p>
+          <p style={{ fontSize: 12, color: T.inkDim, lineHeight: 1.6, margin: '0 0 10px' }}>
+            Most accounts have a ratio well below 1.0 - that&apos;s normal. A very low ratio (like 0.00) usually means you followed many accounts that never followed back.
+          </p>
+          <div style={{ fontSize: 11, color: T.tealMid, fontFamily: T.mono, fontWeight: 600, marginBottom: 4 }}>HOW TO IMPROVE IT</div>
+          <p style={{ fontSize: 12, color: T.inkDim, lineHeight: 1.6, margin: 0 }}>
+            Use the Results page to triage non-followers. Mark them as <em>Dropping</em> and unfollow them on Instagram. As your following count drops, the ratio rises.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function FollowRatioCard({ followers, following, snapshots }: {
   followers: number; following: number;
@@ -189,12 +238,15 @@ function FollowRatioCard({ followers, following, snapshots }: {
   return (
     <Card style={{ display: 'flex', flexDirection: 'column' }}>
       <SectionLabel>Follow ratio</SectionLabel>
-      <CardTitle>Followers vs following</CardTitle>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+        <CardTitle>Followers vs following</CardTitle>
+        <RatioInfoTooltip />
+      </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginTop: 16 }}>
         <div style={{ position: 'relative', width: 120, height: 120, flexShrink: 0 }}>
           <ResponsiveContainer width={120} height={120}>
             <RadialBarChart innerRadius={40} outerRadius={56} startAngle={225} endAngle={-45} data={radialData} barSize={10}>
-              <RadialBar dataKey="value" cornerRadius={5} fill={ratioColor} background={{ fill: 'rgba(244,240,232,0.04)' }} />
+              <RadialBar dataKey="value" cornerRadius={5} fill={ratioColor} background={{ fill: 'var(--t-surface2)' }} />
             </RadialBarChart>
           </ResponsiveContainer>
           <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -219,7 +271,7 @@ function FollowRatioCard({ followers, following, snapshots }: {
                   <stop offset="95%" stopColor={T.tealMid} stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(244,240,232,0.04)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--t-surface2)" />
               <XAxis dataKey="date" tick={{ fontSize: 9, fill: T.inkMute }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 9, fill: T.inkMute }} axisLine={false} tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
@@ -275,7 +327,7 @@ function FollowAgeCard({ nonFollowers }: { nonFollowers: { username: string; hre
     <Card>
       <SectionLabel>Follow age</SectionLabel>
       <CardTitle>How long you&apos;ve been waiting</CardTitle>
-      {/* Two stat boxes — distinct visual treatment */}
+      {/* Two stat boxes - distinct visual treatment */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 12, marginTop: 16, marginBottom: 20 }}>
         {/* Left: count box */}
         <div style={{
@@ -308,7 +360,7 @@ function FollowAgeCard({ nonFollowers }: { nonFollowers: { username: string; hre
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 15, fontWeight: 600, color: T.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{oldest.username}</div>
-              <div style={{ fontSize: 11, color: T.inkMute, marginTop: 2 }}>followed {oldestDays} days ago — still waiting</div>
+              <div style={{ fontSize: 11, color: T.inkMute, marginTop: 2 }}>followed {oldestDays} days ago - still waiting</div>
             </div>
             <span style={{
               flexShrink: 0, fontFamily: T.serif, fontSize: 22, color: '#a0956b', letterSpacing: '-0.02em',
@@ -332,7 +384,7 @@ function FollowAgeCard({ nonFollowers }: { nonFollowers: { username: string; hre
         </div>
       </div>
 
-      {/* Top 10 oldest — copyable list */}
+      {/* Top 10 oldest - copyable list */}
       {(() => {
         const top10 = [...withTs]
           .sort((a, b) => (a.followedAt ?? 0) - (b.followedAt ?? 0))
@@ -352,7 +404,7 @@ function FollowAgeCard({ nonFollowers }: { nonFollowers: { username: string; hre
                 }}
                 style={{
                   fontSize: 11, fontFamily: T.mono, padding: '5px 14px', borderRadius: 20,
-                  border: `1px solid rgba(244,240,232,0.12)`,
+                  border: `1px solid var(--t-border3)`,
                   background: copied ? 'rgba(2,136,143,0.12)' : 'transparent',
                   color: copied ? T.tealLight : T.inkDim, cursor: 'pointer', transition: 'all 0.2s',
                 }}
@@ -428,9 +480,9 @@ function FollowAgeCard({ nonFollowers }: { nonFollowers: { username: string; hre
               return (
                 <div key={a.username} style={{
                   display: 'flex', alignItems: 'center', gap: 10, padding: '9px 14px',
-                  borderBottom: i < activeBucket.accounts.length - 1 ? '1px solid rgba(244,240,232,0.04)' : 'none',
+                  borderBottom: i < activeBucket.accounts.length - 1 ? '1px solid var(--t-surface2)' : 'none',
                 }}>
-                  <div style={{ width: 26, height: 26, borderRadius: '50%', background: 'rgba(244,240,232,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: T.inkDim, flexShrink: 0 }}>
+                  <div style={{ width: 26, height: 26, borderRadius: '50%', background: 'var(--t-surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, color: T.inkDim, flexShrink: 0 }}>
                     {a.username[0]?.toUpperCase()}
                   </div>
                   <span style={{ fontSize: 13, color: T.ink, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{a.username}</span>
@@ -448,15 +500,52 @@ function FollowAgeCard({ nonFollowers }: { nonFollowers: { username: string; hre
 
 // ─── 5. Pending requests ──────────────────────────────────────────────────────
 
+function pendingLabel(days: number | null, username: string): { text: string; color: string } | null {
+  if (days === null) return null;
+  const h = username.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  if (days >= 365) {
+    const t = ['Year+ and nothing.', 'Ancient request.', 'Let it go.', 'They forgot.'];
+    return { text: t[h % t.length]!, color: T.terra };
+  }
+  if (days >= 180) {
+    const t = ['Half a year.', 'Six months ignored.', 'Long silence.', 'Probably never.'];
+    return { text: t[h % t.length]!, color: T.terra };
+  }
+  if (days >= 90) {
+    const t = ['They saw it.', 'No response.', 'Still waiting.', 'Ghosted.'];
+    return { text: t[h % t.length]!, color: T.terra };
+  }
+  if (days >= 30) {
+    const t = ['Probably not.', 'Going quiet.', 'Still pending.', 'No rush apparently.'];
+    return { text: t[h % t.length]!, color: '#a0956b' };
+  }
+  return null;
+}
+
 function PendingRequestsCard({ accounts }: { accounts: { username: string; href: string; followedAt: number | null }[] }) {
   const now = Math.floor(Date.now() / 1000);
-  const sorted = [...accounts].sort((a, b) => (a.followedAt ?? 0) - (b.followedAt ?? 0));
+  const [activeBucket, setActiveBucket] = useState<string | null>(null);
+  const byAge = (a: typeof accounts[0]) => differenceInDays(now * 1000, (a.followedAt ?? now) * 1000);
+  const sorted = [...accounts].sort((a, b) => byAge(b) - byAge(a)); // oldest first
 
-  const buckets = [
-    { label: '90+ days',  color: T.terra,     count: sorted.filter(a => a.followedAt && differenceInDays(now * 1000, a.followedAt * 1000) >= 90).length },
-    { label: '30–90 days', color: '#a0956b',  count: sorted.filter(a => a.followedAt && differenceInDays(now * 1000, a.followedAt * 1000) >= 30 && differenceInDays(now * 1000, a.followedAt * 1000) < 90).length },
-    { label: '< 30 days', color: T.tealMid,   count: sorted.filter(a => !a.followedAt || differenceInDays(now * 1000, a.followedAt * 1000) < 30).length },
+  type PBucket = { label: string; color: string; count: number; test: (days: number) => boolean };
+  const buckets: PBucket[] = [
+    { label: '90+ days',   color: T.terra,   count: 0, test: d => d >= 90 },
+    { label: '30–90 days', color: '#a0956b', count: 0, test: d => d >= 30 && d < 90 },
+    { label: '< 30 days',  color: T.tealMid, count: 0, test: d => d < 30 },
   ];
+  buckets.forEach(b => { b.count = sorted.filter(a => b.test(byAge(a))).length; });
+
+  // Sort: bucket accounts float to top, rest below — no filtering
+  const displayAccounts = activeBucket
+    ? (() => {
+        const b = buckets.find(bk => bk.label === activeBucket);
+        if (!b) return sorted;
+        const inBucket  = sorted.filter(a => b.test(byAge(a)));
+        const outBucket = sorted.filter(a => !b.test(byAge(a)));
+        return [...inBucket, ...outBucket];
+      })()
+    : sorted;
 
   return (
     <Card>
@@ -468,24 +557,38 @@ function PendingRequestsCard({ accounts }: { accounts: { username: string; href:
       ) : (
         <>
           <div style={{ display: 'flex', gap: 8, margin: '16px 0' }}>
-            {buckets.map(b => (
-              <div key={b.label} style={{ flex: 1, padding: '10px 12px', borderRadius: 10, background: 'var(--t-surface1)', border: '1px solid var(--t-border1)' }}>
-                <div style={{ fontFamily: T.serif, fontSize: 24, color: b.color, letterSpacing: '-0.02em' }}>{b.count}</div>
-                <div style={{ fontSize: 10, color: T.inkMute, marginTop: 4, fontFamily: T.mono }}>{b.label}</div>
-              </div>
-            ))}
+            {buckets.map(b => {
+              const active = activeBucket === b.label;
+              return (
+                <button
+                  key={b.label}
+                  onClick={() => setActiveBucket(prev => prev === b.label ? null : b.label)}
+                  title={`Filter by ${b.label}`}
+                  style={{
+                    flex: 1, padding: '10px 12px', borderRadius: 10, cursor: 'pointer', textAlign: 'left',
+                    background: active ? `${b.color}18` : 'var(--t-surface1)',
+                    border: `1px solid ${active ? b.color : 'var(--t-border1)'}`,
+                    boxShadow: active ? `0 0 0 1px ${b.color}30` : 'none',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  <div style={{ fontFamily: T.serif, fontSize: 24, color: b.color, letterSpacing: '-0.02em' }}>{b.count}</div>
+                  <div style={{ fontSize: 10, color: active ? b.color : T.inkMute, marginTop: 4, fontFamily: T.mono }}>{b.label}</div>
+                  <div style={{ fontSize: 9, color: active ? b.color : T.inkMute, fontFamily: T.mono, marginTop: 2, opacity: 0.65 }}>{active ? 'tap to reset' : 'sort to top'}</div>
+                </button>
+              );
+            })}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', borderRadius: 10, border: '1px solid var(--t-border1)', overflow: 'hidden', maxHeight: 280, overflowY: 'auto' }}>
-            {sorted.map((a, i) => {
+            {displayAccounts.map((a, i) => {
               const days = a.followedAt ? differenceInDays(now * 1000, a.followedAt * 1000) : null;
-              const flag = days !== null && days >= 90 ? { text: 'They saw it.', color: T.terra } :
-                           days !== null && days >= 30 ? { text: 'Probably not.', color: '#a0956b' } : null;
+              const flag = pendingLabel(days, a.username);
               return (
                 <div key={a.username} style={{
                   display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-                  borderBottom: i < sorted.length - 1 ? '1px solid rgba(244,240,232,0.04)' : 'none',
+                  borderBottom: i < displayAccounts.length - 1 ? '1px solid var(--t-surface2)' : 'none',
                 }}>
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(244,240,232,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: T.inkDim, flexShrink: 0 }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--t-surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: T.inkDim, flexShrink: 0 }}>
                     {a.username[0]?.toUpperCase()}
                   </div>
                   <span style={{ fontSize: 13, color: T.ink, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{a.username}</span>
@@ -516,9 +619,9 @@ function RecentlyUnfollowedCard({ accounts }: { accounts: { username: string; hr
           {accounts.map((a, i) => (
             <div key={a.username} style={{
               display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-              borderBottom: i < accounts.length - 1 ? '1px solid rgba(244,240,232,0.04)' : 'none',
+              borderBottom: i < accounts.length - 1 ? '1px solid var(--t-surface2)' : 'none',
             }}>
-              <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(244,240,232,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: T.inkDim, flexShrink: 0 }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--t-surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: T.inkDim, flexShrink: 0 }}>
                 {a.username[0]?.toUpperCase()}
               </div>
               <span style={{ fontSize: 13, color: T.ink, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{a.username}</span>
@@ -552,11 +655,11 @@ function computeHealth({
   // Component 1: Follow ratio (0–25)
   const ratioScore = ratio >= 2 ? 25 : ratio >= 1 ? 20 : ratio >= 0.5 ? 12 : ratio >= 0.3 ? 6 : 0;
   const ratioNote =
-    ratio >= 2   ? `${ratio.toFixed(2)}x ratio — top tier. Followers outnumber following 2:1.` :
-    ratio >= 1   ? `${ratio.toFixed(2)}x ratio — healthy. Unfollow non-followers to push toward 2x.` :
-    ratio >= 0.5 ? `${ratio.toFixed(2)}x ratio — you follow more than follow you. Triage the list.` :
-    ratio >= 0.3 ? `${ratio.toFixed(2)}x ratio — significantly one-sided. Needs a cleanup session.` :
-                   `${ratio.toFixed(2)}x ratio — critical imbalance. Start with the oldest non-followers.`;
+    ratio >= 2   ? `${ratio.toFixed(2)}x ratio - top tier. Followers outnumber following 2:1.` :
+    ratio >= 1   ? `${ratio.toFixed(2)}x ratio - healthy. Unfollow non-followers to push toward 2x.` :
+    ratio >= 0.5 ? `${ratio.toFixed(2)}x ratio - you follow more than follow you. Triage the list.` :
+    ratio >= 0.3 ? `${ratio.toFixed(2)}x ratio - significantly one-sided. Needs a cleanup session.` :
+                   `${ratio.toFixed(2)}x ratio - critical imbalance. Start with the oldest non-followers.`;
   const ratioAction =
     ratio >= 2   ? 'Maintain this.' :
     ratio >= 1   ? `Unfollow ${nonFollowers} non-followers → ratio hits ${((followers) / (following - nonFollowers)).toFixed(2)}x.` :
@@ -565,11 +668,11 @@ function computeHealth({
   // Component 2: Mutual health (0–25)
   const mutualScore = mutualPct >= 0.7 ? 25 : mutualPct >= 0.5 ? 20 : mutualPct >= 0.3 ? 12 : mutualPct >= 0.1 ? 6 : 0;
   const mutualNote =
-    mutualPct >= 0.7 ? `${Math.round(mutualPct * 100)}% mutual — elite account hygiene. Most follows are intentional.` :
-    mutualPct >= 0.5 ? `${Math.round(mutualPct * 100)}% mutual — above average. A small cleanup hits the 70% threshold.` :
-    mutualPct >= 0.3 ? `${Math.round(mutualPct * 100)}% mutual — below average. Half your following doesn't follow back.` :
-    mutualPct >= 0.1 ? `${Math.round(mutualPct * 100)}% mutual — most follows aren't returned. Worth a full audit.` :
-                       `${Math.round(mutualPct * 100)}% mutual — almost no reciprocation. Start triaging today.`;
+    mutualPct >= 0.7 ? `${Math.round(mutualPct * 100)}% mutual - elite account hygiene. Most follows are intentional.` :
+    mutualPct >= 0.5 ? `${Math.round(mutualPct * 100)}% mutual - above average. A small cleanup hits the 70% threshold.` :
+    mutualPct >= 0.3 ? `${Math.round(mutualPct * 100)}% mutual - below average. Half your following doesn't follow back.` :
+    mutualPct >= 0.1 ? `${Math.round(mutualPct * 100)}% mutual - most follows aren't returned. Worth a full audit.` :
+                       `${Math.round(mutualPct * 100)}% mutual - almost no reciprocation. Start triaging today.`;
   const mutualAction =
     mutualPct >= 0.7 ? 'Nothing to do here.' :
     `Remove ${Math.max(0, Math.ceil(following * (1 - 0.7)) - (following - mutuals))} one-sided follows → hits 70%.`;
@@ -578,11 +681,11 @@ function computeHealth({
   const nfScore = nonFollowerPct <= 0.1 ? 25 : nonFollowerPct <= 0.2 ? 20 : nonFollowerPct <= 0.35 ? 12 : nonFollowerPct <= 0.5 ? 6 : 0;
   const toHitTen = Math.max(0, nonFollowers - Math.floor(following * 0.1));
   const nfNote =
-    nonFollowerPct <= 0.1 ? `Only ${Math.round(nonFollowerPct * 100)}% don't follow back — already elite.` :
+    nonFollowerPct <= 0.1 ? `Only ${Math.round(nonFollowerPct * 100)}% don't follow back - already elite.` :
     nonFollowerPct <= 0.2 ? `${Math.round(nonFollowerPct * 100)}% don't follow back. ${toHitTen} removals hit the <10% mark.` :
-    nonFollowerPct <= 0.35? `${Math.round(nonFollowerPct * 100)}% don't follow back. Triage the list — quick wins are in there.` :
+    nonFollowerPct <= 0.35? `${Math.round(nonFollowerPct * 100)}% don't follow back. Triage the list - quick wins are in there.` :
     nonFollowerPct <= 0.5 ? `${Math.round(nonFollowerPct * 100)}% don't follow back. Nearly half. This is the main thing to fix.` :
-                             `${Math.round(nonFollowerPct * 100)}% don't follow back — over half. This is the #1 priority.`;
+                             `${Math.round(nonFollowerPct * 100)}% don't follow back - over half. This is the #1 priority.`;
   const nfAction =
     nonFollowerPct <= 0.1 ? 'Maintain this.' :
     `Unfollow ${toHitTen} accounts → non-follower rate drops to 10% (A-grade threshold).`;
@@ -599,17 +702,17 @@ function computeHealth({
     growthScore  = growthPct > 0.05 ? 25 : growthPct > 0 ? 20 : growthPct === 0 ? 15 : growthPct > -0.05 ? 8 : 0;
   }
   const growthNote =
-    snapshots.length < 2  ? 'Only 1 snapshot — no trend to measure yet.' :
+    snapshots.length < 2  ? 'Only 1 snapshot - no trend to measure yet.' :
     growthScore === 25     ? `+${growthDelta} followers since last snapshot. Strong growth.` :
     growthScore === 20     ? `+${growthDelta} followers since last snapshot. Positive momentum.` :
     growthScore === 15     ? `No change since last snapshot. Neither growing nor declining.` :
     growthScore === 8      ? `${growthDelta} followers since last snapshot. Slight decline.` :
                               `${growthDelta} followers since last snapshot. Significant drop.`;
   const growthAction =
-    snapshots.length < 2  ? 'Upload again in 2 weeks — then trend data unlocks.' :
+    snapshots.length < 2  ? 'Upload again in 2 weeks - then trend data unlocks.' :
     growthScore >= 20      ? 'Keep the cadence. Upload every 2 weeks to track momentum.' :
     growthScore === 15     ? 'Upload more snapshots to find your real pattern over time.' :
-                              'Check who unfollowed in the Compare view — find the pattern.';
+                              'Check who unfollowed in the Compare view - find the pattern.';
 
   const score = ratioScore + mutualScore + nfScore + growthScore;
   const grade = score >= 85 ? 'A' : score >= 70 ? 'B' : score >= 55 ? 'C' : score >= 40 ? 'D' : 'F';
@@ -688,7 +791,7 @@ function AccountHealthCard(props: {
   const gradeDesc: Record<string, string> = {
     A: 'Top tier. Your account is clean, growing, and well-balanced.',
     B: 'One focused cleanup session pushes this to an A.',
-    C: 'Average standing. Your non-follower list needs attention — start with the oldest.',
+    C: 'Average standing. Your non-follower list needs attention - start with the oldest.',
     D: 'Multiple signals need work. Open the triage list now.',
     F: 'Account health is critical. The triage list is your first priority today.',
   };
@@ -696,13 +799,13 @@ function AccountHealthCard(props: {
   return (
     <div style={{
       borderRadius: 20, overflow: 'hidden',
-      background: `linear-gradient(135deg, rgba(14,20,22,0.95) 0%, ${color}10 100%)`,
-      border: `1px solid ${color}30`,
-      boxShadow: `0 0 60px ${color}10`,
+      background: `linear-gradient(135deg, ${T.bgCard} 0%, ${color}18 100%)`,
+      border: `1px solid ${color}40`,
+      boxShadow: `0 0 40px ${color}12`,
     }}>
       {/* Header strip */}
       <div style={{
-        padding: '14px 24px', borderBottom: `1px solid ${color}15`,
+        padding: '14px 24px', borderBottom: `1px solid ${T.border1}`,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
         <span style={{ fontSize: 10, color: T.tealMid, fontFamily: T.mono, letterSpacing: '0.14em' }}>ACCOUNT HEALTH</span>
@@ -735,8 +838,8 @@ function AccountHealthCard(props: {
             return (
               <div key={b.label} style={{
                 padding: '16px 20px',
-                borderBottom: !isBottom ? `1px solid rgba(244,240,232,0.05)` : 'none',
-                borderRight:  !isRight  ? `1px solid rgba(244,240,232,0.05)` : 'none',
+                borderBottom: !isBottom ? `1px solid var(--t-surface2)` : 'none',
+                borderRight:  !isRight  ? `1px solid var(--t-surface2)` : 'none',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12,
               }}>
                 {/* Label + note + action stacked */}
@@ -808,7 +911,7 @@ function GrowthChart({ snapshots }: { snapshots: SnapshotSummary[] }) {
     if (!active || !payload?.length) return null;
     const entry = data.find(d => d.date === label);
     return (
-      <div style={{ background: 'rgba(16,20,20,0.97)', border: '1px solid rgba(244,240,232,0.12)', borderRadius: 8, padding: '10px 14px', fontSize: 12, color: T.inkDim, minWidth: 160 }}>
+      <div style={{ background: 'rgba(16,20,20,0.97)', border: '1px solid var(--t-border3)', borderRadius: 8, padding: '10px 14px', fontSize: 12, color: T.inkDim, minWidth: 160 }}>
         <div style={{ color: T.inkMute, marginBottom: 6, fontSize: 11 }}>{label}</div>
         <div style={{ color: T.ink, fontSize: 15, fontFamily: T.serif, marginBottom: 6 }}>{payload[0]?.value.toLocaleString()} followers</div>
         {entry && entry.gained > 0 && <div style={{ color: T.tealLight }}>+{entry.gained} gained</div>}
@@ -838,7 +941,7 @@ function GrowthChart({ snapshots }: { snapshots: SnapshotSummary[] }) {
           fontSize: 12, color: T.terra,
         }}>
           <span style={{ fontSize: 16 }}>⚠</span>
-          <span>Biggest drop: <strong>{biggestDrop.date}</strong> — lost {biggestDrop.lost} followers in one period.</span>
+          <span>Biggest drop: <strong>{biggestDrop.date}</strong> - lost {biggestDrop.lost} followers in one period.</span>
         </div>
       )}
 
@@ -850,7 +953,7 @@ function GrowthChart({ snapshots }: { snapshots: SnapshotSummary[] }) {
               <stop offset="95%" stopColor={T.tealMid} stopOpacity={0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(244,240,232,0.04)" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--t-surface2)" />
           <XAxis dataKey="date" tick={{ fontSize: 10, fill: T.inkMute }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fontSize: 10, fill: T.inkMute }} axisLine={false} tickLine={false} domain={['auto', 'auto']} />
           <Tooltip content={<GrowthTooltip />} />
@@ -894,12 +997,12 @@ function RadarModal({ onClose }: { onClose: () => void }) {
   }, [onClose]);
 
   const sections = [
-    { icon: '⬡', title: 'Account Health Score', body: 'Radar calculates a single A–F grade from four signals: your follow ratio, how many of your following are mutual, your non-follower rate, and your growth trend over time. One letter that tells the whole story — and gives you something to improve.' },
+    { icon: '⬡', title: 'Account Health Score', body: 'Radar calculates a single A–F grade from four signals: your follow ratio, how many of your following are mutual, your non-follower rate, and your growth trend over time. One letter that tells the whole story - and gives you something to improve.' },
     { icon: '↑', title: 'Follower Growth Over Time', body: 'Every time you upload a new Instagram export, Radar plots your follower count on a timeline. You can see exactly when you gained or lost followers, and which period had the biggest drop. It turns a static number into a story.' },
     { icon: '⧗', title: 'Follow Age Analysis', body: "Radar reads the timestamps in your export to tell you how long you've been following people who never followed back. Broken into buckets: under a month, 1–6 months, 6–12, 1–2 years, and 2+ years. The longer the wait, the colder the lead." },
     { icon: '◎', title: 'Audience Breakdown', body: 'Not all followers are equal. Radar splits your audience into Mutuals (both follow each other), Non-followers (you follow them, they don\'t follow back), and Fans (they follow you, you don\'t follow back). A donut chart makes it instant.' },
     { icon: '⏳', title: 'Pending Follow Requests', body: 'Instagram tracks every follow request you\'ve sent that hasn\'t been accepted. Radar surfaces them, sorted oldest-first. Requests over 30 days get flagged. Over 90 days: "They saw it." You decide what to do.' },
-    { icon: '✓', title: 'Recently Unfollowed', body: 'Instagram logs every account you\'ve recently unfollowed. Radar shows it back to you — useful for confirming you already handled someone, or for seeing patterns in who you\'re cutting.' },
+    { icon: '✓', title: 'Recently Unfollowed', body: 'Instagram logs every account you\'ve recently unfollowed. Radar shows it back to you - useful for confirming you already handled someone, or for seeing patterns in who you\'re cutting.' },
   ];
 
   return (
@@ -914,7 +1017,7 @@ function RadarModal({ onClose }: { onClose: () => void }) {
     >
       <div
         style={{
-          background: 'rgba(14,18,18,0.98)', border: '1px solid rgba(244,240,232,0.1)',
+          background: 'rgba(14,18,18,0.98)', border: '1px solid var(--t-border2)',
           borderRadius: 24, padding: '40px 44px', maxWidth: 680, width: '100%',
           maxHeight: '85vh', overflowY: 'auto',
           boxShadow: '0 40px 120px rgba(0,0,0,0.7)',
@@ -926,7 +1029,7 @@ function RadarModal({ onClose }: { onClose: () => void }) {
           onClick={onClose}
           style={{
             position: 'absolute', top: 20, right: 20, width: 32, height: 32,
-            borderRadius: '50%', border: '1px solid rgba(244,240,232,0.12)',
+            borderRadius: '50%', border: '1px solid var(--t-border3)',
             background: 'transparent', color: T.inkMute, cursor: 'pointer',
             fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
@@ -937,7 +1040,7 @@ function RadarModal({ onClose }: { onClose: () => void }) {
           What is Radar?
         </h2>
         <p style={{ fontSize: 15, color: T.inkDim, lineHeight: 1.6, marginBottom: 32 }}>
-          Radar is the intelligence layer on top of your Instagram export. While the results page tells you <em>who</em> doesn&apos;t follow you back right now, Radar tells you the <strong style={{ color: T.ink }}>full story</strong> — trends, health, history, and context. It turns a static snapshot into an ongoing picture of your account.
+          Radar is the intelligence layer on top of your Instagram export. While the results page tells you <em>who</em> doesn&apos;t follow you back right now, Radar tells you the <strong style={{ color: T.ink }}>full story</strong> - trends, health, history, and context. It turns a static snapshot into an ongoing picture of your account.
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -1033,18 +1136,33 @@ export default function DashboardPage() {
         storageKey="ig-tracker:tutorial-radar"
         steps={[
           {
-            title: 'Your account health score',
-            body: 'Radar scores your account based on follow ratio, non-follower percentage, and triage progress. The grade improves as you act on your list.',
+            title: 'Account health score',
+            body: 'A grade from your follow ratio, non-follower %, and triage progress. Improves as you work the list.',
             targetSelector: '#tutorial-health',
           },
           {
+            title: 'Growth chart',
+            body: 'Upload a second export later and this fills in - followers gained, lost, and net change over time.',
+            targetSelector: '#tutorial-growth',
+          },
+          {
             title: 'Audience breakdown',
-            body: 'See your followers split into mutuals, fans, and non-followers. The ratio card shows your follow balance. Upload more exports to unlock the growth timeline.',
+            body: 'Your followers split into mutuals, fans, and non-followers - with a donut chart and follow ratio.',
             targetSelector: '#tutorial-audience',
           },
           {
-            title: 'Recently unfollowed & pending',
-            body: 'Accounts that unfollowed you since your last export and any unanswered follow requests — all pulled straight from your ZIP, nothing extra needed.',
+            title: 'Follow age bars',
+            body: 'How long you\'ve been following each non-follower. Tap a bar to expand it and see the accounts in that range.',
+            targetSelector: '#tutorial-follow-age',
+          },
+          {
+            title: 'Pending requests',
+            body: 'Follow requests you sent that haven\'t been accepted yet - pulled from your export.',
+            targetSelector: '#tutorial-pending',
+          },
+          {
+            title: 'Recently unfollowed',
+            body: 'Accounts in your previous export but not this one - they unfollowed you between uploads.',
             targetSelector: '#tutorial-pending',
           },
         ]}
@@ -1109,7 +1227,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Growth chart */}
-        <div style={{ marginBottom: 16 }}>
+        <div id="tutorial-growth" style={{ marginBottom: 16 }}>
           <GrowthChart snapshots={snapshots as SnapshotSummary[]} />
         </div>
 
@@ -1129,7 +1247,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Follow age full width */}
-        <div style={{ marginBottom: 16 }}>
+        <div id="tutorial-follow-age" style={{ marginBottom: 16 }}>
           <FollowAgeCard nonFollowers={nonFollowers} />
         </div>
 

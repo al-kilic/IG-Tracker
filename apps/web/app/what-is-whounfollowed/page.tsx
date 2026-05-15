@@ -4,12 +4,12 @@ import { LandingFooter } from '@/components/landing/FinalCTA';
 import { T } from '@/components/landing/tokens';
 
 export const metadata: Metadata = {
-  title: 'What is WhoUnfollowed? — Instagram Unfollow Tracker Explained',
-  description: 'WhoUnfollowed shows you who doesn\'t follow you back on Instagram — without your password. Upload your Instagram data export. See the list in 2 seconds. Free.',
+  title: 'What is WhoUnfollowed? Instagram Unfollow Tracker Explained',
+  description: 'WhoUnfollowed shows you who doesn\'t follow you back on Instagram, without your password. Upload your Instagram data export. See the list in 2 seconds. Free.',
   alternates: { canonical: 'https://whounfollowed.app/what-is-whounfollowed' },
   openGraph: {
-    title: 'What is WhoUnfollowed? — Instagram Unfollow Tracker Explained',
-    description: 'WhoUnfollowed shows you who doesn\'t follow you back on Instagram — without your password. Upload your Instagram data export. See the list in 2 seconds. Free.',
+    title: 'What is WhoUnfollowed? Instagram Unfollow Tracker Explained',
+    description: 'WhoUnfollowed shows you who doesn\'t follow you back on Instagram, without your password. Upload your Instagram data export. See the list in 2 seconds. Free.',
     url: 'https://whounfollowed.app/what-is-whounfollowed',
   },
 };
@@ -48,7 +48,7 @@ function Section({ children, first = false }: { children: React.ReactNode; first
     <section style={{
       paddingTop: first ? 0 : 64,
       marginTop: first ? 0 : 64,
-      borderTop: first ? 'none' : '1px solid rgba(244,240,232,0.06)',
+      borderTop: first ? 'none' : '1px solid var(--t-border1)',
     }}>
       {children}
     </section>
@@ -74,7 +74,7 @@ export default function WhatIsWhoUnfollowed() {
       />
       <div style={{ minHeight: '100vh', background: T.bg, color: T.ink, fontFamily: T.sans }}>
         {/* Nav */}
-        <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(244,240,232,0.06)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(14px)', background: 'rgba(13,13,13,0.8)' }}>
+        <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid var(--t-border1)', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(14px)', background: 'var(--t-navBg)' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
             <img src="/logo.png" alt="WhoUnfollowed" width={26} height={26} style={{ borderRadius: 7, objectFit: 'contain' }} />
             <span style={{ fontFamily: T.serif, fontSize: 17, color: T.ink }}>WhoUnfollowed</span>
@@ -94,7 +94,7 @@ export default function WhatIsWhoUnfollowed() {
               WhoUnfollowed shows you exactly who doesn&apos;t follow you back on Instagram.
             </h1>
             <Body>
-              <p>No password. No app to download. No account to create. You upload the data file Instagram already gave you, and WhoUnfollowed shows you the full list in under 2 seconds — all inside your browser, nothing sent to a server.</p>
+              <p>No password. No app to download. No account to create. You upload the data file Instagram already gave you, and WhoUnfollowed shows you the full list in under 2 seconds. All inside your browser, nothing sent to a server.</p>
             </Body>
             <div style={{ marginTop: 32 }}>
               <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 15, fontWeight: 600, color: T.tealLight, textDecoration: 'none' }}>
@@ -111,7 +111,7 @@ export default function WhatIsWhoUnfollowed() {
               Instagram won&apos;t tell you who unfollowed you. Every app that tries asks for your password.
             </h2>
             <Body>
-              <p style={{ marginBottom: 16 }}>Instagram deliberately hides unfollow events. There are no notifications, no logs, no built-in way to see who stopped following you. The only way to know is to compare your follower list over time — and Instagram doesn&apos;t offer that tool.</p>
+              <p style={{ marginBottom: 16 }}>Instagram deliberately hides unfollow events. There are no notifications, no logs, no built-in way to see who stopped following you. The only way to know is to compare your follower list over time - and Instagram doesn&apos;t offer that tool.</p>
               <p style={{ marginBottom: 16 }}>So people turn to third-party apps. Almost all of them ask for your Instagram username and password. Handing that over violates Instagram&apos;s Terms of Service. Thousands of accounts have been flagged or permanently banned this way. Several of these apps have been caught storing and selling those credentials.</p>
               <p>WhoUnfollowed solves the same problem without any of that risk.</p>
             </Body>
@@ -124,26 +124,26 @@ export default function WhatIsWhoUnfollowed() {
               Instagram already has your data. WhoUnfollowed just reads it.
             </h2>
             <Body>
-              <p style={{ marginBottom: 16 }}>Under GDPR, Instagram is legally required to give you your own data on request. That includes your full followers list and your full following list — every account, with timestamps.</p>
+              <p style={{ marginBottom: 16 }}>Under GDPR, Instagram is legally required to give you your own data on request. That includes your full followers list and your full following list - every account, with timestamps.</p>
               <p style={{ marginBottom: 16 }}>You request it in Instagram settings. They email you a ZIP file, usually within minutes. You drop that ZIP on WhoUnfollowed. Your browser reads it locally, compares the two lists, and shows you every account you follow that doesn&apos;t follow you back.</p>
               <p style={{ marginBottom: 32 }}>That&apos;s the whole thing. Instagram does the data collection. WhoUnfollowed does the comparison. Your device does the processing. Nothing leaves your browser.</p>
             </Body>
 
             {/* 3-step inline flow */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0, borderRadius: 14, border: '1px solid rgba(244,240,232,0.07)', overflow: 'hidden', marginBottom: 28 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0, borderRadius: 14, border: '1px solid var(--t-border1)', overflow: 'hidden', marginBottom: 28 }}>
               {[
                 { time: '30 sec', label: 'Request your export from Instagram settings' },
                 { time: 'Few min', label: 'Instagram emails you the ZIP file' },
                 { time: '2 sec',  label: 'Drop the ZIP. See your full list instantly.' },
               ].map((step, i) => (
-                <div key={step.label} style={{ display: 'flex', alignItems: 'center', gap: 20, padding: '16px 20px', borderBottom: i < 2 ? '1px solid rgba(244,240,232,0.05)' : 'none', background: 'rgba(244,240,232,0.02)' }}>
+                <div key={step.label} style={{ display: 'flex', alignItems: 'center', gap: 20, padding: '16px 20px', borderBottom: i < 2 ? '1px solid var(--t-surface2)' : 'none', background: 'var(--t-surface1)' }}>
                   <span style={{ fontFamily: T.mono, fontSize: 11, color: T.tealMid, width: 52, flexShrink: 0, letterSpacing: '0.04em' }}>{step.time}</span>
                   <span style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.5 }}>{step.label}</span>
                 </div>
               ))}
             </div>
 
-            <Link href="/how-to-export" style={{ fontSize: 14, color: T.inkDim, textDecoration: 'none', borderBottom: '1px solid rgba(244,240,232,0.15)', paddingBottom: 1 }}>
+            <Link href="/how-to-export" style={{ fontSize: 14, color: T.inkDim, textDecoration: 'none', borderBottom: '1px solid var(--t-border3)', paddingBottom: 1 }}>
               Not sure how to request your export? Step-by-step guide →
             </Link>
           </Section>
@@ -182,7 +182,7 @@ export default function WhatIsWhoUnfollowed() {
             </h2>
             <Body>
               <p style={{ marginBottom: 16 }}>WhoUnfollowed is for two kinds of people.</p>
-              <p style={{ marginBottom: 16 }}>Creators and influencers who want to understand their audience — who&apos;s genuinely loyal, who followed for a follow-back and left, and how their follower count actually changed over time.</p>
+              <p style={{ marginBottom: 16 }}>Creators and influencers who want to understand their audience - who&apos;s genuinely loyal, who followed for a follow-back and left, and how their follower count actually changed over time.</p>
               <p style={{ marginBottom: 16 }}>Regular users who just want to know. You&apos;ve been following someone for two years. You want to know if they follow you back. Instagram won&apos;t tell you. WhoUnfollowed will.</p>
               <p>Both use cases are free. No account needed.</p>
             </Body>
@@ -195,9 +195,9 @@ export default function WhatIsWhoUnfollowed() {
               There is no login form. We couldn&apos;t take your password even if we wanted to.
             </h2>
             <Body>
-              <p style={{ marginBottom: 16 }}>Most Instagram tools get accounts banned because they log in as you using your credentials — which Instagram detects and flags as unauthorized third-party access.</p>
+              <p style={{ marginBottom: 16 }}>Most Instagram tools get accounts banned because they log in as you using your credentials - which Instagram detects and flags as unauthorized third-party access.</p>
               <p style={{ marginBottom: 16 }}>WhoUnfollowed never touches Instagram&apos;s servers. It reads a file on your device, in your browser, locally. There is no API call, no login, no session token. Instagram has no way of knowing WhoUnfollowed exists, because from Instagram&apos;s perspective, nothing happened.</p>
-              <p>The parser is open source. Every line of code is public on GitHub. You don&apos;t have to trust us — you can read exactly what runs when you drop your ZIP.</p>
+              <p>The parser is open source. Every line of code is public on GitHub. You don&apos;t have to trust us - you can read exactly what runs when you drop your ZIP.</p>
             </Body>
           </Section>
 
@@ -209,7 +209,7 @@ export default function WhatIsWhoUnfollowed() {
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
               {faqItems.map((item, i) => (
-                <div key={item.q} style={{ paddingTop: 20, paddingBottom: 20, borderBottom: i < faqItems.length - 1 ? '1px solid rgba(244,240,232,0.06)' : 'none' }}>
+                <div key={item.q} style={{ paddingTop: 20, paddingBottom: 20, borderBottom: i < faqItems.length - 1 ? '1px solid var(--t-border1)' : 'none' }}>
                   <div style={{ fontSize: 15, fontWeight: 600, color: T.ink, marginBottom: 8, lineHeight: 1.4 }}>{item.q}</div>
                   <div style={{ fontSize: 14, color: T.inkDim, lineHeight: 1.7 }}>{item.a}</div>
                 </div>
@@ -231,14 +231,14 @@ export default function WhatIsWhoUnfollowed() {
                 See your list
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M11 7L8 4M11 7L8 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Link>
-              <Link href="/how-to-export" style={{ fontSize: 14, color: T.inkDim, textDecoration: 'none', borderBottom: '1px solid rgba(244,240,232,0.15)', paddingBottom: 1 }}>
+              <Link href="/how-to-export" style={{ fontSize: 14, color: T.inkDim, textDecoration: 'none', borderBottom: '1px solid var(--t-border3)', paddingBottom: 1 }}>
                 How to get your Instagram export →
               </Link>
             </div>
           </Section>
 
           {/* Back link */}
-          <div style={{ marginTop: 64, paddingTop: 32, borderTop: '1px solid rgba(244,240,232,0.06)' }}>
+          <div style={{ marginTop: 64, paddingTop: 32, borderTop: '1px solid var(--t-border1)' }}>
             <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, color: T.inkDim, textDecoration: 'none' }}>
               <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M3 7L6 4M3 7L6 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
               Back to WhoUnfollowed

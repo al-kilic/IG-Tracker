@@ -56,23 +56,27 @@ export function Tutorial({
     const sel = steps[step]?.targetSelector;
     const el  = sel ? document.querySelector(sel) : null;
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Single delayed measure after scroll settles — no ongoing listener
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      // Measure after scroll settles — increase delay for large elements
       if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(measure, 500);
+      timerRef.current = setTimeout(measure, 700);
     } else {
       measure();
     }
+    // Force-show hidden interactive elements (e.g. hover-only triage buttons)
+    document.body.classList.add('tutorial-active');
     // Only resize listener — scroll would cause constant re-renders
     window.addEventListener('resize', measure, { passive: true });
     return () => {
       window.removeEventListener('resize', measure);
       if (timerRef.current) clearTimeout(timerRef.current);
+      document.body.classList.remove('tutorial-active');
     };
   }, [visible, mounted, step, measure]);
 
   function dismiss() {
     try { sessionStorage.setItem(storageKey, '1'); } catch {}
+    document.body.classList.remove('tutorial-active');
     setVisible(false);
     onDismiss?.();
   }
@@ -93,7 +97,8 @@ export function Tutorial({
   if (!vw || !vh) return null;
 
   // ── Positioning ─────────────────────────────────────────────────────────────
-  const tooltipW = Math.min(TOOLTIP_W, vw - 24);
+  const tooltipW   = Math.min(TOOLTIP_W, vw - 24);
+  const CARD_H     = 220; // conservative estimate of card height
   let tooltipTop: number | undefined;
   let tooltipBottom: number | undefined;
   let tooltipLeft: number;
@@ -101,13 +106,29 @@ export function Tutorial({
   let arrowLeft = tooltipW / 2 - 7;
 
   if (rect) {
-    const place = (vh - rect.bottom) >= 200 || (vh - rect.bottom) >= rect.top ? 'below' : 'above';
-    arrowPos    = place === 'below' ? 'top' : 'bottom';
-    const idealLeft = rect.left + rect.width / 2 - tooltipW / 2;
+    const spaceBelow = vh - rect.bottom;
+    const spaceAbove = rect.top;
+    const idealLeft  = rect.left + rect.width / 2 - tooltipW / 2;
     tooltipLeft = Math.max(12, Math.min(idealLeft, vw - tooltipW - 12));
     arrowLeft   = Math.max(16, Math.min(rect.left + rect.width / 2 - tooltipLeft - 7, tooltipW - 30));
-    if (place === 'below') tooltipTop    = rect.bottom + PAD + 10;
-    else                   tooltipBottom = vh - rect.top + PAD + 10;
+
+    if (spaceBelow >= CARD_H + PAD + 10) {
+      // Enough room below — preferred position
+      tooltipTop = rect.bottom + PAD + 10;
+      arrowPos = 'top';
+    } else if (spaceAbove >= CARD_H + PAD + 10) {
+      // Enough room above
+      tooltipTop = rect.top - CARD_H - PAD - 10;
+      arrowPos = 'bottom';
+    } else {
+      // Not enough room either side — pin to bottom of viewport
+      tooltipBottom = 20;
+      arrowPos = 'none';
+    }
+    // Safety clamp: never let tooltip go above nav or below viewport
+    if (tooltipTop !== undefined) {
+      tooltipTop = Math.max(70, Math.min(tooltipTop, vh - CARD_H - 8));
+    }
   } else {
     tooltipLeft   = Math.max(12, vw / 2 - tooltipW / 2);
     tooltipBottom = 32;
@@ -115,7 +136,7 @@ export function Tutorial({
 
   return (
     <>
-      {/* Spotlight — 4 dark panels with a hole, no transitions (performance) */}
+      {/* Spotlight - 4 dark panels with a hole, no transitions (performance) */}
       {rect ? (
         <>
           {([
@@ -126,7 +147,7 @@ export function Tutorial({
           ] as React.CSSProperties[]).map((s, i) => (
             <div key={i} style={{ position: 'fixed', ...s, background: 'rgba(0,0,0,0.65)', zIndex: 998, pointerEvents: 'none' }} />
           ))}
-          {/* Highlight ring — no backdrop-filter for perf */}
+          {/* Highlight ring - no backdrop-filter for perf */}
           <div style={{
             position: 'fixed',
             top: rect.top - PAD, left: rect.left - PAD,
@@ -141,7 +162,7 @@ export function Tutorial({
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', zIndex: 998, pointerEvents: 'none' }} />
       )}
 
-      {/* Tooltip card — no backdrop-filter (expensive when overlaid on page) */}
+      {/* Tooltip card - no backdrop-filter (expensive when overlaid on page) */}
       <div
         role="dialog"
         aria-label="Feature tour"

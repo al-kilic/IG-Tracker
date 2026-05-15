@@ -272,7 +272,7 @@ export function ValueSection() {
           <ProductMock title="Radar · Compare snapshots" variant="diff" />
         </div>
 
-        {/* Desktop: overlapping panels — mouse parallax */}
+        {/* Desktop: overlapping panels - mouse parallax */}
         <div
           className="hidden md:block"
           ref={containerRef}
@@ -280,7 +280,7 @@ export function ValueSection() {
           onMouseLeave={handleMouseLeave}
           style={{ position: 'relative', height: 520, cursor: 'default', perspective: '1200px' }}
         >
-          {/* Mouse glow — updated via ref, no re-renders */}
+          {/* Mouse glow - updated via ref, no re-renders */}
           <div ref={glowRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }} />
 
           {/* Left */}

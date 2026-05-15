@@ -262,7 +262,7 @@ export function HeroSection() {
         pointerEvents: 'none', filter: 'blur(40px)',
       }} />
 
-      {/* Floating profile cards — hidden on mobile */}
+      {/* Floating profile cards - hidden on mobile */}
       <div className="hidden lg:block" style={{ position: 'absolute', left: 60, top: 140, animation: 'drift-1 6s ease-in-out infinite', zIndex: 2 }}>
         <ProfileCard handle="@alex.studio" status="not_following_back" />
       </div>
@@ -278,7 +278,7 @@ export function HeroSection() {
       <div className="hidden lg:block" style={{ position: 'absolute', left: 200, top: 490, animation: 'drift-5 7s ease-in-out infinite', zIndex: 2, opacity: 0.75 }}>
         <ProfileCard handle="@wave.theory" status="not_following_back" small />
       </div>
-      {/* Mobile floating cards — subtle, edge-clipped */}
+      {/* Mobile floating cards - subtle, edge-clipped */}
       <div className="lg:hidden" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 2, overflow: 'hidden' }}>
         <div style={{ position: 'absolute', left: -24, top: 160, animation: 'drift-1 6s ease-in-out infinite', opacity: 0.25 }}>
           <ProfileCard handle="@alex.studio" status="not_following_back" small />
@@ -489,14 +489,26 @@ export function HeroSection() {
         {/* Trust line */}
         <div style={{
           marginTop: 14, textAlign: 'center',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          gap: 26, fontSize: 12, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.02em',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap',
+          gap: '8px 20px', fontSize: 11, color: T.inkMute, fontFamily: T.mono, letterSpacing: '0.03em',
         }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon.shield size={13} color={T.tealMid} />no login required</span>
-          <span style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon.code size={13} color={T.tealMid} />open-source parser</span>
-          <span style={{ width: 4, height: 4, borderRadius: '50%', background: T.inkMute }} />
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon.bolt size={13} color={T.tealMid} />runs in your browser</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap' }}>
+            <Icon.shield size={12} color={T.tealMid} />
+            <span>no login,</span>
+            <span style={{ color: T.ink, fontWeight: 600 }}>no risk</span>
+          </span>
+          <span style={{ width: 3, height: 3, borderRadius: '50%', background: T.inkMute, flexShrink: 0 }} />
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap' }}>
+            <Icon.code size={12} color={T.tealMid} />
+            <span>open source,</span>
+            <span style={{ color: T.ink, fontWeight: 600 }}>MIT licensed</span>
+          </span>
+          <span style={{ width: 3, height: 3, borderRadius: '50%', background: T.inkMute, flexShrink: 0 }} />
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap' }}>
+            <Icon.bolt size={12} color={T.tealMid} />
+            <span>nothing stored,</span>
+            <span style={{ color: T.ink, fontWeight: 600 }}>nothing shared</span>
+          </span>
         </div>
       </div>
 

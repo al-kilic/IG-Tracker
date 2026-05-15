@@ -41,8 +41,8 @@ export function UpgradeDialog({ oldestLabel, onDeleteOldest, onUpgrade, onClose 
         position: 'relative', width: '100%', maxWidth: 400,
         borderRadius: 20, overflow: 'hidden',
         background: T.bgCard,
-        border: '1px solid rgba(244,240,232,0.08)',
-        boxShadow: `0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(244,240,232,0.04)`,
+        border: '1px solid var(--t-border2)',
+        boxShadow: `0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px var(--t-surface2)`,
         animation: 'ig-scale-in 0.25s cubic-bezier(0.16,1,0.3,1) both',
       }}>
         {/* Header bar */}
@@ -83,7 +83,7 @@ export function UpgradeDialog({ oldestLabel, onDeleteOldest, onUpgrade, onClose 
           </div>
 
           {/* Oldest snapshot */}
-          <div style={{ padding: '12px 16px', borderRadius: 12, background: 'rgba(244,240,232,0.03)', border: '1px solid rgba(244,240,232,0.07)' }}>
+          <div style={{ padding: '12px 16px', borderRadius: 12, background: 'var(--t-surface1)', border: '1px solid var(--t-border1)' }}>
             <div style={{ fontSize: 10, color: T.inkMute, letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: T.mono, marginBottom: 6 }}>Oldest snapshot</div>
             <div style={{ fontSize: 14, fontWeight: 600, color: T.ink, fontFamily: T.sans, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{oldestLabel}</div>
           </div>
@@ -92,9 +92,9 @@ export function UpgradeDialog({ oldestLabel, onDeleteOldest, onUpgrade, onClose 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <button
               onClick={onDeleteOldest}
-              style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderRadius: 12, border: '1px solid rgba(244,240,232,0.1)', background: 'rgba(244,240,232,0.03)', color: T.ink, fontSize: 13, fontWeight: 500, cursor: 'pointer', textAlign: 'left', fontFamily: T.sans, transition: 'background 0.15s' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(244,240,232,0.07)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(244,240,232,0.03)'; }}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderRadius: 12, border: '1px solid var(--t-border2)', background: 'var(--t-surface1)', color: T.ink, fontSize: 13, fontWeight: 500, cursor: 'pointer', textAlign: 'left', fontFamily: T.sans, transition: 'background 0.15s' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--t-border1)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--t-surface1)'; }}
             >
               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style={{ flexShrink: 0, color: T.inkDim }}>
                 <path d="M2 4 H13 M5 4 V2.5 A0.5 0.5 0 0 1 5.5 2 H9.5 A0.5 0.5 0 0 1 10 2.5 V4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>

@@ -151,10 +151,10 @@ function ComparePageInner() {
         </div>
 
         {/* Period card */}
-        <div style={{ padding: '20px 24px', borderRadius: 16, background: 'rgba(244,240,232,0.02)', border: '1px solid rgba(244,240,232,0.06)', marginBottom: 32 }}>
+        <div style={{ padding: '20px 24px', borderRadius: 16, background: 'var(--t-surface1)', border: '1px solid var(--t-border1)', marginBottom: 32 }}>
           <div style={{ fontSize: 10, color: T.inkMute, letterSpacing: '0.12em', textTransform: 'uppercase', fontFamily: T.mono, marginBottom: 10 }}>Comparing</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
-            <div style={{ padding: '8px 16px', borderRadius: 10, background: 'rgba(244,240,232,0.04)', border: '1px solid rgba(244,240,232,0.08)', fontFamily: T.mono, fontSize: 13, color: T.ink }}>
+            <div style={{ padding: '8px 16px', borderRadius: 10, background: 'var(--t-surface2)', border: '1px solid var(--t-border2)', fontFamily: T.mono, fontSize: 13, color: T.ink }}>
               {format(new Date(oldRecord.data.exportedAt * 1000), 'MMM d, yyyy')}
             </div>
             <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
@@ -168,7 +168,7 @@ function ComparePageInner() {
           {/* Summary stats */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
             {sections.map(s => (
-              <div key={s.id} style={{ textAlign: 'center', padding: '12px 8px', borderRadius: 10, background: 'rgba(244,240,232,0.02)', border: '1px solid rgba(244,240,232,0.05)' }}>
+              <div key={s.id} style={{ textAlign: 'center', padding: '12px 8px', borderRadius: 10, background: 'var(--t-surface1)', border: '1px solid var(--t-surface2)' }}>
                 <div style={{ fontFamily: T.serif, fontSize: 28, lineHeight: 1, color: s.color, letterSpacing: '-0.02em' }}>
                   {s.symbol}{s.count.toLocaleString()}
                 </div>
@@ -179,7 +179,7 @@ function ComparePageInner() {
 
           {/* Net change */}
           {netChange !== 0 && (
-            <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px solid rgba(244,240,232,0.05)', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ marginTop: 16, paddingTop: 14, borderTop: '1px solid var(--t-surface2)', display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono }}>Net follower change:</span>
               <span style={{ fontFamily: T.serif, fontSize: 18, color: netColor, letterSpacing: '-0.01em' }}>{netPrefix}{netChange.toLocaleString()}</span>
             </div>
@@ -188,7 +188,7 @@ function ComparePageInner() {
 
         {/* Tabs + list */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ display: 'flex', gap: 4, padding: 4, borderRadius: 14, background: 'rgba(244,240,232,0.03)', border: '1px solid rgba(244,240,232,0.06)' }}>
+          <div style={{ display: 'flex', gap: 4, padding: 4, borderRadius: 14, background: 'var(--t-surface1)', border: '1px solid var(--t-border1)' }}>
             {sections.map(s => {
               const active = s.id === activeSection;
               return (
@@ -208,7 +208,7 @@ function ComparePageInner() {
                   <span style={{ color: active ? s.color : T.inkMute, fontFamily: T.mono, fontWeight: 700, fontSize: 14 }}>{s.symbol}</span>
                   <span style={{ display: 'none' }} className="sm-inline">{s.label}</span>
                   {s.label}
-                  <span style={{ fontSize: 11, padding: '2px 7px', borderRadius: 20, fontFamily: T.mono, background: active ? T.tealMid : 'rgba(244,240,232,0.06)', color: active ? T.cream : T.inkMute }}>
+                  <span style={{ fontSize: 11, padding: '2px 7px', borderRadius: 20, fontFamily: T.mono, background: active ? T.tealMid : 'var(--t-border1)', color: active ? T.cream : T.inkMute }}>
                     {s.count.toLocaleString()}
                   </span>
                 </button>

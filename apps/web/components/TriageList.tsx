@@ -30,6 +30,7 @@ function saveVisited(snapshotKey: number, set: Set<string>) {
 interface TriageOption {
   state: TriageState;
   label: string;
+  description: string;
   wittys: string[];
   color: string;
   gradient?: string;
@@ -41,6 +42,7 @@ interface TriageOption {
 const TRIAGE_OPTIONS: TriageOption[] = [
   {
     state: 'not_a_fan', label: 'Dropping', key: '1',
+    description: 'You plan to unfollow this account. Marks it for your clean-up run.',
     color: T.terra, bg: 'rgba(168,75,47,0.12)', border: 'rgba(168,75,47,0.35)',
     wittys: [
       'They made their choice. Now make yours.',
@@ -59,7 +61,8 @@ const TRIAGE_OPTIONS: TriageOption[] = [
   },
   {
     state: 'let_it_slide', label: 'Whitelist', key: '2',
-    color: T.inkDim, bg: 'rgba(244,240,232,0.06)', border: 'rgba(244,240,232,0.15)',
+    description: 'You want to keep following them - hides them from the list permanently.',
+    color: T.ink, bg: 'var(--t-surface2)', border: 'var(--t-border2)',
     wittys: [
       'You follow for the content. Fair enough.',
       "They don't follow back. You don't care. Perfect.",
@@ -77,6 +80,7 @@ const TRIAGE_OPTIONS: TriageOption[] = [
   },
   {
     state: 'done', label: 'Unfollowed', key: '3',
+    description: "Already unfollowed them outside the app - marks it to keep your count accurate.",
     color: '#C0392B', gradient: 'linear-gradient(to right, #8B1A1A, #C0392B)',
     bg: 'rgba(139,26,26,0.1)', border: 'rgba(192,57,43,0.35)',
     wittys: [
@@ -96,6 +100,7 @@ const TRIAGE_OPTIONS: TriageOption[] = [
   },
   {
     state: 'check_later', label: 'Skip for now', key: '4',
+    description: "Not sure yet - come back to this one later. Nothing is marked.",
     color: '#a0956b', bg: 'rgba(160,149,107,0.1)', border: 'rgba(160,149,107,0.3)',
     wittys: [
       'Not today. Maybe not ever.',
@@ -143,17 +148,17 @@ function InfoIcon({ text }: { text: string }) {
         <span style={{
           position: 'absolute', bottom: '130%', left: '50%', transform: 'translateX(-50%)',
           width: 200, padding: '8px 12px', borderRadius: 8, zIndex: 300,
-          background: 'rgba(16,20,20,0.98)', border: '1px solid rgba(244,240,232,0.12)',
-          fontSize: 11, color: 'rgba(244,240,232,0.7)', lineHeight: 1.5,
+          background: 'rgba(20,20,20,0.95)', border: '1px solid rgba(255,255,255,0.1)',
+          fontSize: 11, color: 'rgba(244,240,232,0.85)', lineHeight: 1.5,
           whiteSpace: 'normal', textAlign: 'left', pointerEvents: 'none',
-          boxShadow: '0 6px 24px rgba(0,0,0,0.5)',
+          boxShadow: '0 6px 24px rgba(0,0,0,0.4)',
         }}>
           {text}
           <span style={{
             position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)',
             width: 0, height: 0,
             borderLeft: '5px solid transparent', borderRight: '5px solid transparent',
-            borderTop: '5px solid rgba(244,240,232,0.12)',
+            borderTop: '5px solid rgba(20,20,20,0.95)',
           }}/>
         </span>
       )}
@@ -176,7 +181,7 @@ function Toast({ toast, onUndo, onDismiss }: { toast: ToastData; onUndo: () => v
       position: 'fixed', bottom: 28, left: '50%', transform: 'translateX(-50%)',
       display: 'flex', alignItems: 'center', gap: 12,
       padding: '12px 18px', borderRadius: 12,
-      background: 'rgba(20,24,24,0.97)', border: '1px solid rgba(244,240,232,0.12)',
+      background: T.overlay, border: '1px solid var(--t-border3)',
       boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
       fontSize: 13, color: T.inkDim, fontFamily: T.sans,
       zIndex: 200, whiteSpace: 'nowrap',
@@ -225,7 +230,7 @@ function TriageRow({ account, triageState, isVisited, isFocused, onTriage, onVis
       style={{
         height: ROW_HEIGHT,
         display: 'flex', alignItems: 'center', gap: 12, padding: '0 16px',
-        borderBottom: '1px solid rgba(244,240,232,0.05)',
+        borderBottom: '1px solid var(--t-surface2)',
         borderLeft: isFocused
           ? `3px solid ${T.tealMid}`
           : isVisited
@@ -236,7 +241,7 @@ function TriageRow({ account, triageState, isVisited, isFocused, onTriage, onVis
           : isFocused
             ? 'rgba(2,136,143,0.04)'
             : hovered
-              ? 'rgba(244,240,232,0.02)'
+              ? 'var(--t-surface1)'
               : 'transparent',
         opacity: isDone || isSlide ? 0.45 : 1,
         transition: 'all 0.15s',
@@ -274,8 +279,8 @@ function TriageRow({ account, triageState, isVisited, isFocused, onTriage, onVis
         )}
       </div>
 
-      {/* Triage buttons — show on hover/focus or when already triaged */}
-      <div style={{
+      {/* Triage buttons - show on hover/focus or when already triaged */}
+      <div id="tutorial-triage-buttons" style={{
         display: 'flex', alignItems: 'center', gap: 6,
         opacity: hovered || isFocused || triageState ? 1 : 0,
         transition: 'opacity 0.15s',
@@ -303,7 +308,7 @@ function TriageRow({ account, triageState, isVisited, isFocused, onTriage, onVis
               title="Clear"
               style={{
                 width: 22, height: 22, borderRadius: '50%',
-                border: '1px solid rgba(244,240,232,0.12)',
+                border: '1px solid var(--t-border3)',
                 background: 'transparent', color: T.inkMute,
                 fontSize: 14, lineHeight: 1, cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -342,6 +347,7 @@ function TriageRow({ account, triageState, isVisited, isFocused, onTriage, onVis
 
       {/* Instagram link */}
       <a
+        id="tutorial-ig-link"
         href={account.href}
         target="_blank"
         rel="noopener noreferrer"
@@ -378,8 +384,8 @@ function ProgressBar({ done, total }: { done: number; total: number }) {
   return (
     <div style={{
       padding: '14px 18px', borderRadius: 12,
-      background: isComplete ? 'rgba(2,136,143,0.08)' : 'rgba(244,240,232,0.02)',
-      border: `1px solid ${isComplete ? 'rgba(2,136,143,0.3)' : 'rgba(244,240,232,0.06)'}`,
+      background: isComplete ? 'rgba(2,136,143,0.08)' : 'var(--t-surface1)',
+      border: `1px solid ${isComplete ? 'rgba(2,136,143,0.3)' : 'var(--t-border1)'}`,
       transition: 'all 0.3s',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
@@ -390,7 +396,7 @@ function ProgressBar({ done, total }: { done: number; total: number }) {
           {pct}%
         </span>
       </div>
-      <div style={{ height: 4, borderRadius: 4, background: 'rgba(244,240,232,0.06)', overflow: 'hidden' }}>
+      <div style={{ height: 4, borderRadius: 4, background: 'var(--t-border1)', overflow: 'hidden' }}>
         <div style={{
           height: '100%', borderRadius: 4,
           background: isComplete ? T.tealLight : T.tealMid,
@@ -571,8 +577,8 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
                     onChange={e => setPrevSelectedKey(Number(e.target.value))}
                     style={{
                       padding: '4px 10px', borderRadius: 8, fontSize: 12,
-                      border: '1px solid rgba(244,240,232,0.15)',
-                      background: 'rgba(244,240,232,0.04)', color: T.ink,
+                      border: '1px solid var(--t-border3)',
+                      background: 'var(--t-surface2)', color: T.ink,
                       fontFamily: T.sans, cursor: 'pointer', outline: 'none',
                     }}
                   >
@@ -610,7 +616,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
                       display: 'flex', alignItems: 'center', gap: 7,
                       padding: '6px 14px', borderRadius: 20, cursor: 'pointer',
                       fontSize: 12, fontFamily: 'monospace',
-                      border: `1px solid ${checked ? 'rgba(2,136,143,0.4)' : 'rgba(244,240,232,0.12)'}`,
+                      border: `1px solid ${checked ? 'rgba(2,136,143,0.4)' : 'var(--t-border3)'}`,
                       background: checked ? 'rgba(2,136,143,0.1)' : 'transparent',
                       color: checked ? T.tealLight : T.inkDim,
                       transition: 'all 0.15s',
@@ -671,8 +677,8 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
             onChange={e => setSearch(e.target.value)}
             style={{
               width: '100%', paddingLeft: 36, paddingRight: 16, paddingTop: 8, paddingBottom: 8,
-              borderRadius: 10, border: '1px solid rgba(244,240,232,0.12)',
-              background: 'rgba(244,240,232,0.02)', color: T.ink,
+              borderRadius: 10, border: '1px solid var(--t-border3)',
+              background: 'var(--t-surface1)', color: T.ink,
               fontSize: 13, outline: 'none', fontFamily: T.sans,
               boxSizing: 'border-box',
             }}
@@ -688,6 +694,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
           {sortDir === 'asc' ? 'A→Z' : 'Z→A'}
         </Button>
         <Button
+          id="tutorial-export-csv"
           variant="outline"
           size="sm"
           onClick={() => setShowEmailModal(true)}
@@ -719,7 +726,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
             count: accounts.filter(a => triage.get(a.username) === o.state).length,
             color: o.color,
             border: o.border,
-            info: o.wittys[0]!,
+            info: o.description,
             ...(o.gradient ? { gradient: o.gradient } : {}),
           })),
         ];
@@ -740,23 +747,23 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
                     border: active
                       ? `1px solid ${f.border ?? f.color}`
                       : f.isAll
-                        ? '1px solid rgba(244,240,232,0.18)'
-                        : '1px solid rgba(244,240,232,0.08)',
+                        ? '1px solid var(--t-border3)'
+                        : '1px solid var(--t-border2)',
                     background: active
-                      ? f.isAll ? 'rgba(244,240,232,0.07)' : `${f.color}15`
-                      : f.isAll ? 'rgba(244,240,232,0.02)' : 'transparent',
+                      ? f.isAll ? 'var(--t-border1)' : `${f.color}15`
+                      : f.isAll ? 'var(--t-surface1)' : 'transparent',
                     transition: 'all 0.15s',
                     ...(active && f.gradient
                       ? { backgroundImage: f.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }
-                      : { color: active ? f.color : f.isAll ? T.inkDim : 'rgba(244,240,232,0.3)' }),
+                      : { color: active ? f.color : f.isAll ? T.inkDim : T.inkMute }),
                   }}
                 >
                   {f.label}
                   <span style={{
                     fontSize: 10, fontFamily: 'monospace',
                     padding: '1px 5px', borderRadius: 10,
-                    background: active ? 'rgba(255,255,255,0.1)' : 'rgba(244,240,232,0.06)',
-                    color: active ? 'inherit' : 'rgba(244,240,232,0.25)',
+                    background: active ? 'rgba(128,128,128,0.15)' : 'var(--t-border1)',
+                    color: active ? 'inherit' : T.inkMute,
                   }}>
                     {f.count}
                   </span>
@@ -779,7 +786,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
       {mainAccounts.length === 0 && slideAccounts.length === 0 ? (
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          borderRadius: 16, border: '1px dashed rgba(244,240,232,0.08)',
+          borderRadius: 16, border: '1px dashed var(--t-border2)',
           padding: '64px 32px', color: T.inkMute, fontSize: 14,
         }}>
           {search ? `No results for "${search}"` : "Everyone here earned their spot. Radar’s got nothing."}
@@ -798,7 +805,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
           ref={parentRef}
           style={{
             height: listHeight, overflowY: 'auto',
-            borderRadius: 16, border: '1px solid rgba(244,240,232,0.07)',
+            borderRadius: 16, border: '1px solid var(--t-border1)',
             background: 'rgba(244,240,232,0.01)',
           }}
         >
@@ -837,13 +844,13 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
 
       {/* Whitelist section */}
       {slideAccounts.length > 0 && (
-        <div style={{ marginTop: 8 }}>
+        <div id="tutorial-whitelist" style={{ marginTop: 8 }}>
           <button
             onClick={() => setSlideOpen(o => !o)}
             style={{
               display: 'flex', alignItems: 'center', gap: 8, width: '100%',
               padding: '12px 16px', borderRadius: 12,
-              background: 'rgba(244,240,232,0.02)', border: '1px solid rgba(244,240,232,0.07)',
+              background: 'var(--t-surface1)', border: '1px solid var(--t-border1)',
               color: T.inkDim, fontSize: 13, fontFamily: T.sans, cursor: 'pointer',
               textAlign: 'left',
             }}
@@ -853,7 +860,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
             <span style={{
               fontSize: 13, fontFamily: 'monospace', fontWeight: 700,
               padding: '2px 9px', borderRadius: 20,
-              background: 'rgba(244,240,232,0.06)', color: T.ink,
+              background: 'var(--t-border1)', color: T.ink,
             }}>
               {slideAccounts.length}
             </span>
@@ -865,7 +872,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
           {slideOpen && (
             <div style={{
               marginTop: 4, borderRadius: 12,
-              border: '1px solid rgba(244,240,232,0.06)',
+              border: '1px solid var(--t-border1)',
               background: 'rgba(244,240,232,0.01)',
               overflow: 'hidden',
             }}>

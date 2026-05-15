@@ -71,7 +71,7 @@ function InfoTooltip({ text }: { text: string }) {
         <span style={{
           position: 'absolute', bottom: '100%', left: '50%', transform: 'translateX(-50%)',
           marginBottom: 8, width: 200, padding: '8px 12px', borderRadius: 8,
-          background: 'rgba(20,20,20,0.97)', border: '1px solid rgba(244,240,232,0.1)',
+          background: 'rgba(20,20,20,0.97)', border: '1px solid var(--t-border2)',
           fontSize: 12, color: 'rgba(244,240,232,0.75)', lineHeight: 1.5,
           whiteSpace: 'normal', textAlign: 'left', pointerEvents: 'none', zIndex: 100,
           boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
@@ -85,7 +85,7 @@ function InfoTooltip({ text }: { text: string }) {
 
 function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; onChange: (id: string) => void }) {
   return (
-    <div style={{ display: 'flex', gap: 4, padding: 4, borderRadius: 14, background: 'rgba(244,240,232,0.03)', border: '1px solid var(--t-border1)' }}>
+    <div style={{ display: 'flex', gap: 4, padding: 4, borderRadius: 14, background: 'var(--t-surface1)', border: '1px solid var(--t-border1)' }}>
       {tabs.map(tab => {
         const active = tab.id === activeId;
         return (
@@ -122,39 +122,48 @@ function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; o
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 function RadarPulse({ trigger }: { trigger: boolean }) {
-  const [show, setShow] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
+  const [phase, setPhase] = useState<'hidden' | 'in' | 'visible' | 'out'>('hidden');
 
   useEffect(() => {
     if (!trigger) return;
     try { if (sessionStorage.getItem('ig-tracker:radar-pulse')) return; } catch {}
-    const t = setTimeout(() => setShow(true), 1200);
-    const t2 = setTimeout(() => setShow(false), 9000);
-    return () => { clearTimeout(t); clearTimeout(t2); };
+    const t1 = setTimeout(() => setPhase('in'), 1200);
+    const t2 = setTimeout(() => setPhase('visible'), 1700);
+    const t3 = setTimeout(() => setPhase('out'), 9000);
+    const t4 = setTimeout(() => setPhase('hidden'), 9600);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
   }, [trigger]);
 
-  if (!show || dismissed) return null;
+  function dismiss() {
+    try { sessionStorage.setItem('ig-tracker:radar-pulse', '1'); } catch {}
+    setPhase('out');
+    setTimeout(() => setPhase('hidden'), 500);
+  }
+
+  if (phase === 'hidden') return null;
 
   return (
     <div style={{
-      position: 'fixed', top: 56, left: '50%', transform: 'translateX(-50%)',
+      position: 'fixed', top: 62, left: '50%',
+      transform: `translateX(-50%) translateY(${phase === 'visible' ? '0' : '-8px'})`,
       zIndex: 500,
-      background: 'rgba(6,14,16,0.97)',
+      background: '#060e10',
       border: `1px solid ${T.tealMid}`,
       borderRadius: 12,
       padding: '10px 16px',
-      boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 24px rgba(2,136,143,0.25)`,
-      backdropFilter: 'blur(16px)',
+      boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(2,136,143,0.2)`,
       display: 'flex', alignItems: 'center', gap: 10,
-      animation: 'fade-up 0.5s cubic-bezier(0.16,1,0.3,1) both',
-      cursor: 'default',
       whiteSpace: 'nowrap',
+      opacity: phase === 'visible' ? 1 : 0,
+      transition: 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1)',
     }}>
-      <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.tealLight, animation: 'glow-soft 2s ease-in-out infinite', flexShrink: 0 }} />
+      <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.tealLight, flexShrink: 0, animation: 'glow-soft 2s ease-in-out infinite' }} />
       <span style={{ fontSize: 13, color: '#f4f0e8', fontFamily: T.sans }}>
-        Done triaging? Check <a href="/dashboard" onClick={() => { try { sessionStorage.setItem('ig-tracker:radar-pulse', '1'); } catch {} setDismissed(true); }} style={{ color: T.tealLight, fontWeight: 700, textDecoration: 'none' }}>Radar ↗</a> for your account health score.
+        Done triaging? Check{' '}
+        <a href="/dashboard" onClick={dismiss} style={{ color: T.tealLight, fontWeight: 700, textDecoration: 'none' }}>Radar ↗</a>
+        {' '}for your account health score.
       </span>
-      <button onClick={() => { try { sessionStorage.setItem('ig-tracker:radar-pulse', '1'); } catch {} setDismissed(true); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(244,240,232,0.3)', fontSize: 16, lineHeight: 1, padding: '0 2px' }}>×</button>
+      <button onClick={dismiss} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(244,240,232,0.3)', fontSize: 16, lineHeight: 1, padding: '0 2px' }}>×</button>
     </div>
   );
 }
@@ -195,19 +204,49 @@ export default function ResultsPage() {
         onDismiss={() => setTutorialDone(true)}
         steps={[
           {
-            title: 'Your numbers at a glance',
-            body: "Followers, following, mutuals, and non-followers — all pulled from your export. The non-followers count is the list you'll work through.",
+            title: 'Your stats',
+            body: 'Followers, following, mutuals, non-followers - all from your export.',
             targetSelector: '#tutorial-stats',
           },
           {
-            title: 'Triage each account',
-            body: "Hover a row to see action buttons — mark accounts as Dropping, Whitelist, or Skip. Progress saves automatically and the estimated following count updates in real time.",
+            title: 'Fans & Mutuals',
+            body: 'Switch tabs to see who follows you (Fans) and mutual connections.',
             targetSelector: '#tutorial-tabbar',
           },
           {
-            title: 'Fans, Mutuals & CSV export',
-            body: "Switch tabs to see who follows you back (Fans) and mutual follows. Export any list as a CSV file any time.",
-            targetSelector: '#tutorial-tabbar',
+            title: 'Export CSV',
+            body: 'Download the current tab\'s list as a spreadsheet anytime.',
+            targetSelector: '#tutorial-export-csv',
+          },
+          {
+            title: 'Open on Instagram',
+            body: 'Tap ↗ on any row to open that account\'s Instagram profile in a new tab.',
+            targetSelector: '#tutorial-ig-link',
+          },
+          {
+            title: 'Triage buttons',
+            body: 'Hover a row to reveal four action buttons. Pick one to label the account.',
+            targetSelector: '#tutorial-triage-buttons',
+          },
+          {
+            title: '"Dropping"',
+            body: 'You plan to unfollow them. Marks it for your clean-up run.',
+            targetSelector: '#tutorial-triage-buttons',
+          },
+          {
+            title: '"Whitelist"',
+            body: 'Keep following them - removes them from the list permanently.',
+            targetSelector: '#tutorial-triage-buttons',
+          },
+          {
+            title: '"Unfollowed"',
+            body: 'Already unfollowed outside the app? Mark it to keep your count accurate.',
+            targetSelector: '#tutorial-triage-buttons',
+          },
+          {
+            title: 'Whitelist section',
+            body: 'Whitelisted accounts collapse here. Expand anytime to review or undo.',
+            targetSelector: '#tutorial-whitelist',
           },
         ]}
       />

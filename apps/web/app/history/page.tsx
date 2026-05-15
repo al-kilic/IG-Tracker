@@ -83,14 +83,14 @@ export default function HistoryPage() {
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '14px 20px', borderRadius: 12,
-          background: slotsLeft === 0 ? 'rgba(168,75,47,0.06)' : 'rgba(244,240,232,0.02)',
-          border: `1px solid ${slotsLeft === 0 ? 'rgba(168,75,47,0.25)' : 'rgba(244,240,232,0.06)'}`,
+          background: slotsLeft === 0 ? 'rgba(168,75,47,0.06)' : 'var(--t-surface1)',
+          border: `1px solid ${slotsLeft === 0 ? 'rgba(168,75,47,0.25)' : 'var(--t-border1)'}`,
           marginBottom: 28,
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ display: 'flex', gap: 6 }}>
               {Array.from({ length: FREE_SNAPSHOT_LIMIT }).map((_, i) => (
-                <div key={i} style={{ width: 28, height: 8, borderRadius: 4, background: i < slotsUsed ? T.tealMid : 'rgba(244,240,232,0.08)', transition: 'background 0.3s' }} />
+                <div key={i} style={{ width: 28, height: 8, borderRadius: 4, background: i < slotsUsed ? T.tealMid : 'var(--t-border2)', transition: 'background 0.3s' }} />
               ))}
             </div>
             <span style={{ fontSize: 13, color: T.inkDim, fontFamily: T.mono }}>
@@ -115,8 +115,8 @@ export default function HistoryPage() {
 
         {/* Empty state */}
         {snapshots.length === 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20, padding: '80px 40px', borderRadius: 20, border: '1px dashed rgba(244,240,232,0.1)', textAlign: 'center' }}>
-            <div style={{ width: 56, height: 56, borderRadius: 16, background: 'rgba(244,240,232,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20, padding: '80px 40px', borderRadius: 20, border: '1px dashed var(--t-border2)', textAlign: 'center' }}>
+            <div style={{ width: 56, height: 56, borderRadius: 16, background: 'var(--t-surface2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <rect x="3" y="4" width="18" height="18" rx="2" stroke={T.inkMute} strokeWidth="1.5"/>
                 <path d="M8 2 V6 M16 2 V6 M3 10 H21" stroke={T.inkMute} strokeWidth="1.5" strokeLinecap="round"/>
@@ -179,8 +179,8 @@ function SnapshotCard({ record, allSnapshots, compareBaseId, isDeleting, onView,
   return (
     <div style={{
       padding: '20px 24px', borderRadius: 16,
-      background: isCompareBase ? 'rgba(2,136,143,0.06)' : 'rgba(244,240,232,0.02)',
-      border: `1px solid ${isCompareBase ? 'rgba(2,136,143,0.3)' : 'rgba(244,240,232,0.06)'}`,
+      background: isCompareBase ? 'rgba(2,136,143,0.06)' : 'var(--t-surface1)',
+      border: `1px solid ${isCompareBase ? 'rgba(2,136,143,0.3)' : 'var(--t-border1)'}`,
       transition: 'all 0.2s',
     }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
@@ -206,13 +206,13 @@ function SnapshotCard({ record, allSnapshots, compareBaseId, isDeleting, onView,
 
       {/* Actions */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
-        <button onClick={onView} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, border: '1px solid rgba(244,240,232,0.12)', background: 'transparent', color: T.ink, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}>
+        <button onClick={onView} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, border: '1px solid var(--t-border3)', background: 'transparent', color: T.ink, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}>
           View results
         </button>
 
         {!isCompareBase && others.length > 0 ? (
           compareBaseId == null ? (
-            <button onClick={onSetCompareBase} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, border: '1px solid rgba(244,240,232,0.12)', background: 'transparent', color: T.inkDim, fontSize: 12, cursor: 'pointer', fontFamily: T.sans }}>
+            <button onClick={onSetCompareBase} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, border: '1px solid var(--t-border3)', background: 'transparent', color: T.inkDim, fontSize: 12, cursor: 'pointer', fontFamily: T.sans }}>
               Compare
             </button>
           ) : (
@@ -228,7 +228,7 @@ function SnapshotCard({ record, allSnapshots, compareBaseId, isDeleting, onView,
           {confirmDelete ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 12, color: T.inkDim }}>Delete?</span>
-              <button onClick={() => setConfirmDelete(false)} style={{ padding: '6px 12px', borderRadius: 7, border: '1px solid rgba(244,240,232,0.12)', background: 'transparent', color: T.inkDim, fontSize: 12, cursor: 'pointer', fontFamily: T.sans }}>Cancel</button>
+              <button onClick={() => setConfirmDelete(false)} style={{ padding: '6px 12px', borderRadius: 7, border: '1px solid var(--t-border3)', background: 'transparent', color: T.inkDim, fontSize: 12, cursor: 'pointer', fontFamily: T.sans }}>Cancel</button>
               <button onClick={onDelete} disabled={isDeleting} style={{ padding: '6px 12px', borderRadius: 7, border: `1px solid rgba(168,75,47,0.4)`, background: 'rgba(168,75,47,0.12)', color: T.terra, fontSize: 12, fontWeight: 600, cursor: isDeleting ? 'not-allowed' : 'pointer', fontFamily: T.sans }}>
                 {isDeleting ? 'Deleting…' : 'Delete'}
               </button>

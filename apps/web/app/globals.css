@@ -375,6 +375,11 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
+/* Force triage buttons visible during tutorial */
+body.tutorial-active #tutorial-triage-buttons {
+  opacity: 1 !important;
+}
+
 /* ── Reduced motion ────────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
