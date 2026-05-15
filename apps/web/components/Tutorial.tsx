@@ -27,10 +27,11 @@ export function Tutorial({
   steps: TutorialStep[];
   onDismiss?: () => void;
 }) {
-  const [mounted,  setMounted]  = useState(false);
-  const [visible,  setVisible]  = useState(false);
-  const [step,     setStep]     = useState(0);
-  const [layout,   setLayout]   = useState<Layout>({ rect: null, vw: 0, vh: 0 });
+  const [mounted,   setMounted]  = useState(false);
+  const [visible,   setVisible]  = useState(false);
+  const [step,      setStep]     = useState(0);
+  const [layout,    setLayout]   = useState<Layout>({ rect: null, vw: 0, vh: 0 });
+  const [measuring, setMeasuring] = useState(false); // true while waiting for scroll+measure
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -56,11 +57,12 @@ export function Tutorial({
     const sel = steps[step]?.targetSelector;
     const el  = sel ? document.querySelector(sel) : null;
     if (el) {
+      setMeasuring(true); // hide tooltip while scrolling
       el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      // Measure after scroll settles — increase delay for large elements
       if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(measure, 700);
+      timerRef.current = setTimeout(() => { measure(); setMeasuring(false); }, 700);
     } else {
+      setMeasuring(false);
       measure();
     }
     // Force-show hidden interactive elements (e.g. hover-only triage buttons)
@@ -83,14 +85,14 @@ export function Tutorial({
 
   function next() {
     if (step < steps.length - 1) {
-      setLayout(l => ({ ...l, rect: null }));
+      setMeasuring(true); // hide immediately — will show again after scroll+measure
       setStep(s => s + 1);
     } else {
       dismiss();
     }
   }
 
-  if (!mounted || !visible) return null;
+  if (!mounted || !visible || measuring) return null;
 
   const current = steps[step]!;
   const { rect, vw, vh } = layout;

@@ -71,7 +71,7 @@ export function NetworkGraph() {
           strokeDasharray="4 8"
         />
 
-        {/* Mutual edges — solid teal */}
+        {/* Mutual edges - solid teal */}
         {mutuals.map((n, i) => (
           <line
             key={`me${i}`}
@@ -89,7 +89,7 @@ export function NetworkGraph() {
           />
         ))}
 
-        {/* Non-follower edges — dashed terra */}
+        {/* Non-follower edges - dashed terra */}
         {nonFollowers.map((n, i) => (
           <line
             key={`nfe${i}`}
@@ -107,7 +107,7 @@ export function NetworkGraph() {
           />
         ))}
 
-        {/* Mutual nodes — teal */}
+        {/* Mutual nodes - teal */}
         {mutuals.map((n, i) => (
           <g key={`mn${i}`} style={{ animation: `ig-fade-in 0.5s ease ${n.d} both` }}>
             <circle cx={n.x} cy={n.y} r="14" fill="#01696f" fillOpacity="0.12" />
@@ -116,7 +116,7 @@ export function NetworkGraph() {
           </g>
         ))}
 
-        {/* Non-follower nodes — terra with pulse */}
+        {/* Non-follower nodes - terra with pulse */}
         {nonFollowers.map((n, i) => (
           <g key={`nfn${i}`} style={{ animation: `ig-fade-in 0.5s ease ${n.d} both` }}>
             <circle
@@ -133,7 +133,7 @@ export function NetworkGraph() {
           </g>
         ))}
 
-        {/* Fan nodes — light, no edges */}
+        {/* Fan nodes - light, no edges */}
         {fans.map((n, i) => (
           <circle
             key={`fn${i}`}

@@ -162,31 +162,28 @@ function PricingBig() {
       </div>
 
       {/* Desktop: 3-card grid */}
-      <div className="hidden sm:grid" style={{ gridTemplateColumns: '1fr 1.25fr 1fr', gap: 18, alignItems: 'stretch' }}>
+      <div className="hidden sm:grid" style={{ gridTemplateColumns: '1fr 1.2fr 1fr', gap: 14, alignItems: 'stretch' }}>
         {/* FREE */}
         <div style={{
-          position: 'relative', padding: '32px 28px', borderRadius: 20,
+          position: 'relative', padding: '22px 22px', borderRadius: 16,
           background: T.surface1, border: `1px solid ${T.border1}`,
           display: 'flex', flexDirection: 'column',
         }}>
-          <div style={{ fontSize: 11, color: T.inkMute, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 14, fontFamily: T.mono }}>Free</div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 8 }}>
-            <span style={{ fontFamily: T.serif, fontSize: 64, lineHeight: 1, letterSpacing: '-0.04em', color: T.ink }}>$0</span>
+          <div style={{ fontSize: 10, color: T.inkMute, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 10, fontFamily: T.mono }}>Free</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 }}>
+            <span style={{ fontFamily: T.serif, fontSize: 44, lineHeight: 1, letterSpacing: '-0.03em', color: T.ink }}>$0</span>
           </div>
-          <div style={{ fontSize: 12, color: T.inkMute, marginBottom: 22 }}>forever, no signup</div>
-          <p style={{ fontFamily: T.serif, fontSize: 16, fontStyle: 'italic', color: T.inkDim, lineHeight: 1.55, marginBottom: 28 }}>
-            &ldquo;Run it once, get the list, move on with your day.&rdquo;
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 11, marginBottom: 28, flex: 1 }}>
+          <div style={{ fontSize: 11, color: T.inkMute, marginBottom: 16 }}>forever, no signup</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20, flex: 1 }}>
             {['One snapshot at a time','Full non-followers list','CSV export','No account needed'].map(f => (
-              <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, color: T.ink }}>
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: T.tealMid, flexShrink: 0 }} />{f}
+              <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: T.ink }}>
+                <span style={{ width: 4, height: 4, borderRadius: '50%', background: T.tealMid, flexShrink: 0 }} />{f}
               </div>
             ))}
           </div>
           <button
             onClick={() => { const el = document.getElementById('upload'); if (el) el.scrollIntoView({ behavior: 'smooth' }); else window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            style={{ width: '100%', padding: '13px 18px', borderRadius: 11, background: 'transparent', color: T.ink, border: `1px solid ${T.border3}`, fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}
+            style={{ width: '100%', padding: '10px 14px', borderRadius: 9, background: 'transparent', color: T.ink, border: `1px solid ${T.border3}`, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}
           >
             Use it free
           </button>
@@ -194,41 +191,37 @@ function PricingBig() {
 
         {/* PRO */}
         <div style={{
-          position: 'relative', padding: '40px 32px 32px', borderRadius: 22,
-          background: `linear-gradient(180deg, rgba(2,136,143,0.16) 0%, rgba(2,136,143,0.04) 100%)`,
+          position: 'relative', padding: '24px 24px 22px', borderRadius: 18,
+          background: `linear-gradient(180deg, rgba(2,136,143,0.14) 0%, rgba(2,136,143,0.03) 100%)`,
           border: `1px solid ${T.tealMid}`,
-          boxShadow: `0 30px 80px rgba(2,136,143,0.18), inset 0 1px 0 ${T.border2}`,
+          boxShadow: `0 16px 48px rgba(2,136,143,0.14)`,
           display: 'flex', flexDirection: 'column', overflow: 'hidden',
         }}>
-          <div style={{ position: 'absolute', top: -120, left: '50%', transform: 'translateX(-50%)', width: 320, height: 320, borderRadius: '50%', background: `radial-gradient(circle, ${T.tealGlow} 0%, transparent 60%)`, filter: 'blur(40px)', pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', top: 18, right: 18, display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 11px', borderRadius: 100, background: T.tealMid, fontSize: 10, fontWeight: 700, color: T.cream, letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: T.sans }}>
-            <span style={{ width: 5, height: 5, borderRadius: '50%', background: T.cream, animation: 'glow-soft 2s ease-in-out infinite' }} />
+          <div style={{ position: 'absolute', top: 14, right: 14, display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 9px', borderRadius: 100, background: T.tealMid, fontSize: 9, fontWeight: 700, color: T.cream, letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: T.sans }}>
+            <span style={{ width: 4, height: 4, borderRadius: '50%', background: T.cream, animation: 'glow-soft 2s ease-in-out infinite' }} />
             Free during beta
           </div>
           <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <div style={{ fontSize: 11, color: T.tealLight, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 14, fontFamily: T.mono }}>Pro</div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 8 }}>
-              <span style={{ fontSize: 22, color: T.inkMute, marginRight: -4 }}>$</span>
-              <span style={{ fontFamily: T.serif, fontSize: 80, lineHeight: 1, letterSpacing: '-0.04em', color: T.ink }}>
+            <div style={{ fontSize: 10, color: T.tealLight, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 10, fontFamily: T.mono }}>Pro</div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 }}>
+              <span style={{ fontSize: 16, color: T.inkMute, marginRight: -2 }}>$</span>
+              <span style={{ fontFamily: T.serif, fontSize: 52, lineHeight: 1, letterSpacing: '-0.03em', color: T.ink }}>
                 {billing === 'monthly' ? '4.99' : '3.74'}
               </span>
-              <span style={{ fontSize: 13, color: T.inkMute }}>/month</span>
+              <span style={{ fontSize: 12, color: T.inkMute }}>/month</span>
             </div>
-            <div style={{ fontSize: 12, color: T.inkMute, marginBottom: 22 }}>
+            <div style={{ fontSize: 11, color: T.inkMute, marginBottom: 16 }}>
               {billing === 'monthly' ? 'billed monthly · cancel anytime' : 'billed annually · save $18/year'}
             </div>
-            <p style={{ fontFamily: T.serif, fontSize: 17, fontStyle: 'italic', color: T.ink, lineHeight: 1.4, marginBottom: 28 }}>
-              &ldquo;For creators who want to see the curve, not just the snapshot.&rdquo;
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 11, marginBottom: 28, flex: 1 }}>
-              {['Everything in Free','Unlimited snapshot history','Radar dashboard: follow age, pending requests, health score','Compare any two snapshots to see who unfollowed','Follower growth charts over time','Triage workflow to clean your following list','Encrypted cloud sync across devices (coming soon)'].map(f => (
-                <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, color: T.ink }}>
-                  <Icon.check color={T.tealLight} size={15} />{f}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20, flex: 1 }}>
+              {['Everything in Free','Unlimited snapshot history','Radar: health score, follow age, pending','Compare snapshots, see who unfollowed','Follower growth charts','Triage workflow','Cloud sync (coming soon)'].map(f => (
+                <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: T.ink }}>
+                  <Icon.check color={T.tealLight} size={13} />{f}
                 </div>
               ))}
             </div>
             <button
-              style={{ width: '100%', padding: '15px 22px', borderRadius: 12, background: T.teal, color: T.cream, border: 'none', fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, boxShadow: `0 12px 32px ${T.tealGlow}, inset 0 1px 0 ${T.border2}`, transition: 'transform 0.2s' }}
+              style={{ width: '100%', padding: '11px 18px', borderRadius: 10, background: T.teal, color: T.cream, border: 'none', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans, boxShadow: `0 6px 20px ${T.tealGlow}`, transition: 'transform 0.2s' }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; }}
             >
@@ -239,30 +232,27 @@ function PricingBig() {
 
         {/* MOBILE APP */}
         <div style={{
-          position: 'relative', padding: '32px 28px', borderRadius: 20,
+          position: 'relative', padding: '22px 22px', borderRadius: 16,
           background: T.surface1, border: `1px solid ${T.border1}`,
           display: 'flex', flexDirection: 'column', overflow: 'hidden',
         }}>
-          <div style={{ position: 'absolute', top: 18, right: 18, padding: '4px 10px', borderRadius: 100, background: T.surface2, border: `1px solid ${T.border2}`, fontSize: 9, fontWeight: 700, color: T.inkDim, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: T.mono }}>Coming soon</div>
-          <div style={{ fontSize: 11, color: T.inkMute, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 14, fontFamily: T.mono }}>Mobile App</div>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+          <div style={{ position: 'absolute', top: 14, right: 14, padding: '3px 8px', borderRadius: 100, background: T.surface2, border: `1px solid ${T.border2}`, fontSize: 8, fontWeight: 700, color: T.inkDim, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: T.mono }}>Soon</div>
+          <div style={{ fontSize: 10, color: T.inkMute, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 10, fontFamily: T.mono }}>Mobile App</div>
+          <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
             {[
-              { label: 'iOS', icon: <svg width="11" height="14" viewBox="0 0 384 512" fill="currentColor" opacity={.7}><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-16.9 75.8-16.9 31.8 0 48.3 16.9 76.4 16.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg> },
-              { label: 'Android', icon: <svg width="12" height="14" viewBox="0 0 576 512" fill="currentColor" opacity={.7}><path d="M420.55 301.93a24 24 0 1 1 24-24 24 24 0 0 1-24 24m-265.1 0a24 24 0 1 1 24-24 24 24 0 0 1-24 24m273.7-144.48 47.94-83a10 10 0 1 0-17.27-10h0l-48.54 84.07a301.25 301.25 0 0 0-246.56 0L116.18 64.45a10 10 0 1 0-17.27 10h0l47.94 83C64.53 202.22 8.24 285.55 0 384h576c-8.24-98.45-64.54-181.78-146.85-226.55"/></svg> },
+              { label: 'iOS', icon: <svg width="10" height="12" viewBox="0 0 384 512" fill="currentColor" opacity={.7}><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-16.9 75.8-16.9 31.8 0 48.3 16.9 76.4 16.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg> },
+              { label: 'Android', icon: <svg width="11" height="12" viewBox="0 0 576 512" fill="currentColor" opacity={.7}><path d="M420.55 301.93a24 24 0 1 1 24-24 24 24 0 0 1-24 24m-265.1 0a24 24 0 1 1 24-24 24 24 0 0 1-24 24m273.7-144.48 47.94-83a10 10 0 1 0-17.27-10h0l-48.54 84.07a301.25 301.25 0 0 0-246.56 0L116.18 64.45a10 10 0 1 0-17.27 10h0l47.94 83C64.53 202.22 8.24 285.55 0 384h576c-8.24-98.45-64.54-181.78-146.85-226.55"/></svg> },
             ].map(p => (
-              <span key={p.label} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 20, border: `1px solid ${T.border2}`, background: T.surface1, fontSize: 12, fontFamily: T.mono, color: T.inkDim }}>
+              <span key={p.label} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 10px', borderRadius: 20, border: `1px solid ${T.border2}`, background: T.surface1, fontSize: 11, fontFamily: T.mono, color: T.inkDim }}>
                 {p.icon}{p.label}
               </span>
             ))}
           </div>
-          <p style={{ fontSize: 12, color: T.tealMid, fontFamily: T.mono, marginBottom: 22 }}>Included with your Pro subscription</p>
-          <p style={{ fontFamily: T.serif, fontSize: 16, fontStyle: 'italic', color: T.inkDim, lineHeight: 1.4, marginBottom: 28 }}>
-            &ldquo;Your full Radar, in your pocket. No browser needed.&rdquo;
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 11, marginBottom: 28, flex: 1 }}>
-            {['Everything in Pro','Native iOS and Android','Works offline','Share results as an image','Included with your Pro subscription'].map(f => (
-              <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, color: T.ink }}>
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: T.tealMid, flexShrink: 0 }} />{f}
+          <p style={{ fontSize: 11, color: T.tealMid, fontFamily: T.mono, marginBottom: 14 }}>Included with Pro</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20, flex: 1 }}>
+            {['Everything in Pro','Native iOS and Android','Works offline','Share results as an image'].map(f => (
+              <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: T.ink }}>
+                <span style={{ width: 4, height: 4, borderRadius: '50%', background: T.tealMid, flexShrink: 0 }} />{f}
               </div>
             ))}
           </div>

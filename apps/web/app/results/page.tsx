@@ -123,10 +123,22 @@ function TabBar({ tabs, activeId, onChange }: { tabs: Tab[]; activeId: string; o
 
 function RadarPulse({ trigger }: { trigger: boolean }) {
   const [phase, setPhase] = useState<'hidden' | 'in' | 'visible' | 'out'>('hidden');
+  const [anchor, setAnchor] = useState<{ top: number; left: number; arrowLeft: number } | null>(null);
 
   useEffect(() => {
     if (!trigger) return;
     try { if (sessionStorage.getItem('ig-tracker:radar-pulse')) return; } catch {}
+
+    // Measure Radar button position
+    const radarBtn = document.querySelector<HTMLElement>('[href="/dashboard"]');
+    if (radarBtn) {
+      const r = radarBtn.getBoundingClientRect();
+      const popupW = 320;
+      const idealLeft = r.left + r.width / 2 - popupW / 2;
+      const left = Math.max(12, Math.min(idealLeft, window.innerWidth - popupW - 12));
+      setAnchor({ top: r.bottom + 10, left, arrowLeft: r.left + r.width / 2 - left - 7 });
+    }
+
     const t1 = setTimeout(() => setPhase('in'), 1200);
     const t2 = setTimeout(() => setPhase('visible'), 1700);
     const t3 = setTimeout(() => setPhase('out'), 9000);
@@ -142,28 +154,45 @@ function RadarPulse({ trigger }: { trigger: boolean }) {
 
   if (phase === 'hidden') return null;
 
+  const pos = anchor ?? { top: 64, left: window.innerWidth / 2 - 160, arrowLeft: 153 };
+
   return (
     <div style={{
-      position: 'fixed', top: 62, left: '50%',
-      transform: `translateX(-50%) translateY(${phase === 'visible' ? '0' : '-8px'})`,
+      position: 'fixed',
+      top: pos.top,
+      left: pos.left,
+      width: 320,
       zIndex: 500,
       background: '#060e10',
       border: `1px solid ${T.tealMid}`,
       borderRadius: 12,
-      padding: '10px 16px',
-      boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(2,136,143,0.2)`,
+      padding: '10px 14px',
+      boxShadow: `0 8px 32px rgba(0,0,0,0.55), 0 0 20px rgba(2,136,143,0.2)`,
       display: 'flex', alignItems: 'center', gap: 10,
-      whiteSpace: 'nowrap',
       opacity: phase === 'visible' ? 1 : 0,
-      transition: 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1)',
+      transform: `translateY(${phase === 'visible' ? '0' : '-6px'})`,
+      transition: 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1)',
     }}>
-      <span style={{ width: 7, height: 7, borderRadius: '50%', background: T.tealLight, flexShrink: 0, animation: 'glow-soft 2s ease-in-out infinite' }} />
-      <span style={{ fontSize: 13, color: '#f4f0e8', fontFamily: T.sans }}>
-        Done triaging? Check{' '}
+      {/* Arrow pointing up to Radar button */}
+      <div style={{
+        position: 'absolute', top: -7, left: Math.max(12, Math.min(pos.arrowLeft, 296)),
+        width: 14, height: 7, overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', top: 2, left: 1,
+          width: 12, height: 12,
+          background: '#060e10',
+          border: `1px solid ${T.tealMid}`,
+          transform: 'rotate(45deg)',
+          transformOrigin: 'center',
+        }} />
+      </div>
+      <span style={{ width: 6, height: 6, borderRadius: '50%', background: T.tealLight, flexShrink: 0, animation: 'glow-soft 2s ease-in-out infinite' }} />
+      <span style={{ fontSize: 12, color: '#f4f0e8', fontFamily: T.sans, flex: 1 }}>
+        See your account health score in{' '}
         <a href="/dashboard" onClick={dismiss} style={{ color: T.tealLight, fontWeight: 700, textDecoration: 'none' }}>Radar ↗</a>
-        {' '}for your account health score.
       </span>
-      <button onClick={dismiss} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(244,240,232,0.3)', fontSize: 16, lineHeight: 1, padding: '0 2px' }}>×</button>
+      <button onClick={dismiss} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(244,240,232,0.3)', fontSize: 15, lineHeight: 1, padding: '0 2px', flexShrink: 0 }}>×</button>
     </div>
   );
 }
