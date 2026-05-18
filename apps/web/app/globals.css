@@ -32,6 +32,7 @@
   --t-tealGlow:  rgba(1,105,111,0.12);
   --t-terra:     #a84b2f;
   --t-cream:     #f4f0e8;
+  --t-shimmer-hi: #5aabb0; /* light theme: muted teal instead of near-white */
 
   /* Derived surface / border tokens */
   --t-navBg:     rgba(244,240,232,0.88);
@@ -66,6 +67,7 @@ html.dark {
   --t-tealGlow:  rgba(2,136,143,0.25);
   --t-terra:     #a84b2f;
   --t-cream:     #f4f0e8;
+  --t-shimmer-hi: #f4f0e8; /* dark theme: keep cream */
 
   --t-navBg:     rgba(13,13,13,0.75);
   --t-border1:   rgba(244,240,232,0.06);

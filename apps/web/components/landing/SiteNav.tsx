@@ -91,14 +91,36 @@ function HowItWorksDropdown() {
 
   return (
     <div style={{ position: 'relative' }} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+      <style>{`
+        @keyframes bolt-pulse {
+          0%, 100% { opacity: 1; filter: drop-shadow(0 0 4px rgba(245,158,11,0.9)); transform: scale(1); }
+          50% { opacity: 0.5; filter: drop-shadow(0 0 1px rgba(245,158,11,0.3)); transform: scale(0.82); }
+        }
+        @keyframes lightning-shimmer {
+          0% { background-position: 200% center; }
+          100% { background-position: -200% center; }
+        }
+      `}</style>
       <a
         href="#flow"
         style={{
           cursor: 'pointer', color: open ? T.ink : 'inherit', textDecoration: 'none',
-          display: 'inline-flex', alignItems: 'center', gap: 4, transition: 'color 0.15s',
+          display: 'inline-flex', alignItems: 'center', gap: 5, transition: 'color 0.15s',
         }}
       >
-        How It Works
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="#f59e0b" style={{ animation: 'bolt-pulse 1.9s ease-in-out infinite', flexShrink: 0 }}>
+          <path d="M13 2 L4.5 13.5 H11 L11 22 L19.5 10.5 H13 Z"/>
+        </svg>
+        <span style={{
+          background: 'linear-gradient(110deg, #92400e 0%, #f59e0b 30%, #fbbf24 50%, #f59e0b 70%, #92400e 100%)',
+          backgroundSize: '200% 100%',
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          color: 'transparent',
+          animation: 'lightning-shimmer 6s linear infinite',
+          display: 'inline-block',
+        }}>How It Works</span>
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ opacity: 0.5, marginTop: 1 }}>
           <path d="M2 3.5 L5 6.5 L8 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>

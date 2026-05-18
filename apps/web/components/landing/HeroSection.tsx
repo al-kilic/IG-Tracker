@@ -323,11 +323,11 @@ export function HeroSection() {
         <div style={{ marginBottom: 4 }}>See exactly who</div>
         <div style={{ marginBottom: 4 }}>
           <span style={{
-            background: `linear-gradient(110deg, ${T.tealLight} 0%, ${T.cream} 30%, ${T.tealLight} 50%, ${T.cream} 70%, ${T.tealLight} 100%)`,
+            background: `linear-gradient(110deg, var(--t-tealLight) 0%, var(--t-shimmer-hi) 30%, var(--t-tealLight) 50%, var(--t-shimmer-hi) 70%, var(--t-tealLight) 100%)`,
             backgroundSize: '200% 100%',
             WebkitBackgroundClip: 'text', backgroundClip: 'text',
             WebkitTextFillColor: 'transparent', color: 'transparent',
-            animation: 'shimmer-text 5s linear infinite',
+            animation: 'shimmer-text 9s linear infinite',
             fontStyle: 'italic', display: 'inline-block', paddingBottom: '0.1em',
           }}>{"doesn't follow you back."}</span>
         </div>
