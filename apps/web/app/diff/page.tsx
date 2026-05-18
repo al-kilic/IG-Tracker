@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { format } from 'date-fns';
@@ -99,7 +99,7 @@ function StatChip({ label, value, positive }: { label: string; value: number; po
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function DiffPage() {
+function DiffPageInner() {
   const searchParams = useSearchParams();
 
   const oldId     = Number(searchParams.get('old'));
@@ -228,5 +228,17 @@ export default function DiffPage() {
 
       <LandingFooter />
     </div>
+  );
+}
+
+export default function DiffPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: '100vh', background: 'var(--t-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span style={{ fontFamily: 'monospace', fontSize: 13, color: 'var(--t-ink-mute)' }}>Loading…</span>
+      </div>
+    }>
+      <DiffPageInner />
+    </Suspense>
   );
 }
