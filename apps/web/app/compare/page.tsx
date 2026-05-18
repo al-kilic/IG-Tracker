@@ -134,7 +134,7 @@ export default function ComparePage() {
             WhoUnfollowed vs every other Instagram tracker.
           </h1>
           <p style={{ fontSize: 15, color: T.inkDim, lineHeight: 1.65, maxWidth: 560, margin: '0 auto 28px' }}>
-            Every other app in this space asks for your Instagram password. That is not a coincidence — your credentials are part of their business model. Here is the full breakdown.
+            Every other app in this space asks for your Instagram password. That is not a coincidence. Your credentials are part of their business model. Here is the full breakdown.
           </p>
         </motion.div>
 

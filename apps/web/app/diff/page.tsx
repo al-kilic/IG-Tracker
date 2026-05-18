@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { compareSnapshots } from '@ig-tracker/core';
@@ -101,7 +101,6 @@ function StatChip({ label, value, positive }: { label: string; value: number; po
 
 export default function DiffPage() {
   const searchParams = useSearchParams();
-  const router       = useRouter();
 
   const oldId     = Number(searchParams.get('old'));
   const currentId = Number(searchParams.get('current'));

@@ -119,10 +119,10 @@ const TRIAGE_OPTIONS: TriageOption[] = [
   },
   {
     state: 'deactivated', label: 'Deactivated', key: '5',
-    description: "This account is deactivated or deleted — not a real unfollow. Moves them out of the list.",
+    description: "This account is deactivated or deleted. Not a real unfollow. Moves them out of the list.",
     color: '#6b7280', bg: 'rgba(107,114,128,0.1)', border: 'rgba(107,114,128,0.3)',
     wittys: [
-      "Not their choice — Instagram's.",
+      "Not their choice. Instagram's.",
       "The account is gone, not the friendship.",
       "They didn't leave. They just… disappeared.",
       'Ghost account. Different kind of ghost.',
@@ -888,7 +888,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
               {deactivatedAccounts.length}
             </span>
             <span style={{ fontSize: 11, color: T.inkMute, marginLeft: 'auto', fontStyle: 'italic' }}>
-              Accounts that deactivated — not a real unfollow.
+              Accounts that deactivated. Not a real unfollow.
             </span>
           </button>
           {deactivatedOpen && (
