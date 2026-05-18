@@ -117,6 +117,25 @@ const TRIAGE_OPTIONS: TriageOption[] = [
       'Leave it for now.',
     ],
   },
+  {
+    state: 'deactivated', label: 'Deactivated', key: '5',
+    description: "This account is deactivated or deleted — not a real unfollow. Moves them out of the list.",
+    color: '#6b7280', bg: 'rgba(107,114,128,0.1)', border: 'rgba(107,114,128,0.3)',
+    wittys: [
+      "Not their choice — Instagram's.",
+      "The account is gone, not the friendship.",
+      "They didn't leave. They just… disappeared.",
+      'Ghost account. Different kind of ghost.',
+      "Can't unfollow you if they don't exist.",
+      'Collateral damage.',
+      "Instagram made this decision for them.",
+      'Account closed. Case closed.',
+      'Not a snub. Just a casualty.',
+      'The platform got to them first.',
+      'One less active account, one less clean break.',
+      "They're gone. Probably temporary.",
+    ],
+  },
 ];
 
 function stateConfig(state: TriageState): TriageOption {
@@ -222,8 +241,9 @@ function TriageRow({ account, triageState, isVisited, isFocused, onTriage, onVis
   const [hovered, setHovered] = useState(false);
   const cfg = triageState ? stateConfig(triageState) : null;
 
-  const isDone       = triageState === 'done';
-  const isSlide      = triageState === 'let_it_slide';
+  const isDone        = triageState === 'done';
+  const isSlide       = triageState === 'let_it_slide';
+  const isDeactivated = triageState === 'deactivated';
 
   return (
     <div
@@ -243,7 +263,7 @@ function TriageRow({ account, triageState, isVisited, isFocused, onTriage, onVis
             : hovered
               ? 'var(--t-surface1)'
               : 'transparent',
-        opacity: isDone || isSlide ? 0.45 : 1,
+        opacity: isDone || isSlide || isDeactivated ? 0.45 : 1,
         transition: 'all 0.15s',
         cursor: 'default',
         userSelect: 'none',
@@ -428,7 +448,8 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
   const [sortDir, setSortDir]         = useState<'asc' | 'desc'>('asc');
   const [filterState, setFilterState] = useState<TriageState | 'untriaged' | 'all'>('all');
   const [focusedIndex, setFocusedIdx] = useState<number>(-1);
-  const [slideOpen, setSlideOpen]     = useState(false);
+  const [slideOpen, setSlideOpen]         = useState(false);
+  const [deactivatedOpen, setDeactivatedOpen] = useState(false);
   const [visited, setVisited]         = useState<Set<string>>(() => new Set());
   const [toast, setToast]             = useState<ToastData | null>(null);
   const [showEmailModal, setShowEmailModal] = useState(false);
@@ -471,33 +492,35 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
     });
   }, []);
 
-  // Split into main queue vs let-it-slide, with search + filter + sort
-  const { mainAccounts, slideAccounts } = useMemo(() => {
+  // Split into main queue vs let-it-slide vs deactivated, with search + filter + sort
+  const { mainAccounts, slideAccounts, deactivatedAccounts } = useMemo(() => {
     const q = search.trim().toLowerCase();
     const searched = q ? accounts.filter(a => a.username.toLowerCase().includes(q)) : accounts;
-    const main: Account[]  = [];
-    const slide: Account[] = [];
+    const main: Account[]        = [];
+    const slide: Account[]       = [];
+    const deactivated: Account[] = [];
     for (const a of searched) {
-      if (triage.get(a.username) === 'let_it_slide') { slide.push(a); continue; }
-      if (filterState === 'all') { main.push(a); continue; }
       const s = triage.get(a.username);
+      if (s === 'let_it_slide') { slide.push(a); continue; }
+      if (s === 'deactivated')  { deactivated.push(a); continue; }
+      if (filterState === 'all') { main.push(a); continue; }
       if (filterState === 'untriaged' && !s) main.push(a);
       else if (filterState !== 'untriaged' && s === filterState) main.push(a);
     }
     const cmp = (a: Account, b: Account) => a.username.localeCompare(b.username);
     main.sort(sortDir === 'asc' ? cmp : (a, b) => -cmp(a, b));
-    return { mainAccounts: main, slideAccounts: slide };
+    return { mainAccounts: main, slideAccounts: slide, deactivatedAccounts: deactivated };
   }, [accounts, triage, search, sortDir, filterState]);
 
-  // Count non-let_it_slide triaged
+  // Count non-let_it_slide / non-deactivated triaged
   const triaged = useMemo(
     () => accounts.filter(a => {
       const s = triage.get(a.username);
-      return s !== undefined && s !== 'let_it_slide';
+      return s !== undefined && s !== 'let_it_slide' && s !== 'deactivated';
     }).length,
     [accounts, triage],
   );
-  const totalForProgress = accounts.length - slideAccounts.length;
+  const totalForProgress = accounts.length - slideAccounts.length - deactivatedAccounts.length;
 
   const listHeight = Math.min(560, Math.max(120, mainAccounts.length * ROW_HEIGHT));
 
@@ -520,7 +543,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
         setFocusedIdx(i => Math.max(i - 1, 0));
-      } else if (['1','2','3','4'].includes(e.key) && focusedIndex >= 0) {
+      } else if (['1','2','3','4','5'].includes(e.key) && focusedIndex >= 0) {
         const account = mainAccounts[focusedIndex];
         const opt = TRIAGE_OPTIONS[Number(e.key) - 1];
         if (account && opt) {
@@ -715,7 +738,7 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
 
       {/* Filter pills */}
       {(() => {
-        const allCount = accounts.filter(a => triage.get(a.username) !== 'let_it_slide').length;
+        const allCount = accounts.filter(a => { const s = triage.get(a.username); return s !== 'let_it_slide' && s !== 'deactivated'; }).length;
         const untriagedColor = '#8b8fa8'; // muted blue-grey, neutral/pending feel
         const filters: { value: TriageState | 'untriaged' | 'all'; label: string; count: number; color: string; gradient?: string; border?: string; isAll?: boolean; info: string }[] = [
           { value: 'all',       label: 'All',         count: allCount,                                                                            color: T.ink,         isAll: true,  info: 'Everyone in your non-followers list.' },
@@ -840,6 +863,56 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
           onUndo={() => { void setTriageState(toast.username, null); setToast(null); }}
           onDismiss={() => setToast(null)}
         />
+      )}
+
+      {/* Deactivated section */}
+      {deactivatedAccounts.length > 0 && (
+        <div style={{ marginTop: 8 }}>
+          <button
+            onClick={() => setDeactivatedOpen(o => !o)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+              padding: '12px 16px', borderRadius: 12,
+              background: 'var(--t-surface1)', border: '1px solid var(--t-border1)',
+              color: T.inkDim, fontSize: 13, fontFamily: T.sans, cursor: 'pointer',
+              textAlign: 'left',
+            }}
+          >
+            {deactivatedOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+            <span style={{ color: T.inkMute, fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Deactivated</span>
+            <span style={{
+              fontSize: 13, fontFamily: 'monospace', fontWeight: 700,
+              padding: '2px 9px', borderRadius: 20,
+              background: 'var(--t-border1)', color: T.ink,
+            }}>
+              {deactivatedAccounts.length}
+            </span>
+            <span style={{ fontSize: 11, color: T.inkMute, marginLeft: 'auto', fontStyle: 'italic' }}>
+              Accounts that deactivated — not a real unfollow.
+            </span>
+          </button>
+          {deactivatedOpen && (
+            <div style={{
+              marginTop: 4, borderRadius: 12,
+              border: '1px solid var(--t-border1)',
+              background: 'rgba(244,240,232,0.01)',
+              overflow: 'hidden',
+            }}>
+              {deactivatedAccounts.map(account => (
+                <TriageRow
+                  key={account.username}
+                  account={account}
+                  triageState="deactivated"
+                  isVisited={visited.has(account.username)}
+                  isFocused={false}
+                  onTriage={state => handleTriage(account.username, state)}
+                  onVisit={() => markVisited(account.username)}
+                  onFocus={() => {}}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
       {/* Whitelist section */}

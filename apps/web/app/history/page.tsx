@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { useSnapshotStore } from '@/lib/store';
-import { useSnapshotList, deleteSnapshot, FREE_SNAPSHOT_LIMIT, type SnapshotRecord } from '@/hooks/useSnapshots';
+import { useSnapshotList, deleteSnapshot, updateSnapshotLabel, redateSnapshot, FREE_SNAPSHOT_LIMIT, type SnapshotRecord } from '@/hooks/useSnapshots';
 import { LandingFooter } from '@/components/landing/FinalCTA';
 import { T } from '@/components/landing/tokens';
 import { Icon } from '@/components/landing/atoms';
@@ -34,7 +34,7 @@ export default function HistoryPage() {
     const target = snapshots.find(s => s.id === targetId);
     if (!base || !target) return;
     const [old, cur] = base.exportedAt <= target.exportedAt ? [base, target] : [target, base];
-    router.push(`/compare?old=${old.id}&current=${cur.id}`);
+    router.push(`/diff?old=${old.id}&current=${cur.id}`);
   }
 
   const slotsUsed = snapshots.length;
@@ -169,7 +169,23 @@ interface CardProps {
 
 function SnapshotCard({ record, allSnapshots, compareBaseId, isDeleting, onView, onDelete, onSetCompareBase, onCompareWith }: CardProps) {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [editLabel, setEditLabel] = useState(record.label);
+  const [editDate, setEditDate] = useState(() => {
+    const d = new Date(record.exportedAt * 1000);
+    return d.toISOString().slice(0, 10);
+  });
   const isCompareBase = compareBaseId === record.id;
+
+  async function saveEdit() {
+    if (record.id == null) return;
+    const newExportedAt = Math.floor(new Date(editDate + 'T12:00:00').getTime() / 1000);
+    const labelChanged = editLabel.trim() !== record.label;
+    const dateChanged = newExportedAt !== record.exportedAt;
+    if (labelChanged) await updateSnapshotLabel(record.id, editLabel.trim() || record.label);
+    if (dateChanged) await redateSnapshot(record.id, record.exportedAt, newExportedAt);
+    setEditing(false);
+  }
   const others        = allSnapshots.filter(s => s.id !== record.id);
   const followers     = record.data.followers.length;
   const following     = record.data.following.length;
@@ -192,10 +208,38 @@ function SnapshotCard({ record, allSnapshots, compareBaseId, isDeleting, onView,
             </svg>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontFamily: T.serif, fontSize: 19, color: T.ink, letterSpacing: '-0.01em', marginBottom: 4 }}>{record.label}</div>
-            <div style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono }}>
-              {followers.toLocaleString()} followers · {following.toLocaleString()} following · saved {format(new Date(record.savedAt * 1000), 'MMM d, yyyy')}
-            </div>
+            {editing ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <input
+                  autoFocus
+                  value={editLabel}
+                  onChange={e => setEditLabel(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') void saveEdit(); if (e.key === 'Escape') setEditing(false); }}
+                  style={{ fontFamily: T.sans, fontSize: 14, padding: '6px 10px', borderRadius: 8, border: '1px solid rgba(2,136,143,0.4)', background: 'var(--t-surface2)', color: T.ink, outline: 'none', width: '100%', boxSizing: 'border-box' }}
+                  placeholder="Snapshot name"
+                />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono, flexShrink: 0 }}>Export date:</span>
+                  <input
+                    type="date"
+                    value={editDate}
+                    onChange={e => setEditDate(e.target.value)}
+                    style={{ fontFamily: T.mono, fontSize: 12, padding: '4px 8px', borderRadius: 7, border: '1px solid rgba(2,136,143,0.3)', background: 'var(--t-surface2)', color: T.ink, outline: 'none' }}
+                  />
+                </div>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button onClick={() => void saveEdit()} style={{ padding: '5px 14px', borderRadius: 8, border: 'none', background: T.teal, color: T.cream, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}>Save</button>
+                  <button onClick={() => { setEditing(false); setEditLabel(record.label); }} style={{ padding: '5px 14px', borderRadius: 8, border: '1px solid var(--t-border3)', background: 'transparent', color: T.inkDim, fontSize: 12, cursor: 'pointer', fontFamily: T.sans }}>Cancel</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div style={{ fontFamily: T.serif, fontSize: 19, color: T.ink, letterSpacing: '-0.01em', marginBottom: 4 }}>{record.label}</div>
+                <div style={{ fontSize: 12, color: T.inkMute, fontFamily: T.mono }}>
+                  {followers.toLocaleString()} followers · {following.toLocaleString()} following · export {format(new Date(record.exportedAt * 1000), 'MMM d, yyyy')}
+                </div>
+              </>
+            )}
           </div>
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
@@ -209,6 +253,11 @@ function SnapshotCard({ record, allSnapshots, compareBaseId, isDeleting, onView,
         <button onClick={onView} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, border: '1px solid var(--t-border3)', background: 'transparent', color: T.ink, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: T.sans }}>
           View results
         </button>
+        {!editing && (
+          <button onClick={() => setEditing(true)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, border: '1px solid var(--t-border3)', background: 'transparent', color: T.inkDim, fontSize: 12, cursor: 'pointer', fontFamily: T.sans }}>
+            Rename / Redate
+          </button>
+        )}
 
         {!isCompareBase && others.length > 0 ? (
           compareBaseId == null ? (

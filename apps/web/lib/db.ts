@@ -9,7 +9,7 @@ export interface SnapshotRecord {
   data: ParsedSnapshot;
 }
 
-export type TriageState = 'not_a_fan' | 'let_it_slide' | 'done' | 'check_later';
+export type TriageState = 'not_a_fan' | 'let_it_slide' | 'done' | 'check_later' | 'deactivated';
 
 export interface TriageRecord {
   id?: number;
