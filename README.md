@@ -1,18 +1,11 @@
 <div align="center">
 
-<img src="https://whounfollowed-production.up.railway.app/favicon.ico" width="60" alt="WhoUnfollowed logo" />
 
 # WhoUnfollowed
 
 **See exactly who doesn't follow you back — without sharing your password.**
 
 Upload the ZIP from Instagram's official data export. Your browser reads it locally and gives you the full picture in seconds. No server. No login. No risk.
-
-[
-[
-[
-[
-[
 
 </div>
 
@@ -219,7 +212,7 @@ The core parser (`packages/core`) is licensed under **MIT**.
 
 ## Contact
 
-Built by [Alan Kılıç](https://github.com/al-kilic) · [aekilicc@gmail.com](mailto:aekilicc@gmail.com)
+Built by [Alan Kılıç](https://github.com/al-kilic) / [aekilicc@gmail.com](mailto:aekilicc@gmail.com) / @alterindoles
 
 Not affiliated with Instagram or Meta.
 
