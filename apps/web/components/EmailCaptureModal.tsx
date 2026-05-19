@@ -35,21 +35,23 @@ export function EmailCaptureModal({ csvFilename, csvContent, onClose, onDownload
     if (!validEmail) return;
     setStatus('sending');
     saveEmail(email.trim());
+    // Only email + filename sent to server — CSV stays client-side (GDPR compliance)
     try {
       const res = await fetch('/api/capture-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), csvFilename, csvContent }),
+        body: JSON.stringify({ email: email.trim(), csvFilename }),
       });
       setStatus(res.ok ? 'sent' : 'error');
     } catch {
       setStatus('error');
     }
+    onDownload();
   }
 
   function handleDownloadOnly() {
-    if (!validEmail) return;
-    saveEmail(email.trim());
+    // Download never requires email (GDPR: consent must not be bundled with data access)
+    if (validEmail) saveEmail(email.trim());
     onDownload();
     onClose();
   }
@@ -74,10 +76,10 @@ export function EmailCaptureModal({ csvFilename, csvContent, onClose, onDownload
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 10, color: T.tealMid, fontFamily: T.mono, letterSpacing: '0.12em', marginBottom: 8 }}>EXPORT CSV</div>
           <h2 style={{ fontFamily: T.serif, fontSize: 24, fontWeight: 400, letterSpacing: '-0.02em', color: T.ink, marginBottom: 6 }}>
-            Enter your email to export.
+            Your CSV is ready.
           </h2>
           <p style={{ fontSize: 13, color: T.inkDim, lineHeight: 1.6 }}>
-            Your email unlocks the download. We&apos;ll also send you a copy and occasional product updates. Unsubscribe anytime.
+            Download it now, or enter your email to also receive a copy and occasional product updates. Unsubscribe anytime.
           </p>
         </div>
 
@@ -144,13 +146,12 @@ export function EmailCaptureModal({ csvFilename, csvContent, onClose, onDownload
             </button>
             <button
               onClick={handleDownloadOnly}
-              disabled={!validEmail}
               style={{
                 padding: '11px 16px', borderRadius: 10,
-                cursor: validEmail ? 'pointer' : 'not-allowed',
+                cursor: 'pointer',
                 background: 'rgba(244,240,232,0.04)',
-                border: `1px solid ${validEmail ? 'rgba(244,240,232,0.12)' : 'rgba(244,240,232,0.05)'}`,
-                color: validEmail ? T.inkDim : 'rgba(244,240,232,0.2)',
+                border: '1px solid rgba(244,240,232,0.12)',
+                color: T.inkDim,
                 fontSize: 13, fontFamily: T.sans, transition: 'all 0.15s',
               }}
             >

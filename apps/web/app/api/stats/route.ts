@@ -2,6 +2,20 @@ import { NextResponse } from 'next/server';
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
+// Rate limit: max 3 POST requests per IP per minute
+const statsRateMap = new Map<string, { count: number; resetAt: number }>();
+function isStatsRateLimited(ip: string): boolean {
+  const now   = Date.now();
+  const entry = statsRateMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    statsRateMap.set(ip, { count: 1, resetAt: now + 60_000 });
+    return false;
+  }
+  if (entry.count >= 3) return true;
+  entry.count++;
+  return false;
+}
+
 const DATA_DIR  = join(process.cwd(), 'data');
 const STATS_FILE = join(DATA_DIR, 'stats.json');
 
@@ -40,6 +54,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+  if (isStatsRateLimited(ip)) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+  }
+
   let body: { nonFollowerCount?: unknown };
   try { body = await req.json() as typeof body; } catch { body = {}; }
 

@@ -109,15 +109,6 @@ export function UploadZone() {
         const latestSaved = await db.snapshots.orderBy('exportedAt').last();
         const previousSnapshot = latestSaved?.data;
         const detection = detectDeltaExport(snapshot, previousSnapshot);
-        console.error('🔴 DELTA CHECK', {
-          followers: snapshot.followers.length,
-          following: snapshot.following.length,
-          prevFollowers: previousSnapshot?.followers.length ?? 'none',
-          isDelta: detection.isDelta,
-          reasons: detection.reasons,
-          firstFollowerTs: snapshot.followers[0]?.followedAt,
-          firstFollowingTs: snapshot.following[0]?.followedAt,
-        });
         if (detection.isDelta) {
           setState({ status: 'idle' });
           setDeltaWarning({ snapshot, reasons: detection.reasons });
