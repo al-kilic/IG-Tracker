@@ -203,10 +203,9 @@ The project is under active development. Feel free to open issues for bugs or fe
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+The web app (`apps/web`) is licensed under **[AGPL-3.0](./LICENSE)** — if you run a modified version as a network service, you must publish your source.
 
-The web app (`apps/web`) is licensed under **AGPL-3.0**.  
-The core parser (`packages/core`) is licensed under **MIT**.
+The core parser (`packages/core`) is licensed under **[MIT](./packages/core/LICENSE)** — use it freely in any project.
 
 ***
 

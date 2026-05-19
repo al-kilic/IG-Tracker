@@ -1,8 +1,31 @@
+# Dependencies
 node_modules/
+
+# Next.js
 .next/
+out/
+
+# Build outputs
+dist/
+.turbo/
+
+# Environment variables — never commit these
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
 
 # Private docs — local only
 CLAUDE.md
 PRO.md
 ROADMAP.md
 TODO.md
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
