@@ -172,9 +172,19 @@ Full guide: [How to Export Your Instagram Data](https://whounfollowed-production
 - On **Pro**: snapshots you explicitly save are stored encrypted in cloud so you can compare across sessions/devices
 - No Instagram login. No third-party API calls. No credential storage.
 
-The parser source is public and MIT-licensed — you can read exactly what happens to your data.
+The core parser (`packages/core`) is MIT-licensed — you can read exactly what happens to your data. The web app is AGPL-3.0.
 
 → [Full Privacy Policy](https://whounfollowed-production.up.railway.app/privacy)
+
+***
+
+## Self-Hosting
+
+You can self-host the full open-source app. Clone the repo, set up the env vars from `.env.example`, and run `pnpm dev`.
+
+**What self-hosting includes:** everything in the free tier — full non-followers list, snapshot comparison, Radar health score, triage workflow, CSV export.
+
+**What requires the cloud service:** Pro features depend on server infrastructure by design — cross-device snapshot history, email alerts when a new export reveals unfollowers, and historical trend charts across sessions. These features store data server-side and cannot work in a purely local build without you implementing the backend yourself.
 
 ***
 
