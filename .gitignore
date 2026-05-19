@@ -16,11 +16,12 @@ dist/
 .env.production
 .env.development
 
-# Private docs — local only
+# Private docs — local only, never push
 CLAUDE.md
 PRO.md
 ROADMAP.md
 TODO.md
+AI_OPS_ROOM.md
 
 # OS
 .DS_Store
