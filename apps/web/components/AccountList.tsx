@@ -68,7 +68,6 @@ export function AccountList({
         {showEmailModal && (
           <EmailCaptureModal
             csvFilename={csvFilename}
-            csvContent={buildCsv(filtered)}
             onClose={() => setShowEmailModal(false)}
             onDownload={() => downloadCsv(filtered, csvFilename)}
           />

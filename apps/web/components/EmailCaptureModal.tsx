@@ -15,12 +15,11 @@ function saveEmail(email: string) {
 
 interface Props {
   csvFilename: string;
-  csvContent: string;
   onClose: () => void;
   onDownload: () => void;
 }
 
-export function EmailCaptureModal({ csvFilename, csvContent, onClose, onDownload }: Props) {
+export function EmailCaptureModal({ csvFilename, onClose, onDownload }: Props) {
   const [email, setEmail]     = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 

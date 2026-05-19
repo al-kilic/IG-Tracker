@@ -121,7 +121,7 @@ function PricingBig() {
       const res = await fetch('/api/capture-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: mobileEmail, csvFilename: 'mobile-app-waitlist', csvContent: '' }),
+        body: JSON.stringify({ email: mobileEmail, csvFilename: 'mobile-app-waitlist' }),
       });
       setMobileStatus(res.ok ? 'sent' : 'error');
     } catch { setMobileStatus('error'); }

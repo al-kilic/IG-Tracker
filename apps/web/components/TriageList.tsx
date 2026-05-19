@@ -730,7 +730,6 @@ export function TriageList({ accounts, snapshotKey, csvFilename }: TriageListPro
       {showEmailModal && (
         <EmailCaptureModal
           csvFilename={csvFilename}
-          csvContent={buildCsv(mainAccounts)}
           onClose={() => setShowEmailModal(false)}
           onDownload={() => downloadCsv(mainAccounts, csvFilename)}
         />

@@ -101,7 +101,7 @@ function HowItWorksDropdown() {
           100% { background-position: -200% center; }
         }
       `}</style>
-      <a
+      <Link
         href="/#flow"
         style={{
           cursor: 'pointer', color: open ? T.ink : 'inherit', textDecoration: 'none',
@@ -124,7 +124,7 @@ function HowItWorksDropdown() {
         <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ opacity: 0.5, marginTop: 1 }}>
           <path d="M2 3.5 L5 6.5 L8 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-      </a>
+      </Link>
       {open && (
         <>
           {/* Transparent bridge fills the gap so mouse doesn't leave the hover zone */}
@@ -246,11 +246,11 @@ export function SiteNav() {
         >
           <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.tealLight, fontWeight: 600, textDecoration: 'none' }}>Radar Dashboard</Link>
           <Link href="/history" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Snapshot History</Link>
-          <a href="/#pricing" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Pricing</a>
+          <Link href="/#pricing" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Pricing</Link>
           <Link href="/what-is-whounfollowed" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>What is WhoUnfollowed?</Link>
           <Link href="/compare" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Compare</Link>
           <Link href="/blog" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Blog</Link>
-          <a href="/#flow" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>How It Works</a>
+          <Link href="/#flow" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>How It Works</Link>
           <Link href="/how-to-export" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>How to Export Your Data</Link>
           <a href="https://accountscenter.instagram.com/info_and_permissions/dyi/" target="_blank" rel="noopener noreferrer" style={{ fontSize: 16, color: T.tealLight, textDecoration: 'none' }}>
             Export on Instagram ↗
