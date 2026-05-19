@@ -244,6 +244,9 @@ export function SiteNav() {
             display: 'flex', flexDirection: 'column', gap: 20,
           }}
         >
+          <Link href="/dashboard" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.tealLight, fontWeight: 600, textDecoration: 'none' }}>Radar Dashboard</Link>
+          <Link href="/history" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Snapshot History</Link>
+          <a href="/#pricing" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Pricing</a>
           <Link href="/what-is-whounfollowed" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>What is WhoUnfollowed?</Link>
           <Link href="/compare" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Compare</Link>
           <Link href="/blog" onClick={() => setMenuOpen(false)} style={{ fontSize: 16, color: T.inkDim, textDecoration: 'none' }}>Blog</Link>

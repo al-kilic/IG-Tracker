@@ -66,11 +66,6 @@ export function HeroSection() {
 
     // Delay stats fetch so it doesn't compete with route compilation on first load
     const t = setTimeout(() => {
-      const sessionCounted = sessionStorage.getItem('ig-tracker:session-counted');
-      if (!sessionCounted) {
-        sessionStorage.setItem('ig-tracker:session-counted', '1');
-        fetch('/api/stats', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nonFollowerCount: 0 }) }).catch(() => {});
-      }
       fetch('/api/stats')
         .then(r => r.json())
         .then(d => {

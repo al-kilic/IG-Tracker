@@ -455,9 +455,8 @@ function FollowAgeCard({ nonFollowers }: { nonFollowers: { username: string; hre
             radius={[0, 4, 4, 0]}
             name="Accounts"
             style={{ cursor: 'pointer' }}
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onClick={(data: any) => {
-              const label = data?.label as string | undefined;
+            onClick={(data: unknown) => {
+              const label = (data as { label?: string } | null)?.label;
               setSelectedBucket(prev => prev === label ? null : (label ?? null));
             }}
           >
